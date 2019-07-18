@@ -10,22 +10,29 @@ warnings.filterwarnings('ignore')
 #%matplotlib inline
 from programs import checker # import local file
 
+# Out-liars Handling
+# {
 #.....Relationship with numerical variables of SalePrice
-def scatter(file, var):
+def numerical_relationship(file, var):
     data = pd.concat([file['SalePrice'], file[var]], axis=1)
     data.plot.scatter(x=var, y='SalePrice', ylim=(0, 800000))
     plt.show()
 
+#.....Relationship with categorical features of SalePrice
+def categorical_relationship(file, var):
+    data = pd.concat([file['SalePrice'], file[var]], axis=1)
+    f, ax = plt.subplots(figsize=(8, 6))
+    fig = sns.boxplot(x=var, y="SalePrice", data=data)
+    fig.axis(ymin=0, ymax=800000)
+    plt.show()
+# }
 
 
 
 
 
 
-
-
-
-#.....Checking Distribution in general and converting into normal if necessary
+#.....Normalization handling
 # {
 # Checking distribution
 def general_distribution(file, cell):

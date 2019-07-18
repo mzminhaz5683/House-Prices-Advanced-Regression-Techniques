@@ -1,0 +1,12 @@
+1.Missing data
+    Important questions when thinking about missing data:
+	a. How prevalent is the missing data?
+	b. Is missing data random or does it have a pattern?
+
+2. Finding relationship of dependent variable with independent variables
+3. clean the dataset and handle the missing data, outliers and categorical variables.
+4. check if data meets the assumptions required by most multivariate techniques
+    Check variables through the questions
+	a. Do we think about this variable when we are buying a house?
+	b. If so, how important would this variable be?
+	c. Is this information already described in any other variable?

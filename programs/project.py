@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 #%matplotlib inline
 from programs import checker # import local file
 
-#.....Importing & Checking Inputs.")
+#.....Importing & Checking Inputs.
 df_train = pd.read_csv('../input/train.csv')
 df_test = pd.read_csv('../input/test.csv')
 print("df_train set size:", df_train.shape) #1460 samples
@@ -22,13 +22,37 @@ df_test_ID = df_test['Id']
 df_train.drop(['Id'], axis=1, inplace=True)
 df_test.drop(['Id'], axis=1, inplace=True)
 
-#.....work with outliers of GrLivArea
-#checker.scatter(df_train, 'GrLivArea')
-#.....outliers : GrlivArea > 4500
-df_train = df_train[df_train.GrLivArea < 4500]
-df_train.reset_index(drop=True, inplace=True)
-#.....after removing outliers from GrLivArea
-#checker.scatter(df_train, 'GrLivArea')
 
-#.....work with outliers of TotalBsmtSF
-#checker.scatter(df_train, 'TotalBsmtSF')
+# 1. Missing Data Handling
+# {
+#.....missing data observing
+total = df_train.isnull().sum().sort_values(ascending=False)
+percent = (df_train.isnull().sum()/df_train.isnull().count()).sort_values(ascending=False)
+missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+#print(missing_data)
+
+#.....dealing with missing data
+df_train = df_train.drop((missing_data[missing_data['Total'] > 1]).index,1)
+df_train = df_train.drop(df_train.loc[df_train['Electrical'].isnull()].index) #dropping the observation
+#print(df_train.isnull().sum().max()) #just checking that there's no missing data missing...
+# }
+
+
+# 2. Out-liars Handling
+# {
+# 2a.....numerical analyzing
+#   [
+#checker.numerical_relationship(df_train, 'GrLivArea')
+df_train = df_train[df_train.GrLivArea < 4500] # outliers : GrlivArea > 4500
+df_train.reset_index(drop=True, inplace=True) # removing outliers from GrLivArea
+#checker.numerical_relationship(df_train, 'GrLivArea')
+
+#checker.numerical_relationship(df_train, 'TotalBsmtSF')
+#   ]
+
+# 2b.....categorical analyzing
+#   [
+#checker.categorical_relationship(df_train, 'OverallQual')
+#checker.categorical_relationship(df_train, 'YearBuilt')
+#   ]
+# }
