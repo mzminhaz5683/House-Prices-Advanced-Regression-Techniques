@@ -24,7 +24,7 @@ df_train.drop(['Id'], axis=1, inplace=True)
 df_test.drop(['Id'], axis=1, inplace=True)
 
 
-###################################### 1. Missing Data Handling #########################################
+###################################### 1. Data Handling ##################################################
 
 #.........................................missing data observing.........................................
 ntrain = df_train.shape[0]
@@ -36,7 +36,7 @@ all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
 total = all_data.isnull().sum().sort_values(ascending=False)
 percent = ((all_data.isnull().sum()/all_data.isnull().count()) * 100).sort_values(ascending=False)
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-print(missing_data)
+#print(missing_data)
 
 #.........................................dealing with missing data.....................................
 
@@ -60,12 +60,11 @@ all_data['Fence'] = all_data['Fence'].fillna("None")
 all_data['FireplaceQu'] = all_data['FireplaceQu'].fillna("None")
 
 
-# GarageType, GarageFinish, GarageQual and GarageCond: NA means "None"
-for col in ('GarageType', 'GarageFinish', 'GarageQual', 'GarageCond'):
+# GarageType, GarageFinish, GarageQual and GarageCond represent similar & NA means "None"
+for col in ('GarageQual', 'GarageType', 'GarageFinish', 'GarageCond'):
     all_data[col] = all_data[col].fillna("None")
 
-
-# GarageYrBlt, GarageArea and GarageCars : NA means o
+# GarageYrBlt, GarageArea and GarageCars : NA means 0
 for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
     all_data[col] = all_data[col].fillna(0)
 
@@ -76,19 +75,14 @@ for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBat
     all_data[col] = all_data[col].fillna(0)
 
 
-# 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'
+# 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2' represent similar
 # categorical meaning NA means 'None'
 for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
     all_data[col] = all_data[col].fillna('None')
 
-
 # masonry veneer: 0 for area and None for category
 all_data["MasVnrType"] = all_data["MasVnrType"].fillna("None")
 all_data["MasVnrArea"] = all_data["MasVnrArea"].fillna(0)
-
-
-# Utilises: won't help in predictive modelling
-all_data.drop(['Utilities'], axis = 1, inplace = True) #?????????????????????????????????????????
 
 
 # Functional: NA means typical
@@ -96,6 +90,11 @@ all_data['Functional'] = all_data['Functional'].fillna('Typ')
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~set the most common string by ''all_data[cell].mode()[0])''
+
+# Utilises: won't help in predictive modelling
+#all_data.drop(['Utilities'], axis = 1, inplace = True) #?????????????????????????????????????????
+# Utilities: No for No utility
+all_data['Utilities'] = all_data['Utilities'].fillna(all_data['Utilities'].mode()[0])
 
 # MSZoning: NA replace most common value of the list "RL"
 all_data['MSZoning'] = all_data['MSZoning'].fillna(all_data['MSZoning'].mode()[0])
@@ -113,8 +112,11 @@ all_data['KitchenQual'] = all_data['KitchenQual'].fillna(all_data['KitchenQual']
 
 
 # Exterior1st and Exterior2nd: NA means most common string
+all_data['ExterQual'] = all_data['ExterQual'].fillna(all_data['ExterQual'].mode()[0])
 all_data['Exterior1st'] = all_data['Exterior1st'].fillna(all_data['Exterior1st'].mode()[0])
 all_data['Exterior2nd'] = all_data['Exterior2nd'].fillna(all_data['Exterior2nd'].mode()[0])
+
+#.....................................Data conversion...................................................
 
 
 # most important
@@ -123,17 +125,14 @@ all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transf
 
 # converting numerical variables that are actually categorical
 all_data['MSSubClass'] = all_data['MSSubClass'].apply(str)
-all_data['OverallCond'] = all_data['OverallCond'].astype(str)
+#all_data['OverallCond'] = all_data['OverallCond'].astype(str)
 all_data['YrSold'] = all_data['YrSold'].astype(str)
 all_data['MoSold'] = all_data['MoSold'].astype(str)
 
 
 # creating a set of all categorical variables
-cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
-        'ExterQual', 'ExterCond','HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
-        'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
-        'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond',
-        'YrSold', 'MoSold')
+cols = ('GarageType', 'GarageFinish', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2',
+        'Functional', 'Fence', 'PavedDrive', 'Street', 'CentralAir', 'MSSubClass', 'YrSold', 'MoSold')
 
 # process columns, apply LabelEncoder to categorical features
 from sklearn.preprocessing import LabelEncoder #import labelEncoder to process data
@@ -141,7 +140,57 @@ for c in cols:
     lbl = LabelEncoder()
     lbl.fit(list(all_data[c].values))
     all_data[c] = lbl.transform(list(all_data[c].values))
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+# creating a set of all categorical(Ordinal) variables with a specific value to the characters
+col2 = ('PoolQC', 'Alley', 'FireplaceQu', 'GarageQual', 'GarageCond', 'MSZoning', 'BsmtQual',
+        'BsmtCond', 'Utilities', 'KitchenQual', 'ExterQual', 'ExterCond', 'HeatingQC',
+        'LandSlope', 'LotShape')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2,'None':0}
+all_data['PoolQC'] = checker.data_converter(dic, all_data, 'PoolQC')
+
+dic = {'Pave':6, 'Grvl':3, 'None':0}
+all_data['Alley'] = checker.data_converter(dic, all_data, 'Alley')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+all_data['FireplaceQu'] = checker.data_converter(dic, all_data, 'FireplaceQu')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+all_data['GarageQual'] = checker.data_converter(dic, all_data, 'GarageQual')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+all_data['GarageCond'] = checker.data_converter(dic, all_data, 'GarageCond')
+
+dic = {'RM':8, 'RP':6, 'RL':5, 'RH':9, 'I':4, 'FV':1, 'C (all)':3,'A':2}
+all_data['MSZoning'] = checker.data_converter(dic, all_data, 'MSZoning')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+all_data['BsmtQual'] = checker.data_converter(dic, all_data, 'BsmtQual')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+all_data['BsmtCond'] = checker.data_converter(dic, all_data, 'BsmtCond')
+
+dic = {'AllPub':9, 'NoSewr':8, 'NoSeWa':7,'ELO':5}
+all_data['Utilities'] = checker.data_converter(dic, all_data, 'Utilities')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1}
+all_data['KitchenQual'] = checker.data_converter(dic, all_data, 'KitchenQual')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1}
+all_data['ExterQual'] = checker.data_converter(dic, all_data, 'ExterQual')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1}
+all_data['ExterCond'] = checker.data_converter(dic, all_data, 'ExterCond')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1}
+all_data['HeatingQC'] = checker.data_converter(dic, all_data, 'HeatingQC')
+
+dic = {'Gtl':3, 'Mod':2,'Sev':1}
+all_data['LandSlope'] = checker.data_converter(dic, all_data, 'LandSlope')
+
+dic = {'Reg':9,'IR1':7,'IR2':5, 'IR3':2}
+all_data['LotShape'] = checker.data_converter(dic, all_data, 'LotShape')
 
 #  Adding total sqfootage feature
 all_data['Total_SF']=all_data['TotalBsmtSF'] + all_data['1stFlrSF'] + all_data['2ndFlrSF']
@@ -150,8 +199,9 @@ all_data['Total_Bathrooms'] = (all_data['FullBath'] + (0.5 * all_data['HalfBath'
 #  Adding total porch sqfootage feature
 all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] + all_data['EnclosedPorch'] + all_data['ScreenPorch'] + all_data['WoodDeckSF'])
 
-
-
+# Not normally distributed can not be normalised and has no central tendency
+all_data = all_data.drop(['MasVnrArea', 'OpenPorchSF', 'WoodDeckSF', 'BsmtFinSF1', '2ndFlrSF'], axis=1)
+all_data.to_csv('../output/load.csv')
 # separate all_data into df_train & df_test
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
@@ -175,7 +225,7 @@ df_train.reset_index(drop=True, inplace=True)
 #checker.numerical_relationship(df_train, '2ndFlrSF')
 #checker.numerical_relationship(df_train, '3SsnPorch')
 
-checker.numerical_relationship(df_train, 'BedroomAbvGr')
+#checker.numerical_relationship(df_train, 'BedroomAbvGr')
 df_train = df_train[df_train['BedroomAbvGr'] < 7]
 df_train.reset_index(drop=True, inplace=True)
 #checker.numerical_relationship(df_train, 'BedroomAbvGr')

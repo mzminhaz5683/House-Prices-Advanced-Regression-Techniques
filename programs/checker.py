@@ -11,7 +11,7 @@ warnings.filterwarnings('ignore')
 from programs import checker # import local file
 
 ########################################### Out-liars Handling ############################################
-# {
+
 #.....Relationship with numerical variables of SalePrice (Bivariate analysis)
 def numerical_relationship(file, var):
     data = pd.concat([file['SalePrice'], file[var]], axis=1)
@@ -25,12 +25,10 @@ def categorical_relationship(file, var):
     fig = sns.boxplot(x=var, y="SalePrice", data=data)
     fig.axis(ymin=0, ymax=800000)
     plt.show()
-# }
-
 
 
 ##################################### distribution handling ##############################################
-# {
+
 # Checking distribution (histogram and normal probability plot)
 def general_distribution(file, cell):
     sns.distplot(file[file[cell]>0][cell], fit=norm)
@@ -41,6 +39,7 @@ def general_distribution(file, cell):
 def normalized_distribution(file, cell):
     file[cell] = np.log1p(file[cell])
     general_distribution(file,cell)
-# }
 
-
+################################## categorical(Ordinal) variables handling ###############################
+def data_converter(dic, file, cell):
+    return file[cell].replace(dic)
