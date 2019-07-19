@@ -7,6 +7,7 @@ from scipy import stats  # scientific notation handler
 from sklearn.preprocessing import StandardScaler
 import warnings
 warnings.filterwarnings('ignore')
+pd.set_option('display.float_format', lambda x: '{:.3f}'.format(x)) #Limiting floats output to 3 decimal points
 #%matplotlib inline
 from programs import checker # import local file
 
@@ -24,8 +25,8 @@ df_test.drop(['Id'], axis=1, inplace=True)
 
 
 ###################################### 1. Missing Data Handling #########################################
-# {
-#.....missing data observing
+
+#.........................................missing data observing.........................................
 ntrain = df_train.shape[0]
 y_train = df_train.SalePrice.values
 
@@ -35,23 +36,25 @@ all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
 total = all_data.isnull().sum().sort_values(ascending=False)
 percent = ((all_data.isnull().sum()/all_data.isnull().count()) * 100).sort_values(ascending=False)
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-#print(missing_data)
+print(missing_data)
 
+#.........................................dealing with missing data.....................................
 
-
-#.....dealing with missing data
-### imputing missing values
 # PoolQC --> NA means missing houses have no Pool in general so "None"
 all_data['PoolQC'] = all_data['PoolQC'].fillna("None")
+
 
 # MiscFeature --> NA means no misc. features so "No"
 all_data['MiscFeature'] = all_data['MiscFeature'].fillna("None")
 
+
 # Alley :  NA means "no alley access"
 all_data['Alley'] = all_data['Alley'].fillna("None")
 
+
 # Fence: NA means "no fence"
 all_data['Fence'] = all_data['Fence'].fillna("None")
+
 
 # FireplaceQu: NA means "no fireplace"
 all_data['FireplaceQu'] = all_data['FireplaceQu'].fillna("None")
@@ -61,6 +64,7 @@ all_data['FireplaceQu'] = all_data['FireplaceQu'].fillna("None")
 for col in ('GarageType', 'GarageFinish', 'GarageQual', 'GarageCond'):
     all_data[col] = all_data[col].fillna("None")
 
+
 # GarageYrBlt, GarageArea and GarageCars : NA means o
 for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
     all_data[col] = all_data[col].fillna(0)
@@ -68,18 +72,20 @@ for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
 
 # BsmtFinSF1, BsmtFinSF2, BsmtUnfSF, TotalBsmtSF, BsmtFullBath and BsmtHalfBath:
 # "NA" means 0 for no basement
-for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF',
-            'BsmtFullBath', 'BsmtHalfBath'):
+for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath', 'BsmtHalfBath'):
     all_data[col] = all_data[col].fillna(0)
+
 
 # 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'
 # categorical meaning NA means 'None'
 for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
     all_data[col] = all_data[col].fillna('None')
 
+
 # masonry veneer: 0 for area and None for category
 all_data["MasVnrType"] = all_data["MasVnrType"].fillna("None")
 all_data["MasVnrArea"] = all_data["MasVnrArea"].fillna(0)
+
 
 # Utilises: won't help in predictive modelling
 all_data.drop(['Utilities'], axis = 1, inplace = True) #?????????????????????????????????????????
@@ -89,7 +95,8 @@ all_data.drop(['Utilities'], axis = 1, inplace = True) #????????????????????????
 all_data['Functional'] = all_data['Functional'].fillna('Typ')
 
 
-# set the most common string
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~set the most common string by ''all_data[cell].mode()[0])''
+
 # MSZoning: NA replace most common value of the list "RL"
 all_data['MSZoning'] = all_data['MSZoning'].fillna(all_data['MSZoning'].mode()[0])
 
@@ -109,15 +116,17 @@ all_data['KitchenQual'] = all_data['KitchenQual'].fillna(all_data['KitchenQual']
 all_data['Exterior1st'] = all_data['Exterior1st'].fillna(all_data['Exterior1st'].mode()[0])
 all_data['Exterior2nd'] = all_data['Exterior2nd'].fillna(all_data['Exterior2nd'].mode()[0])
 
+
 # most important
-all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(
-    lambda x: x.fillna(x.median()))
+all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
+
 
 # converting numerical variables that are actually categorical
 all_data['MSSubClass'] = all_data['MSSubClass'].apply(str)
 all_data['OverallCond'] = all_data['OverallCond'].astype(str)
 all_data['YrSold'] = all_data['YrSold'].astype(str)
 all_data['MoSold'] = all_data['MoSold'].astype(str)
+
 
 # creating a set of all categorical variables
 cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
@@ -133,12 +142,21 @@ for c in cols:
     lbl.fit(list(all_data[c].values))
     all_data[c] = lbl.transform(list(all_data[c].values))
 
+
+#  Adding total sqfootage feature
+all_data['Total_SF']=all_data['TotalBsmtSF'] + all_data['1stFlrSF'] + all_data['2ndFlrSF']
+#  Adding total bathrooms feature
+all_data['Total_Bathrooms'] = (all_data['FullBath'] + (0.5 * all_data['HalfBath']) + all_data['BsmtFullBath'] + (0.5 * all_data['BsmtHalfBath']))
+#  Adding total porch sqfootage feature
+all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] + all_data['EnclosedPorch'] + all_data['ScreenPorch'] + all_data['WoodDeckSF'])
+
+
+
 # separate all_data into df_train & df_test
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
-#print(df_train.isnull().sum().max()) #just checking that there's no missing data missing...
-# }
+#print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
 #cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
 #cName_train.to_csv('../output/column_name_ms_train.csv') # save accepted column names after handling missing data
@@ -148,29 +166,105 @@ print("df_test set size after handling missing data(remove : id & utilities):", 
 
 
 ##################################### 2. Out-liars Handling #############################################
-# {
-# 2a.....numerical analyzing
-#       [
-#checker.numerical_relationship(df_train, 'GrLivArea')
-df_train = df_train[df_train.GrLivArea < 4500] # outliers : GrlivArea > 4500
+#.......................................2a numerical analyzing.......................................
+
+df_train = df_train[df_train['1stFlrSF'] < 3500]
+df_train.reset_index(drop=True, inplace=True)
+#checker.numerical_relationship(df_train, '1stFlrSF')
+
+#checker.numerical_relationship(df_train, '2ndFlrSF')
+#checker.numerical_relationship(df_train, '3SsnPorch')
+
+checker.numerical_relationship(df_train, 'BedroomAbvGr')
+df_train = df_train[df_train['BedroomAbvGr'] < 7]
+df_train.reset_index(drop=True, inplace=True)
+#checker.numerical_relationship(df_train, 'BedroomAbvGr')
+
+#checker.numerical_relationship(df_train, 'BldgType') #?????????????????????????????????????????????
+#checker.numerical_relationship(df_train, 'BsmtFinSF1')
+#checker.numerical_relationship(df_train, 'BsmtFinSF2')
+#checker.numerical_relationship(df_train, 'BsmtFullBath')
+#checker.numerical_relationship(df_train, 'BsmtHalfBath')
+#checker.numerical_relationship(df_train, 'BsmtUnfSF')
+#checker.numerical_relationship(df_train, 'Condition1')
+#checker.numerical_relationship(df_train, 'Condition2')
+#checker.numerical_relationship(df_train, 'Electrical')
+#checker.numerical_relationship(df_train, 'EnclosedPorch')
+#checker.numerical_relationship(df_train, 'Exterior1st')
+#checker.numerical_relationship(df_train, 'Exterior2nd')
+#checker.numerical_relationship(df_train, 'Fireplaces')
+#checker.numerical_relationship(df_train, 'Foundation')
+#checker.numerical_relationship(df_train, 'FullBath')
+#checker.numerical_relationship(df_train, 'GarageArea')
+#checker.numerical_relationship(df_train, 'GarageCars')
+#checker.numerical_relationship(df_train, 'GarageType')
+#checker.numerical_relationship(df_train, 'GarageYrBlt')
+
+df_train = df_train[df_train['GrLivArea'] < 4500] # outliers : GrlivArea > 4500
 df_train.reset_index(drop=True, inplace=True) # removing outliers from GrLivArea
 #checker.numerical_relationship(df_train, 'GrLivArea')
 
+#checker.numerical_relationship(df_train, 'HalfBath')
+#checker.numerical_relationship(df_train, 'Heating')
+#checker.numerical_relationship(df_train, 'HouseStyle')
+#checker.numerical_relationship(df_train, 'KitchenAbvGr')
+#checker.numerical_relationship(df_train, 'LandContour')
+#checker.numerical_relationship(df_train, 'LotArea')
+#checker.numerical_relationship(df_train, 'LotConfig')
+#checker.numerical_relationship(df_train, 'LotFrontage')
+#checker.numerical_relationship(df_train, 'LowQualFinSF')
+#checker.numerical_relationship(df_train, 'MasVnrArea')
+#checker.numerical_relationship(df_train, 'MasVnrType')
+#checker.numerical_relationship(df_train, 'MiscFeature')
+#checker.numerical_relationship(df_train, 'MiscVal')
+#checker.numerical_relationship(df_train, 'MSZoning')
+#checker.numerical_relationship(df_train, 'Neighborhood')
+#checker.numerical_relationship(df_train, 'OpenPorchSF')
+#checker.numerical_relationship(df_train, 'OverallQual')
+#checker.numerical_relationship(df_train, 'PoolArea')
+#checker.numerical_relationship(df_train, 'RoofMatl')
+#checker.numerical_relationship(df_train, 'RoofStyle')
+#checker.numerical_relationship(df_train, 'SaleCondition')
+#checker.numerical_relationship(df_train, 'SalePrice')
+#checker.numerical_relationship(df_train, 'SaleType')
+#checker.numerical_relationship(df_train, 'ScreenPorch')
 #checker.numerical_relationship(df_train, 'TotalBsmtSF')
-#       ]
+#checker.numerical_relationship(df_train, 'TotRmsAbvGrd')
+#checker.numerical_relationship(df_train, 'WoodDeckSF')
+#checker.numerical_relationship(df_train, 'YearBuilt')
+#checker.numerical_relationship(df_train, 'YearRemodAdd')
 
+#.......................................2b categorical analyzing.......................................
 
-# 2b.....categorical analyzing
-#       [
-#checker.categorical_relationship(df_train, 'OverallQual')
-#checker.categorical_relationship(df_train, 'YearBuilt')
-#       ]
-# }
-
-
+#checker.categorical_relationship(df_train, 'Alley')
+#checker.categorical_relationship(df_train, 'BsmtCond')
+#checker.categorical_relationship(df_train, 'BsmtExposure')
+#checker.categorical_relationship(df_train, 'BsmtFinType1')
+#checker.categorical_relationship(df_train, 'BsmtFinType2')
+#checker.categorical_relationship(df_train, 'BsmtQual')
+#checker.categorical_relationship(df_train, 'CentralAir')
+#checker.categorical_relationship(df_train, 'ExterCond')
+#checker.categorical_relationship(df_train, 'ExterQual')
+#checker.categorical_relationship(df_train, 'Fence')
+#checker.categorical_relationship(df_train, 'FireplaceQu')
+#checker.categorical_relationship(df_train, 'Functional')
+#checker.categorical_relationship(df_train, 'GarageCond')
+#checker.categorical_relationship(df_train, 'GarageFinish')
+#checker.categorical_relationship(df_train, 'GarageQual')
+#checker.categorical_relationship(df_train, 'HeatingQC')
+#checker.categorical_relationship(df_train, 'KitchenQual')
+#checker.categorical_relationship(df_train, 'LandSlope')
+#checker.categorical_relationship(df_train, 'LotShape')
+#checker.categorical_relationship(df_train, 'MoSold')
+#checker.categorical_relationship(df_train, 'MSSubClass')
+#checker.categorical_relationship(df_train, 'OverallCond')
+#checker.categorical_relationship(df_train, 'PavedDrive')
+#checker.categorical_relationship(df_train, 'PoolQC')
+#checker.categorical_relationship(df_train, 'Street')
+#checker.categorical_relationship(df_train, 'YrSold')
 
 ###################################### 3. Normalization handling #########################################
-# {
+
 #checker.general_distribution(df_train, 'SalePrice')
 #plt.show()
 checker.normalized_distribution(df_train, 'SalePrice')
@@ -194,12 +288,10 @@ df_train.loc[df_train['TotalBsmtSF']>0,'HasBsmt'] = 1
 df_train.loc[df_train['HasBsmt']==1,'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
 checker.general_distribution(df_train, 'TotalBsmtSF')
 #plt.show()
-# }
 
 
 ################################### 3. Homoscedasticity handling #########################################
-# {
-# }
+
 
 ############################ 4. Converting categorical variable into dummy ###############################
 #all_data = pd.get_dummies(all_data) #?????????????????????????????????????????

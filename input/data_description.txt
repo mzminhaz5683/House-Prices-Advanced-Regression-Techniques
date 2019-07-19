@@ -19,14 +19,14 @@ MSSubClass: Identifies the type of dwelling involved in the sale.
 
 MSZoning: Identifies the general zoning classification of the sale.
 		
-       A	Agriculture
-       C	Commercial
-       FV	Floating Village Residential
-       I	Industrial
-       RH	Residential High Density
-       RL	Residential Low Density
-       RP	Residential Low Density Park 
-       RM	Residential Medium Density
+       A	.2	Agriculture
+       C (all)	.3	Commercial
+       FV	.1	Floating Village Residential
+       I	.4	Industrial
+       RH	01	Residential High Density
+       RL	.5	Residential Low Density
+       RP	.6	Residential Low Density Park 
+       RM	.8	Residential Medium Density
 	
 LotFrontage: Linear feet of street connected to property
 
@@ -34,14 +34,14 @@ LotArea: Lot size in square feet
 
 Street: Type of road access to property
 
-       Grvl	Gravel	
-       Pave	Paved
+       Grvl	.5	Gravel
+       Pave	01	Paved
        	
 Alley: Type of alley access to property
 
-       Grvl	Gravel
-       Pave	Paved
-       NA 	No alley access
+       Grvl	.7	Gravel
+       Pave	01	Paved
+       NA 	.5	No alley access
 		
 LotShape: General shape of property
 
