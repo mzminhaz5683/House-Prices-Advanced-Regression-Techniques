@@ -1,60 +1,44 @@
-import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O handler(e.g. pd.read_csv)
-import seaborn as sns # # data presentation
 import matplotlib.pyplot as plt # data manipulation
-
-from datetime import datetime # time handler
-from scipy import stats # scientific notation handler
-from scipy.stats import norm, skew #for some statistics
-from scipy.special import boxcox1p
-from scipy.stats import boxcox_normmax
-
-from sklearn.preprocessing import RobustScaler
-from sklearn.model_selection import KFold, cross_val_score
-from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import ElasticNetCV, LassoCV, RidgeCV
-from sklearn.pipeline import make_pipeline
-#.....Input data files are available in the "../input/" directory.
-import os
-#print(os.listdir("../input"))
+import seaborn as sns # data presentation
+import numpy as np # linear algebra
+from scipy.stats import norm #for some statistics
+from scipy import stats  # scientific notation handler
+from sklearn.preprocessing import StandardScaler
 import warnings
 warnings.filterwarnings('ignore')
+#%matplotlib inline
+from programs import checker # import local file
 
+# Out-liars Handling
+# {
+#.....Relationship with numerical variables of SalePrice (Bivariate analysis)
+def numerical_relationship(file, var):
+    data = pd.concat([file['SalePrice'], file[var]], axis=1)
+    data.plot.scatter(x=var, y='SalePrice', ylim=(0, 800000))
+    plt.show()
+
+#.....Relationship with categorical features of SalePrice (Bivariate analysis)
+def categorical_relationship(file, var):
+    data = pd.concat([file['SalePrice'], file[var]], axis=1)
+    f, ax = plt.subplots(figsize=(8, 6))
+    fig = sns.boxplot(x=var, y="SalePrice", data=data)
+    fig.axis(ymin=0, ymax=800000)
+    plt.show()
+# }
+
+
+
+#.....Normalization handling
+# {
+# Checking distribution (histogram and normal probability plot)
 def general_distribution(file, cell):
-    #.....Before the normalisation
-    sns.set_style("white")
-    sns.set_color_codes(palette='deep')
-    f, ax = plt.subplots(figsize=(6, 5))
+    sns.distplot(file[file[cell]>0][cell], fit=norm)
+    fig = plt.figure()
+    res = stats.probplot(file[file[cell]>0][cell], plot=plt)
 
-    #.....Check the distribution
-    sns.distplot(file[cell], color="b")
-    ax.xaxis.grid(False)
-    ax.set(ylabel="Frequency")
-    ax.set(xlabel=cell)
-    ax.set(title="General distribution")
-    sns.despine(trim=True, left=True)
-    plt.show()
-
-
+# converting distribution in normal (histogram and normal probability plot)
 def normalized_distribution(file, cell):
-    #.....We use the numpy function log1p = log(x+1)
     file[cell] = np.log1p(file[cell])
-    sns.set_style("white")
-    sns.set_color_codes(palette='deep')
-    f, ax = plt.subplots(figsize=(6, 5))
-    #......Check the distribution
-    sns.distplot(file[cell] , fit=norm, color="b")
-
-    #.....Get the fitted parameters used by the function
-    (mu, sigma) = norm.fit(file[cell])
-    print( '\n mu = {:.2f} and sigma = {:.2f}\n'.format(mu, sigma))
-
-    #.....Now plot the distribution and update the main file's data
-    plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} )'.format(mu, sigma)], loc='best')
-    ax.xaxis.grid(False)
-    ax.set(ylabel="Frequency")
-    ax.set(xlabel=cell)
-    ax.set(title="Normal distribution")
-    sns.despine(trim=True, left=True)
-
-    plt.show()
+    general_distribution(file,cell)
+# }

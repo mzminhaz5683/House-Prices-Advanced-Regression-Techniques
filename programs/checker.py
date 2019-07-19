@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 #%matplotlib inline
 from programs import checker # import local file
 
-# Out-liars Handling
+#....Out-liars Handling
 # {
 #.....Relationship with numerical variables of SalePrice (Bivariate analysis)
 def numerical_relationship(file, var):
@@ -33,12 +33,14 @@ def categorical_relationship(file, var):
 # {
 # Checking distribution (histogram and normal probability plot)
 def general_distribution(file, cell):
-    sns.distplot(file[cell], fit=norm)
+    sns.distplot(file[file[cell]>0][cell], fit=norm)
     fig = plt.figure()
-    res = stats.probplot(file[cell], plot=plt)
+    res = stats.probplot(file[file[cell]>0][cell], plot=plt)
 
 # converting distribution in normal (histogram and normal probability plot)
 def normalized_distribution(file, cell):
     file[cell] = np.log1p(file[cell])
     general_distribution(file,cell)
 # }
+
+

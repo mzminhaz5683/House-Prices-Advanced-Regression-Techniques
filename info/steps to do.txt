@@ -7,8 +7,8 @@ how 'SalePrice' complies with the statistical assumptions that enables us to app
 According to Hair et al. (2013), four assumptions should be tested:
 	a. Normality 
 	b. Homoscedasticity 
-	C. Linearity
-	d. Absence of correlated errors
+	C. Linearity (However, won't get into this, as most of the scatter plots appear to have linear relationships)
+	d. Absence of correlated errors ( won't get into this)
 
 2. Finding relationship of dependent variable with independent variables
 3. clean the dataset and handle the missing data, outliers and categorical variables.
