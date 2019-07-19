@@ -37,6 +37,11 @@ df_train = df_train.drop(df_train.loc[df_train['Electrical'].isnull()].index) #d
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing...
 # }
 
+#cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
+#cName_train.to_csv('../output/column_name_train.csv') # save accepted column names after handling missing data
+print("df_train set size after handling missing data:", df_train.shape)
+
+
 
 # 2. Out-liars Handling
 # {

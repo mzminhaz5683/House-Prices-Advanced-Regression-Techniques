@@ -3,6 +3,13 @@
 	a. How prevalent is the missing data?
 	b. Is missing data random or does it have a pattern?
 
+how 'SalePrice' complies with the statistical assumptions that enables us to apply multivariate techniques.
+According to Hair et al. (2013), four assumptions should be tested:
+	a. Normality 
+	b. Homoscedasticity 
+	C. Linearity
+	d. Absence of correlated errors
+
 2. Finding relationship of dependent variable with independent variables
 3. clean the dataset and handle the missing data, outliers and categorical variables.
 4. check if data meets the assumptions required by most multivariate techniques

@@ -12,13 +12,13 @@ from programs import checker # import local file
 
 # Out-liars Handling
 # {
-#.....Relationship with numerical variables of SalePrice
+#.....Relationship with numerical variables of SalePrice (Bivariate analysis)
 def numerical_relationship(file, var):
     data = pd.concat([file['SalePrice'], file[var]], axis=1)
     data.plot.scatter(x=var, y='SalePrice', ylim=(0, 800000))
     plt.show()
 
-#.....Relationship with categorical features of SalePrice
+#.....Relationship with categorical features of SalePrice (Bivariate analysis)
 def categorical_relationship(file, var):
     data = pd.concat([file['SalePrice'], file[var]], axis=1)
     f, ax = plt.subplots(figsize=(8, 6))
@@ -29,18 +29,15 @@ def categorical_relationship(file, var):
 
 
 
-
-
-
 #.....Normalization handling
 # {
-# Checking distribution
+# Checking distribution (histogram and normal probability plot)
 def general_distribution(file, cell):
     sns.distplot(file[cell], fit=norm)
     fig = plt.figure()
     res = stats.probplot(file[cell], plot=plt)
 
-# converting distribution in normal
+# converting distribution in normal (histogram and normal probability plot)
 def normalized_distribution(file, cell):
     file[cell] = np.log1p(file[cell])
     general_distribution(file,cell)
