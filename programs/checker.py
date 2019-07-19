@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 #%matplotlib inline
 from programs import checker # import local file
 
-#....Out-liars Handling
+########################################### Out-liars Handling ############################################
 # {
 #.....Relationship with numerical variables of SalePrice (Bivariate analysis)
 def numerical_relationship(file, var):
@@ -29,7 +29,7 @@ def categorical_relationship(file, var):
 
 
 
-#.....Normalization handling
+##################################### distribution handling ##############################################
 # {
 # Checking distribution (histogram and normal probability plot)
 def general_distribution(file, cell):

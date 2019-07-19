@@ -27,9 +27,9 @@ df_test.drop(['Id'], axis=1, inplace=True)
 # {
 #.....missing data observing
 total = df_train.isnull().sum().sort_values(ascending=False)
-percent = (df_train.isnull().sum()/df_train.isnull().count()).sort_values(ascending=False)
+percent = ((df_train.isnull().sum()/df_train.isnull().count()) * 100).sort_values(ascending=False)
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-#print(missing_data)
+print(missing_data)
 
 #.....dealing with missing data
 df_train = df_train.drop((missing_data[missing_data['Total'] > 1]).index,1)
@@ -67,14 +67,20 @@ df_train.reset_index(drop=True, inplace=True) # removing outliers from GrLivArea
 
 # 3. Normalization handling
 # {
+#checker.general_distribution(df_train, 'SalePrice')
+#plt.show()
+checker.normalized_distribution(df_train, 'SalePrice')
+#plt.show()
+
+
 #checker.general_distribution(df_train, 'GrLivArea')
 #plt.show()
-#checker.normalized_distribution(df_train, 'GrLivArea')
+checker.normalized_distribution(df_train, 'GrLivArea')
 #plt.show()
 
 
-checker.general_distribution(df_train, 'TotalBsmtSF')
-plt.show()
+#checker.general_distribution(df_train, 'TotalBsmtSF')
+#plt.show()
 #create column for new variable (one is enough because it's a binary categorical feature)
 #if area>0 it gets 1, for area==0 it gets 0
 df_train['HasBsmt'] = pd.Series(len(df_train['TotalBsmtSF']), index=df_train.index)
@@ -83,6 +89,17 @@ df_train.loc[df_train['TotalBsmtSF']>0,'HasBsmt'] = 1
 #transform data
 df_train.loc[df_train['HasBsmt']==1,'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
 checker.general_distribution(df_train, 'TotalBsmtSF')
-plt.show()
+#plt.show()
 
 # }
+
+
+# 3. Homoscedasticity handling
+# {
+
+
+# }
+
+
+# 4. Converting categorical variable into dummy
+df_train = pd.get_dummies(df_train)

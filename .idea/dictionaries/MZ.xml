@@ -2,10 +2,15 @@
   <dictionary name="MZ">
     <words>
       <w>bivariate</w>
+      <w>brkr</w>
       <w>bsmt</w>
+      <w>exter</w>
       <w>grliv</w>
       <w>homoscedasticity</w>
+      <w>ntest</w>
+      <w>ntrain</w>
       <w>qual</w>
+      <w>seperate</w>
     </words>
   </dictionary>
 </component>
