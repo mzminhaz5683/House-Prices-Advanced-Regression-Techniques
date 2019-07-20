@@ -23,6 +23,22 @@ df_test_ID = df_test['Id']
 df_train.drop(['Id'], axis=1, inplace=True)
 df_test.drop(['Id'], axis=1, inplace=True)
 
+###########################################  Heat Map  ##################################################
+# Numerical values correlation matrix, to locate dependencies between different variables.
+# Complete numerical correlation matrix
+corrmat = df_train.corr()
+f, ax = plt.subplots(figsize=(20, 13))
+sns.heatmap(corrmat, vmax=1, square=True)
+#plt.show()
+
+# Partial numerical correlation matrix (salePrice)
+corr_num = 15 #number of variables for heatmap
+cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
+corr_mat_sales = np.corrcoef(df_train[cols_corr].values.T)
+f, ax = plt.subplots(figsize=(15, 11))
+hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
+                 annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
+#plt.show()
 
 ###################################### 1. Data Handling ##################################################
 
@@ -82,10 +98,10 @@ all_data['MoSold'] = all_data['MoSold'].astype(str)
 
 
 # (categorical) creating a set of all categorical variables
-cols = ( 'GarageType', 'Functional', 'Fence', 'PavedDrive', 'CentralAir', 'MSSubClass', 'Neighborhood',
+cols = [ 'GarageType', 'Functional', 'Fence', 'PavedDrive', 'CentralAir', 'MSSubClass', 'Neighborhood',
          'Condition1', 'Condition2', 'HouseStyle', 'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType',
          'Heating', 'Electrical', 'MiscFeature', 'SaleType', 'YrSold', 'MoSold', 'GarageYrBlt',
-         'YearBuilt', 'YearRemodAdd')
+         'YearBuilt', 'YearRemodAdd']
 
 # process columns, apply LabelEncoder to categorical features
 from sklearn.preprocessing import LabelEncoder #import labelEncoder to process data
@@ -93,7 +109,8 @@ for c in cols:
     lbl = LabelEncoder()
     lbl.fit(list(all_data[c].values))
     all_data[c] = lbl.transform(list(all_data[c].values))
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  Na  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  fillna(0)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # creating a set of all categorical(Ordinal) variables with a specific value to the characters
 dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2,'NA':0}
@@ -128,7 +145,8 @@ all_data['BsmtFinType1'] = checker.data_converter(dic, all_data, 'BsmtFinType1')
 
 dic = {'GLQ':6, 'ALQ':5,'BLQ':4,'Rec':3,'LwQ':2, 'Unf':1, 'NA':0}
 all_data['BsmtFinType2'] = checker.data_converter(dic, all_data, 'BsmtFinType2')
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 dic = {'A':2, 'C (all)':3, 'FV':1, 'I':4, 'RH':9, 'RL':5, 'RP':6,'RM':8}
 all_data['MSZoning'] = checker.data_converter(dic, all_data, 'MSZoning')
@@ -174,7 +192,7 @@ all_data['Foundation'] = checker.data_converter(dic, all_data, 'Foundation')
 
 dic = {'Normal':6, 'Abnorml':5, 'AdjLand':4, 'Alloca':3, 'Family':2, 'Partial':1}
 all_data['SaleCondition'] = checker.data_converter(dic, all_data, 'SaleCondition')
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #  Adding total sqfootage feature
 all_data['Total_SF']=all_data['TotalBsmtSF'] + all_data['1stFlrSF'] + all_data['2ndFlrSF']
@@ -194,9 +212,9 @@ df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
-cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
-cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
-df_train.to_csv('../output/df_train.csv')
+#cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
+#cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
+#df_train.to_csv('../output/df_train.csv')
 print("df_train set size after handling missing data(~ID):", df_train.shape)
 print("df_test set size after handling missing data(~ID):", df_test.shape)
 
@@ -264,7 +282,7 @@ df_train = df_train.drop(drop_index)
 
 #.......................................2b categorical analyzing.......................................
 
-#checker.categorical_relationship(df_train, 'Alley')
+#checker.categorical_relationship(df_train, 'BldgType')
 #checker.categorical_relationship(df_train, 'BsmtCond')
 #checker.categorical_relationship(df_train, 'BsmtExposure')
 #checker.categorical_relationship(df_train, 'BsmtFinType1')

@@ -8,11 +8,14 @@
       <w>brkr</w>
       <w>bsmt</w>
       <w>conc</w>
+      <w>corrmat</w>
       <w>duplx</w>
       <w>exter</w>
+      <w>fillna</w>
       <w>gambrel</w>
       <w>grliv</w>
       <w>grvl</w>
+      <w>heatmap</w>
       <w>homoscedasticity</w>
       <w>matl</w>
       <w>matplotlib</w>
