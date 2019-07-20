@@ -1,0 +1,20 @@
+OverallQual
+Total_SF
+GrLivArea
+GarageCars
+Total_Bathrooms
+GarageArea
+TotalBsmtSF
+1stFlrSF
+FullBath
+TotRmsAbvGrd
+YearBuilt		~	categorical
+GarageYrBlt		~	categorical
+YearRemodAdd 	~	categorical
+Fireplaces
+MasVnrType		~	categorical
+BsmtFinSF1
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+categorical
+~~~~~~~~~~~~~~~~

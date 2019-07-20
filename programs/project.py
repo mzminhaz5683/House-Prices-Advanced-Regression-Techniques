@@ -24,6 +24,7 @@ df_train.drop(['Id'], axis=1, inplace=True)
 df_test.drop(['Id'], axis=1, inplace=True)
 
 ###########################################  Heat Map  ##################################################
+'''
 # Numerical values correlation matrix, to locate dependencies between different variables.
 # Complete numerical correlation matrix
 corrmat = df_train.corr()
@@ -39,7 +40,7 @@ f, ax = plt.subplots(figsize=(15, 11))
 hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
                  annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
 #plt.show()
-
+'''
 ###################################### 1. Data Handling ##################################################
 
 #.........................................missing data observing.........................................
@@ -54,6 +55,7 @@ percent = ((all_data.isnull().sum()/all_data.isnull().count()) * 100).sort_value
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 #print(missing_data)
 
+
 #.........................................dealing with missing data.....................................
 
 # categorical meaning NA means 'None'
@@ -66,7 +68,7 @@ for col in common_vars:
 common_vars = ['PoolQC', 'Alley', 'FireplaceQu', 'GarageQual','BsmtQual','GarageCond', # categorical(numerical)
                'BsmtCond', 'GarageFinish', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinSF2','BsmtFinType2',
                'GarageArea','GarageCars','BsmtUnfSF','TotalBsmtSF','BsmtFullBath','BsmtHalfBath',# numerical
-               'MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd']
+               'MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd','BsmtFinSF1']
 #'MSSubClass', 'GarageYrBlt', 'YrSold', 'MoSold' ---->> special categorical
 for col in common_vars:
     all_data[col] = all_data[col].fillna(0)
@@ -205,7 +207,7 @@ all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] +
                               all_data['WoodDeckSF'])
 
 # Not normally distributed can not be normalised and central tendency
-all_data = all_data.drop(['2ndFlrSF', 'OpenPorchSF', 'WoodDeckSF', 'MasVnrArea', 'BsmtFinSF1'], axis=1)
+all_data = all_data.drop(['2ndFlrSF', 'OpenPorchSF', 'WoodDeckSF', 'MasVnrArea'], axis=1)
 # separate all_data into df_train & df_test
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
@@ -218,96 +220,37 @@ df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 print("df_train set size after handling missing data(~ID):", df_train.shape)
 print("df_test set size after handling missing data(~ID):", df_test.shape)
 
-
 ##################################### 2. Out-liars Handling #############################################
 #.......................................2a numerical analyzing.......................................
 
+#checker.numerical_relationship(df_train, 'OverallQual')
+
 #checker.numerical_relationship(df_train, 'Total_SF')
-#checker.numerical_relationship(df_train, 'BedroomAbvGr')
-#checker.numerical_relationship(df_train, 'BedroomAbvGr')
-#checker.numerical_relationship(df_train, 'BldgType') #?????????????????????????????????????????????
-#checker.numerical_relationship(df_train, 'BsmtFinSF1')
-#checker.numerical_relationship(df_train, 'BsmtFinSF2')
-#checker.numerical_relationship(df_train, 'BsmtFullBath')
-#checker.numerical_relationship(df_train, 'BsmtHalfBath')
-#checker.numerical_relationship(df_train, 'BsmtUnfSF')
-#checker.numerical_relationship(df_train, 'Condition1')
-#checker.numerical_relationship(df_train, 'Condition2')
-#checker.numerical_relationship(df_train, 'Electrical')
-#checker.numerical_relationship(df_train, 'EnclosedPorch')
-#checker.numerical_relationship(df_train, 'Exterior1st')
-#checker.numerical_relationship(df_train, 'Exterior2nd')
-#checker.numerical_relationship(df_train, 'Fireplaces')
-#checker.numerical_relationship(df_train, 'Foundation')
-#checker.numerical_relationship(df_train, 'FullBath')
-#checker.numerical_relationship(df_train, 'GarageArea')
-#checker.numerical_relationship(df_train, 'GarageCars')
-#checker.numerical_relationship(df_train, 'GarageType')
-#checker.numerical_relationship(df_train, 'GarageYrBlt')
+drop_index = df_train[(df_train['Total_SF'] > 7500) & (df_train['SalePrice']<200000)].index
+df_train = df_train.drop(drop_index)
+#checker.numerical_relationship(df_train, 'Total_SF')
 
 #checker.numerical_relationship(df_train, 'GrLivArea')
 drop_index = df_train[(df_train['GrLivArea'] > 4000) & (df_train['SalePrice']<300000)].index
 df_train = df_train.drop(drop_index)
 #checker.numerical_relationship(df_train, 'GrLivArea')
+#checker.numerical_relationship(df_train, 'GarageCars')
+#checker.numerical_relationship(df_train, 'Total_Bathrooms')
 
-#checker.numerical_relationship(df_train, 'HalfBath')
-#checker.numerical_relationship(df_train, 'Heating')
-#checker.numerical_relationship(df_train, 'HouseStyle')
-#checker.numerical_relationship(df_train, 'KitchenAbvGr')
-#checker.numerical_relationship(df_train, 'LandContour')
-#checker.numerical_relationship(df_train, 'LotArea')
-#checker.numerical_relationship(df_train, 'LotConfig')
-#checker.numerical_relationship(df_train, 'LotFrontage')
-#checker.numerical_relationship(df_train, 'LowQualFinSF')
-#checker.numerical_relationship(df_train, 'MasVnrArea')
-#checker.numerical_relationship(df_train, 'MasVnrType')
-#checker.numerical_relationship(df_train, 'MiscFeature')
-#checker.numerical_relationship(df_train, 'MiscVal')
-#checker.numerical_relationship(df_train, 'MSZoning')
-#checker.numerical_relationship(df_train, 'Neighborhood')
-#checker.numerical_relationship(df_train, 'OpenPorchSF')
-#checker.numerical_relationship(df_train, 'OverallQual')
-#checker.numerical_relationship(df_train, 'PoolArea')
-#checker.numerical_relationship(df_train, 'RoofMatl')
-#checker.numerical_relationship(df_train, 'RoofStyle')
-#checker.numerical_relationship(df_train, 'SaleCondition')
-#checker.numerical_relationship(df_train, 'SalePrice')
-#checker.numerical_relationship(df_train, 'SaleType')
-#checker.numerical_relationship(df_train, 'ScreenPorch')
+#checker.numerical_relationship(df_train, 'GarageArea')
+drop_index = df_train[(df_train['GarageArea'] > 1200) & (df_train['SalePrice']<300000)].index
+df_train = df_train.drop(drop_index)
+#checker.numerical_relationship(df_train, 'GarageArea')
 #checker.numerical_relationship(df_train, 'TotalBsmtSF')
+#checker.numerical_relationship(df_train, '1stFlrSF')
+#checker.numerical_relationship(df_train, 'FullBath')
 #checker.numerical_relationship(df_train, 'TotRmsAbvGrd')
-#checker.numerical_relationship(df_train, 'WoodDeckSF')
-#checker.numerical_relationship(df_train, 'YearBuilt')
-#checker.numerical_relationship(df_train, 'YearRemodAdd')
+#checker.numerical_relationship(df_train, 'Fireplaces')
+#checker.numerical_relationship(df_train, 'BsmtFinSF1')
 
 #.......................................2b categorical analyzing.......................................
 
-#checker.categorical_relationship(df_train, 'BldgType')
-#checker.categorical_relationship(df_train, 'BsmtCond')
-#checker.categorical_relationship(df_train, 'BsmtExposure')
-#checker.categorical_relationship(df_train, 'BsmtFinType1')
-#checker.categorical_relationship(df_train, 'BsmtFinType2')
-#checker.categorical_relationship(df_train, 'BsmtQual')
-#checker.categorical_relationship(df_train, 'CentralAir')
-#checker.categorical_relationship(df_train, 'ExterCond')
-#checker.categorical_relationship(df_train, 'ExterQual')
-#checker.categorical_relationship(df_train, 'Fence')
-#checker.categorical_relationship(df_train, 'FireplaceQu')
-#checker.categorical_relationship(df_train, 'Functional')
-#checker.categorical_relationship(df_train, 'GarageCond')
-#checker.categorical_relationship(df_train, 'GarageFinish')
-#checker.categorical_relationship(df_train, 'GarageQual')
-#checker.categorical_relationship(df_train, 'HeatingQC')
-#checker.categorical_relationship(df_train, 'KitchenQual')
-#checker.categorical_relationship(df_train, 'LandSlope')
-#checker.categorical_relationship(df_train, 'LotShape')
-#checker.categorical_relationship(df_train, 'MoSold')
-#checker.categorical_relationship(df_train, 'MSSubClass')
-#checker.categorical_relationship(df_train, 'OverallCond')
-#checker.categorical_relationship(df_train, 'PavedDrive')
-#checker.categorical_relationship(df_train, 'PoolQC')
-#checker.categorical_relationship(df_train, 'Street')
-#checker.categorical_relationship(df_train, 'YrSold')
+checker.categorical_relationship(df_train, 'YearBuilt')
 
 ###################################### 3. Normalization handling #########################################
 

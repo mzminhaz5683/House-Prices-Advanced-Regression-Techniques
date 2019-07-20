@@ -61,6 +61,5 @@ variables which are dropped
 OpenPorchSF
 WoodDeckSF
 MasVnrArea
-BsmtFinSF1
 
 
