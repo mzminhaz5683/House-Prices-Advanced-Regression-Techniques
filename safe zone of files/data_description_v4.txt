@@ -20,7 +20,7 @@ MSSubClass: Identifies the type of dwelling involved in the sale.
 MSZoning: Identifies the general zoning classification of the sale.
 		
        A	2	Agriculture
-       C (all)	3	Commercial
+    C (all)	3	Commercial
        FV	1	Floating Village Residential
        I	4	Industrial
        RH	9	Residential High Density
@@ -34,14 +34,14 @@ LotArea: Lot size in square feet
 
 Street: Type of road access to property
 
-       Grvl	7	Gravel
-       Pave	9	Paved
+       Grvl 	7	Gravel
+       Pave		9	Paved
        	
 Alley: Type of alley access to property
 
-       Grvl	3	Gravel
-       Pave	6	Paved
-       NA 	1	No alley access
+       Grvl		3	Gravel
+       Pave		6	Paved
+       NA/None 	0	No alley access
 		
 LotShape: General shape of property
 
@@ -62,15 +62,15 @@ Utilities: Type of utilities available
        AllPub	9	All public Utilities (E,G,W,& S)	
        NoSewr	8	Electricity, Gas, and Water (Septic Tank)
        NoSeWa	7	Electricity and Gas Only
-       ELO	5	Electricity only	
+       ELO		5	Electricity only	
 	
 LotConfig: Lot configuration
 
        Inside	2	Inside lot
        Corner	4	Corner lot
        CulDSac	5	Cul-de-sac
-       FR2	7	Frontage on 2 sides of property
-       FR3	9	Frontage on 3 sides of property
+       FR2		7	Frontage on 2 sides of property
+       FR3		9	Frontage on 3 sides of property
 	
 LandSlope: Slope of property
 		
@@ -110,29 +110,29 @@ Condition1: Proximity to various conditions
 	
        Artery	Adjacent to arterial street
        Feedr	Adjacent to feeder street	
-       Norm	Normal	
-       RRNn	Within 200' of North-South Railroad
-       RRAn	Adjacent to North-South Railroad
-       PosN	Near positive off-site feature--park, greenbelt, etc.
-       PosA	Adjacent to postive off-site feature
-       RRNe	Within 200' of East-West Railroad
-       RRAe	Adjacent to East-West Railroad
+       Norm		Normal	
+       RRNn		Within 200' of North-South Railroad
+       RRAn		Adjacent to North-South Railroad
+       PosN		Near positive off-site feature--park, greenbelt, etc.
+       PosA		Adjacent to postive off-site feature
+       RRNe		Within 200' of East-West Railroad
+       RRAe		Adjacent to East-West Railroad
 	
 Condition2: Proximity to various conditions (if more than one is present)
 		
        Artery	Adjacent to arterial street
        Feedr	Adjacent to feeder street	
-       Norm	Normal	
-       RRNn	Within 200' of North-South Railroad
-       RRAn	Adjacent to North-South Railroad
-       PosN	Near positive off-site feature--park, greenbelt, etc.
-       PosA	Adjacent to postive off-site feature
-       RRNe	Within 200' of East-West Railroad
-       RRAe	Adjacent to East-West Railroad
+       Norm		Normal	
+       RRNn		Within 200' of North-South Railroad
+       RRAn		Adjacent to North-South Railroad
+       PosN		Near positive off-site feature--park, greenbelt, etc.
+       PosA		Adjacent to postive off-site feature
+       RRNe		Within 200' of East-West Railroad
+       RRAe		Adjacent to East-West Railroad
 	
 BldgType: Type of dwelling
 		
-       1Fam	2	Single-family Detached	
+       1Fam		2	Single-family Detached	
        2FmCon	4	Two-family Conversion; originally built as one-family dwelling
        Duplx	5	Duplex
        TwnhsE	7	Townhouse End Unit
@@ -147,7 +147,7 @@ HouseStyle: Style of dwelling
        2.5Fin	Two and one-half story: 2nd level finished
        2.5Unf	Two and one-half story: 2nd level unfinished
        SFoyer	Split Foyer
-       SLvl	Split Level
+       SLvl		Split Level
 	
 OverallQual: Rates the overall material and finish of the house
 
@@ -181,12 +181,12 @@ YearRemodAdd: Remodel date (same as construction date if no remodeling or additi
 
 RoofStyle: Type of roof
 
-       Flat	Flat
-       Gable	Gable
-       Gambrel	Gabrel (Barn)
-       Hip	Hip
-       Mansard	Mansard
-       Shed	Shed
+       Flat		6	Flat
+       Gable	5	Gable
+       Gambrel	4	Gabrel (Barn)
+       Hip		3	Hip
+       Mansard	2	Mansard
+       Shed		1	Shed
 		
 RoofMatl: Roof material
 
@@ -194,7 +194,7 @@ RoofMatl: Roof material
        CompShg	Standard (Composite) Shingle
        Membran	Membrane
        Metal	Metal
-       Roll	Roll
+       Roll		Roll
        Tar&Grv	Gravel & Tar
        WdShake	Wood Shakes
        WdShngl	Wood Shingles
@@ -244,7 +244,7 @@ MasVnrType: Masonry veneer type
        BrkCmn	Brick Common
        BrkFace	Brick Face
        CBlock	Cinder Block
-       None	None
+       None		None
        Stone	Stone
 	
 MasVnrArea: Masonry veneer area in square feet
@@ -270,9 +270,9 @@ Foundation: Type of foundation
        BrkTil	3	Brick & Tile
        CBlock	4	Cinder Block
        PConc	5	Poured Contrete	
-       Slab	2	Slab
+       Slab		2	Slab
        Stone	6	Stone
-       Wood	1	Wood
+       Wood		1	Wood
 		
 BsmtQual: Evaluates the height of the basement
 
@@ -281,7 +281,7 @@ BsmtQual: Evaluates the height of the basement
        TA	3	Typical (80-89 inches)
        Fa	2	Fair (70-79 inches)
        Po	1	Poor (<70 inches
-       NA	0	No Basement
+    NA/None	0	No Basement
 		
 BsmtCond: Evaluates the general condition of the basement
 
@@ -294,33 +294,33 @@ BsmtCond: Evaluates the general condition of the basement
 	
 BsmtExposure: Refers to walkout or garden level walls
 
-       Gd	Good Exposure
-       Av	Average Exposure (split levels or foyers typically score average or above)	
-       Mn	Mimimum Exposure
-       No	No Exposure
-       NA	No Basement
+       Gd	5	Good Exposure
+       Av	3	Average Exposure (split levels or foyers typically score average or above)	
+       Mn	2	Mimimum Exposure
+       No	1	No Exposure
+       NA	0	No Basement
 	
 BsmtFinType1: Rating of basement finished area
 
-       GLQ	Good Living Quarters
-       ALQ	Average Living Quarters
-       BLQ	Below Average Living Quarters	
-       Rec	Average Rec Room
-       LwQ	Low Quality
-       Unf	Unfinshed
-       NA	No Basement
+       GLQ	6	Good Living Quarters
+       ALQ	5	Average Living Quarters
+       BLQ	4	Below Average Living Quarters	
+       Rec	3	Average Rec Room
+       LwQ	2	Low Quality
+       Unf	1	Unfinshed
+       NA	0	No Basement
 		
 BsmtFinSF1: Type 1 finished square feet
 
 BsmtFinType2: Rating of basement finished area (if multiple types)
 
-       GLQ	Good Living Quarters
-       ALQ	Average Living Quarters
-       BLQ	Below Average Living Quarters	
-       Rec	Average Rec Room
-       LwQ	Low Quality
-       Unf	Unfinshed
-       NA	No Basement
+       GLQ	6	Good Living Quarters
+       ALQ	5	Average Living Quarters
+       BLQ	4	Below Average Living Quarters	
+       Rec	3	Average Rec Room
+       LwQ	2	Low Quality
+       Unf	1	Unfinshed
+       NA	0	No Basement
 
 BsmtFinSF2: Type 2 finished square feet
 
@@ -331,11 +331,11 @@ TotalBsmtSF: Total square feet of basement area
 Heating: Type of heating
 		
        Floor	Floor Furnace
-       GasA	Gas forced warm air furnace
-       GasW	Gas hot water or steam heat
-       Grav	Gravity furnace	
-       OthW	Hot water or steam heat other than gas
-       Wall	Wall furnace
+       GasA		Gas forced warm air furnace
+       GasW		Gas hot water or steam heat
+       Grav		Gravity furnace	
+       OthW		Hot water or steam heat other than gas
+       Wall		Wall furnace
 		
 HeatingQC: Heating quality and condition
 
@@ -347,8 +347,8 @@ HeatingQC: Heating quality and condition
 		
 CentralAir: Central air conditioning
 
-       N	0	No
-       Y	1	Yes
+       N	No
+       Y	Yes
 		
 Electrical: Electrical system
 
@@ -356,7 +356,7 @@ Electrical: Electrical system
        FuseA	Fuse Box over 60 AMP and all Romex wiring (Average)	
        FuseF	60 AMP Fuse Box and mostly Romex wiring (Fair)
        FuseP	60 AMP Fuse Box and mostly knob & tube wiring (poor)
-       Mix	Mixed
+       Mix		Mixed
 		
 1stFlrSF: First Floor square feet
  
@@ -408,7 +408,7 @@ FireplaceQu: Fireplace quality
        TA	3	Average - Prefabricated Fireplace in main living area or Masonry Fireplace in basement
        Fa	2	Fair - Prefabricated Fireplace in basement
        Po	1	Poor - Ben Franklin Stove
-       NA	0	No Fireplace
+    NA/None	0	No Fireplace
 		
 GarageType: Garage location
 		
@@ -418,16 +418,16 @@ GarageType: Garage location
        BuiltIn	Built-In (Garage part of house - typically has room above garage)
        CarPort	Car Port
        Detchd	Detached from home
-       NA	No Garage
+       NA		No Garage
 		
 GarageYrBlt: Year garage was built
 		
 GarageFinish: Interior finish of the garage
 
-       Fin	Finished
-       RFn	Rough Finished	
-       Unf	Unfinished
-       NA	No Garage
+       Fin	3	Finished
+       RFn	2	Rough Finished	
+       Unf	1	Unfinished
+       NA	0	No Garage
 		
 GarageCars: Size of garage in car capacity
 
@@ -440,7 +440,7 @@ GarageQual: Garage quality
        TA	3	Typical/Average
        Fa	2	Fair
        Po	1	Poor
-       NA	0	No Garage
+    NA/None	0	No Garage
 		
 GarageCond: Garage condition
 
@@ -449,7 +449,7 @@ GarageCond: Garage condition
        TA	3	Typical/Average
        Fa	2	Fair
        Po	1	Poor
-       NA	0	No Garage
+    NA/None	0	No Garage
 		
 PavedDrive: Paved driveway
 
@@ -475,24 +475,24 @@ PoolQC: Pool quality
        Gd	4	Good
        TA	3	Average/Typical
        Fa	2	Fair
-       NA	0	No Pool
+    NA/None	0	No Pool
 		
 Fence: Fence quality
 		
        GdPrv	Good Privacy
        MnPrv	Minimum Privacy
-       GdWo	Good Wood
-       MnWw	Minimum Wood/Wire
-       NA	No Fence
+       GdWo		Good Wood
+       MnWw		Minimum Wood/Wire
+    NA/None		No Fence
 	
 MiscFeature: Miscellaneous feature not covered in other categories
 		
-       Elev	Elevator
-       Gar2	2nd Garage (if not described in garage section)
-       Othr	Other
-       Shed	Shed (over 100 SF)
-       TenC	Tennis Court
-       NA	None
+       Elev		Elevator
+       Gar2		2nd Garage (if not described in garage section)
+       Othr		Other
+       Shed		Shed (over 100 SF)
+       TenC		Tennis Court
+    NA/None		None
 		
 MiscVal: $Value of miscellaneous feature
 
@@ -502,16 +502,16 @@ YrSold: Year Sold (YYYY)
 
 SaleType: Type of sale
 		
-       WD 	Warranty Deed - Conventional
-       CWD	Warranty Deed - Cash
-       VWD	Warranty Deed - VA Loan
-       New	Home just constructed and sold
-       COD	Court Officer Deed/Estate
-       Con	Contract 15% Down payment regular terms
+       WD 		Warranty Deed - Conventional
+       CWD		Warranty Deed - Cash
+       VWD		Warranty Deed - VA Loan
+       New		Home just constructed and sold
+       COD		Court Officer Deed/Estate
+       Con		Contract 15% Down payment regular terms
        ConLw	Contract Low Down payment and low interest
        ConLI	Contract Low Interest
        ConLD	Contract Low Down
-       Oth	Other
+       Oth		Other
 		
 SaleCondition: Condition of sale
 

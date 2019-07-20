@@ -195,41 +195,37 @@ all_data['LotShape'] = checker.data_converter(dic, all_data, 'LotShape')
 #  Adding total sqfootage feature
 all_data['Total_SF']=all_data['TotalBsmtSF'] + all_data['1stFlrSF'] + all_data['2ndFlrSF']
 #  Adding total bathrooms feature
-all_data['Total_Bathrooms'] = (all_data['FullBath'] + (0.5 * all_data['HalfBath']) + all_data['BsmtFullBath'] + (0.5 * all_data['BsmtHalfBath']))
+all_data['Total_Bathrooms'] = (all_data['FullBath'] + (0.5 * all_data['HalfBath']) +
+                               all_data['BsmtFullBath'] + (0.5 * all_data['BsmtHalfBath']))
 #  Adding total porch sqfootage feature
-all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] + all_data['EnclosedPorch'] + all_data['ScreenPorch'] + all_data['WoodDeckSF'])
+all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] +
+                              all_data['EnclosedPorch'] + all_data['ScreenPorch'] +
+                              all_data['WoodDeckSF'])
 
-# Not normally distributed can not be normalised and has no central tendency
-all_data = all_data.drop(['MasVnrArea', 'OpenPorchSF', 'WoodDeckSF', 'BsmtFinSF1', '2ndFlrSF'], axis=1)
-all_data.to_csv('../output/load.csv')
+# Not normally distributed can not be normalised and duplicated has no central tendency
+all_data = all_data.drop(['TotalBsmtSF', '1stFlrSF', '2ndFlrSF',
+                          'FullBath', 'HalfBath', 'BsmtFullBath', 'BsmtHalfBath',
+                          'OpenPorchSF', '3SsnPorch', 'EnclosedPorch', 'ScreenPorch', 'WoodDeckSF',
+                          'MasVnrArea', 'BsmtFinSF1'], axis=1)
 # separate all_data into df_train & df_test
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
-#cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
-#cName_train.to_csv('../output/column_name_ms_train.csv') # save accepted column names after handling missing data
-#df_train.to_csv('../output/ms_train.csv')
-print("df_train set size after handling missing data (remove : id & utilities):", df_train.shape)
-print("df_test set size after handling missing data(remove : id & utilities):", df_test.shape)
+cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
+cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
+df_train.to_csv('../output/df_train.csv')
+print("df_train set size after handling missing data(~ID):", df_train.shape)
+print("df_test set size after handling missing data(~ID):", df_test.shape)
 
 
 ##################################### 2. Out-liars Handling #############################################
 #.......................................2a numerical analyzing.......................................
 
-df_train = df_train[df_train['1stFlrSF'] < 3500]
-df_train.reset_index(drop=True, inplace=True)
-#checker.numerical_relationship(df_train, '1stFlrSF')
-
-#checker.numerical_relationship(df_train, '2ndFlrSF')
-#checker.numerical_relationship(df_train, '3SsnPorch')
-
+#checker.numerical_relationship(df_train, 'Total_SF')
 #checker.numerical_relationship(df_train, 'BedroomAbvGr')
-df_train = df_train[df_train['BedroomAbvGr'] < 7]
-df_train.reset_index(drop=True, inplace=True)
 #checker.numerical_relationship(df_train, 'BedroomAbvGr')
-
 #checker.numerical_relationship(df_train, 'BldgType') #?????????????????????????????????????????????
 #checker.numerical_relationship(df_train, 'BsmtFinSF1')
 #checker.numerical_relationship(df_train, 'BsmtFinSF2')
@@ -250,8 +246,9 @@ df_train.reset_index(drop=True, inplace=True)
 #checker.numerical_relationship(df_train, 'GarageType')
 #checker.numerical_relationship(df_train, 'GarageYrBlt')
 
-df_train = df_train[df_train['GrLivArea'] < 4500] # outliers : GrlivArea > 4500
-df_train.reset_index(drop=True, inplace=True) # removing outliers from GrLivArea
+#checker.numerical_relationship(df_train, 'GrLivArea')
+drop_index = df_train[(df_train['GrLivArea'] > 4000) & (df_train['SalePrice']<300000)].index
+df_train = df_train.drop(drop_index)
 #checker.numerical_relationship(df_train, 'GrLivArea')
 
 #checker.numerical_relationship(df_train, 'HalfBath')
@@ -331,12 +328,12 @@ checker.normalized_distribution(df_train, 'GrLivArea')
 #plt.show()
 #create column for new variable (one is enough because it's a binary categorical feature)
 #if area>0 it gets 1, for area==0 it gets 0
-df_train['HasBsmt'] = pd.Series(len(df_train['TotalBsmtSF']), index=df_train.index)
-df_train['HasBsmt'] = 0
-df_train.loc[df_train['TotalBsmtSF']>0,'HasBsmt'] = 1
+#df_train['HasBsmt'] = pd.Series(len(df_train['TotalBsmtSF']), index=df_train.index)
+#df_train['HasBsmt'] = 0
+#df_train.loc[df_train['TotalBsmtSF']>0,'HasBsmt'] = 1
 #transform data
-df_train.loc[df_train['HasBsmt']==1,'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
-checker.general_distribution(df_train, 'TotalBsmtSF')
+#df_train.loc[df_train['HasBsmt']==1,'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
+#checker.general_distribution(df_train, 'TotalBsmtSF')
 #plt.show()
 
 
