@@ -4,17 +4,24 @@ PoolQC
 Alley
 FireplaceQu
 GarageQual
-MSZoning
 BsmtQual
-Utilities
-KitchenQual
-ExterQual
-------------------------------------
+GarageCond
+BsmtCond
 GarageFinish
 BsmtExposure
 BsmtFinType1
 BsmtFinType2
+
+!!!!!!!mode()!!!!!!!!
+MSZoning
+Utilities
+KitchenQual
+ExterQual
 Street
+ExterCond
+HeatingQC
+LandSlope
+LotShape
 LandContour
 LotConfig
 BldgType
@@ -30,9 +37,6 @@ Fence
 PavedDrive
 CentralAir
 MSSubClass
-** YrSold
-** MoSold
------------------------------------------------
 Neighborhood
 Condition1
 Condition2
@@ -43,12 +47,20 @@ Exterior2nd
 MasVnrType
 Heating
 Electrical
-**GarageYrBlt
 MiscFeature
 SaleType
+** YrSold
+** MoSold
+**GarageYrBlt
+**YearBuilt
+**YearRemodAdd
 
-
-
-
+variables which are dropped
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2ndFlrSF
+OpenPorchSF
+WoodDeckSF
+MasVnrArea
+BsmtFinSF1
 
 

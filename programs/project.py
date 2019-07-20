@@ -41,26 +41,30 @@ missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 #.........................................dealing with missing data.....................................
 
 # categorical meaning NA means 'None'
-common_vars = ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2','MasVnrType',
-               'GarageQual', 'GarageType', 'GarageFinish', 'GarageCond', 'FireplaceQu', 'Fence',
-               'Alley', 'MiscFeature', 'PoolQC']
+common_vars = ['MiscFeature', 'MasVnrType', 'GarageType', 'Fence']
 for col in common_vars:
     all_data[col] = all_data[col].fillna('None')
 
 
 # categorical(numerical) meaning NA means 0
-for col in ('GarageYrBlt', 'GarageArea', 'GarageCars', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF',
-            'TotalBsmtSF', 'BsmtFullBath', 'BsmtHalfBath','MasVnrArea'):
+common_vars = ['PoolQC', 'Alley', 'FireplaceQu', 'GarageQual','BsmtQual','GarageCond', # categorical(numerical)
+               'BsmtCond', 'GarageFinish', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinSF2','BsmtFinType2',
+               'GarageArea','GarageCars','BsmtUnfSF','TotalBsmtSF','BsmtFullBath','BsmtHalfBath',# numerical
+               'MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd']
+#'MSSubClass', 'GarageYrBlt', 'YrSold', 'MoSold' ---->> special categorical
+for col in common_vars:
     all_data[col] = all_data[col].fillna(0)
 
 
 #set the most common string for NA
-common_vars = ['Exterior2nd', 'Exterior1st', 'ExterQual', 'KitchenQual', 'SaleType', 'Electrical',
-               'MSZoning', 'Utilities']
+common_vars = ['Exterior2nd', 'Exterior1st', 'SaleType', 'Electrical', # categorical
+               'MSZoning', 'Utilities', 'KitchenQual', 'ExterQual','Street', # categorical(numerical)
+               'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
+               'RoofStyle', 'Foundation','SaleCondition']
 for var in common_vars:
     all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
 
-# Functional: NA means typical
+# (categorical) Functional: NA means typical
 all_data['Functional'] = all_data['Functional'].fillna('Typ')
 
 
@@ -70,15 +74,18 @@ all_data['Functional'] = all_data['Functional'].fillna('Typ')
 all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
 
 
-# converting numerical variables that are actually categorical
+# (categorical) converting numerical variables that are actually categorical
 all_data['MSSubClass'] = all_data['MSSubClass'].apply(str)
+all_data['GarageYrBlt'] = all_data['GarageYrBlt'].apply(str)
 all_data['YrSold'] = all_data['YrSold'].astype(str)
 all_data['MoSold'] = all_data['MoSold'].astype(str)
 
 
-# creating a set of all categorical variables
-cols = ('GarageType', 'GarageFinish', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2',
-        'Functional', 'Fence', 'PavedDrive', 'Street', 'CentralAir', 'MSSubClass', 'YrSold', 'MoSold')
+# (categorical) creating a set of all categorical variables
+cols = ( 'GarageType', 'Functional', 'Fence', 'PavedDrive', 'CentralAir', 'MSSubClass', 'Neighborhood',
+         'Condition1', 'Condition2', 'HouseStyle', 'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType',
+         'Heating', 'Electrical', 'MiscFeature', 'SaleType', 'YrSold', 'MoSold', 'GarageYrBlt',
+         'YearBuilt', 'YearRemodAdd')
 
 # process columns, apply LabelEncoder to categorical features
 from sklearn.preprocessing import LabelEncoder #import labelEncoder to process data
@@ -86,32 +93,45 @@ for c in cols:
     lbl = LabelEncoder()
     lbl.fit(list(all_data[c].values))
     all_data[c] = lbl.transform(list(all_data[c].values))
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  Na  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # creating a set of all categorical(Ordinal) variables with a specific value to the characters
-dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2,'None':0}
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2,'NA':0}
 all_data['PoolQC'] = checker.data_converter(dic, all_data, 'PoolQC')
 
-dic = {'Pave':6, 'Grvl':3, 'None':0}
+dic = {'Grvl':3, 'Pave':6, 'NA':0}
 all_data['Alley'] = checker.data_converter(dic, all_data, 'Alley')
 
-dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'NA':0}
 all_data['FireplaceQu'] = checker.data_converter(dic, all_data, 'FireplaceQu')
 
-dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'NA':0}
 all_data['GarageQual'] = checker.data_converter(dic, all_data, 'GarageQual')
 
-dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
-all_data['GarageCond'] = checker.data_converter(dic, all_data, 'GarageCond')
-
-dic = {'RM':8, 'RP':6, 'RL':5, 'RH':9, 'I':4, 'FV':1, 'C (all)':3,'A':2}
-all_data['MSZoning'] = checker.data_converter(dic, all_data, 'MSZoning')
-
-dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'NA':0}
 all_data['BsmtQual'] = checker.data_converter(dic, all_data, 'BsmtQual')
 
-dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'None':0}
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'NA':0}
+all_data['GarageCond'] = checker.data_converter(dic, all_data, 'GarageCond')
+
+dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1, 'NA':0}
 all_data['BsmtCond'] = checker.data_converter(dic, all_data, 'BsmtCond')
+
+dic = {'Fin':3,'RFn':2, 'Unf':1, 'NA':0}
+all_data['GarageFinish'] = checker.data_converter(dic, all_data, 'GarageFinish')
+
+dic = {'Gd':5,'Av':3,'Mn':2, 'No':1, 'NA':0}
+all_data['BsmtExposure'] = checker.data_converter(dic, all_data, 'BsmtExposure')
+
+dic = {'GLQ':6, 'ALQ':5,'BLQ':4,'Rec':3,'LwQ':2, 'Unf':1, 'NA':0}
+all_data['BsmtFinType1'] = checker.data_converter(dic, all_data, 'BsmtFinType1')
+
+dic = {'GLQ':6, 'ALQ':5,'BLQ':4,'Rec':3,'LwQ':2, 'Unf':1, 'NA':0}
+all_data['BsmtFinType2'] = checker.data_converter(dic, all_data, 'BsmtFinType2')
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+dic = {'A':2, 'C (all)':3, 'FV':1, 'I':4, 'RH':9, 'RL':5, 'RP':6,'RM':8}
+all_data['MSZoning'] = checker.data_converter(dic, all_data, 'MSZoning')
 
 dic = {'AllPub':9, 'NoSewr':8, 'NoSeWa':7,'ELO':5}
 all_data['Utilities'] = checker.data_converter(dic, all_data, 'Utilities')
@@ -121,6 +141,9 @@ all_data['KitchenQual'] = checker.data_converter(dic, all_data, 'KitchenQual')
 
 dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1}
 all_data['ExterQual'] = checker.data_converter(dic, all_data, 'ExterQual')
+
+dic = {'Grvl':7, 'Pave':9}
+all_data['Street'] = checker.data_converter(dic, all_data, 'Street')
 
 dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2, 'Po':1}
 all_data['ExterCond'] = checker.data_converter(dic, all_data, 'ExterCond')
@@ -133,6 +156,24 @@ all_data['LandSlope'] = checker.data_converter(dic, all_data, 'LandSlope')
 
 dic = {'Reg':9,'IR1':7,'IR2':5, 'IR3':2}
 all_data['LotShape'] = checker.data_converter(dic, all_data, 'LotShape')
+
+dic = {'Lvl':7,'Bnk':6,'HLS':5, 'Low':2}
+all_data['LandContour'] = checker.data_converter(dic, all_data, 'LandContour')
+
+dic = {'Inside':2, 'Corner':4, 'CulDSac':5, 'FR2':7, 'FR3':9}
+all_data['LotConfig'] = checker.data_converter(dic, all_data, 'LotConfig')
+
+dic = {'1Fam':2, '2fmCon':4, 'Duplex':5, 'Twnhs':7, 'TwnhsE':7, 'TwnhsI':9}
+all_data['BldgType'] = checker.data_converter(dic, all_data, 'BldgType')
+
+dic = {'Flat':6, 'Gable':5, 'Gambrel':4, 'Hip':3, 'Mansard':2, 'Shed':1}
+all_data['RoofStyle'] = checker.data_converter(dic, all_data, 'RoofStyle')
+
+dic = {'BrkTil':4, 'CBlock':5, 'PConc':6, 'Slab':2, 'Stone':3, 'Wood':1}
+all_data['Foundation'] = checker.data_converter(dic, all_data, 'Foundation')
+
+dic = {'Normal':6, 'Abnorml':5, 'AdjLand':4, 'Alloca':3, 'Family':2, 'Partial':1}
+all_data['SaleCondition'] = checker.data_converter(dic, all_data, 'SaleCondition')
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #  Adding total sqfootage feature

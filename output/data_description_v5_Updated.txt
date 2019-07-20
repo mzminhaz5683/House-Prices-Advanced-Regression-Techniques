@@ -41,7 +41,7 @@ Alley: Type of alley access to property
 
        Grvl		3	Gravel
        Pave		6	Paved
-       NA/None 	0	No alley access
+       NA 	    0	No alley access
 		
 LotShape: General shape of property
 
@@ -133,9 +133,10 @@ Condition2: Proximity to various conditions (if more than one is present)
 BldgType: Type of dwelling
 		
        1Fam		2	Single-family Detached	
-       2FmCon	4	Two-family Conversion; originally built as one-family dwelling
-       Duplx	5	Duplex
-       TwnhsE	7	Townhouse End Unit
+       2fmCon	4	Two-family Conversion; originally built as one-family dwelling
+       Duplex	5	Duplex
+       Twnhs	7	Townhouse End Unit
+       TwnhsE 7      Townhouse End Unit
        TwnhsI	9	Townhouse Inside Unit
 	
 HouseStyle: Style of dwelling
@@ -267,11 +268,11 @@ ExterCond: Evaluates the present condition of the material on the exterior
 		
 Foundation: Type of foundation
 		
-       BrkTil	3	Brick & Tile
-       CBlock	4	Cinder Block
-       PConc	5	Poured Contrete	
+       BrkTil	4	Brick & Tile
+       CBlock	5	Cinder Block
+       PConc	6	Poured Contrete	
        Slab		2	Slab
-       Stone	6	Stone
+       Stone	3	Stone
        Wood		1	Wood
 		
 BsmtQual: Evaluates the height of the basement
@@ -281,7 +282,7 @@ BsmtQual: Evaluates the height of the basement
        TA	3	Typical (80-89 inches)
        Fa	2	Fair (70-79 inches)
        Po	1	Poor (<70 inches
-    NA/None	0	No Basement
+       NA	0	No Basement
 		
 BsmtCond: Evaluates the general condition of the basement
 
@@ -390,14 +391,14 @@ TotRmsAbvGrd: Total rooms above grade (does not include bathrooms)
 
 Functional: Home functionality (Assume typical unless deductions are warranted)
 
-       Typ	Typical Functionality
-       Min1	Minor Deductions 1
-       Min2	Minor Deductions 2
-       Mod	Moderate Deductions
-       Maj1	Major Deductions 1
-       Maj2	Major Deductions 2
-       Sev	Severely Damaged
-       Sal	Salvage only
+       Typ		Typical Functionality
+       Min1		Minor Deductions 1
+       Min2		Minor Deductions 2
+       Mod		Moderate Deductions
+       Maj1		Major Deductions 1
+       Maj2		Major Deductions 2
+       Sev		Severely Damaged
+       Sal		Salvage only
 		
 Fireplaces: Number of fireplaces
 
@@ -408,7 +409,7 @@ FireplaceQu: Fireplace quality
        TA	3	Average - Prefabricated Fireplace in main living area or Masonry Fireplace in basement
        Fa	2	Fair - Prefabricated Fireplace in basement
        Po	1	Poor - Ben Franklin Stove
-    NA/None	0	No Fireplace
+       NA	0	No Fireplace
 		
 GarageType: Garage location
 		
@@ -440,7 +441,7 @@ GarageQual: Garage quality
        TA	3	Typical/Average
        Fa	2	Fair
        Po	1	Poor
-    NA/None	0	No Garage
+       NA	0	No Garage
 		
 GarageCond: Garage condition
 
@@ -449,7 +450,7 @@ GarageCond: Garage condition
        TA	3	Typical/Average
        Fa	2	Fair
        Po	1	Poor
-    NA/None	0	No Garage
+       NA	0	No Garage
 		
 PavedDrive: Paved driveway
 
@@ -475,7 +476,7 @@ PoolQC: Pool quality
        Gd	4	Good
        TA	3	Average/Typical
        Fa	2	Fair
-    NA/None	0	No Pool
+       NA	0	No Pool
 		
 Fence: Fence quality
 		

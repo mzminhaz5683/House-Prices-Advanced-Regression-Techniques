@@ -1,11 +1,16 @@
 <component name="ProjectDictionaryState">
   <dictionary name="MZ">
     <words>
+      <w>abnorml</w>
+      <w>alloca</w>
       <w>astype</w>
       <w>bivariate</w>
       <w>brkr</w>
       <w>bsmt</w>
+      <w>conc</w>
+      <w>duplx</w>
       <w>exter</w>
+      <w>gambrel</w>
       <w>grliv</w>
       <w>grvl</w>
       <w>homoscedasticity</w>
@@ -18,6 +23,7 @@
       <w>seperate</w>
       <w>sewr</w>
       <w>sqfootage</w>
+      <w>twnhs</w>
     </words>
   </dictionary>
 </component>
