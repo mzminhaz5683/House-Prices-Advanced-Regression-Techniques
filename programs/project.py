@@ -40,84 +40,31 @@ missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 
 #.........................................dealing with missing data.....................................
 
-# PoolQC --> NA means missing houses have no Pool in general so "None"
-all_data['PoolQC'] = all_data['PoolQC'].fillna("None")
-
-
-# MiscFeature --> NA means no misc. features so "No"
-all_data['MiscFeature'] = all_data['MiscFeature'].fillna("None")
-
-
-# Alley :  NA means "no alley access"
-all_data['Alley'] = all_data['Alley'].fillna("None")
-
-
-# Fence: NA means "no fence"
-all_data['Fence'] = all_data['Fence'].fillna("None")
-
-
-# FireplaceQu: NA means "no fireplace"
-all_data['FireplaceQu'] = all_data['FireplaceQu'].fillna("None")
-
-
-# GarageType, GarageFinish, GarageQual and GarageCond represent similar & NA means "None"
-for col in ('GarageQual', 'GarageType', 'GarageFinish', 'GarageCond'):
-    all_data[col] = all_data[col].fillna("None")
-
-# GarageYrBlt, GarageArea and GarageCars : NA means 0
-for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
-    all_data[col] = all_data[col].fillna(0)
-
-
-# BsmtFinSF1, BsmtFinSF2, BsmtUnfSF, TotalBsmtSF, BsmtFullBath and BsmtHalfBath:
-# "NA" means 0 for no basement
-for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath', 'BsmtHalfBath'):
-    all_data[col] = all_data[col].fillna(0)
-
-
-# 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2' represent similar
 # categorical meaning NA means 'None'
-for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
+common_vars = ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2','MasVnrType',
+               'GarageQual', 'GarageType', 'GarageFinish', 'GarageCond', 'FireplaceQu', 'Fence',
+               'Alley', 'MiscFeature', 'PoolQC']
+for col in common_vars:
     all_data[col] = all_data[col].fillna('None')
 
-# masonry veneer: 0 for area and None for category
-all_data["MasVnrType"] = all_data["MasVnrType"].fillna("None")
-all_data["MasVnrArea"] = all_data["MasVnrArea"].fillna(0)
 
+# categorical(numerical) meaning NA means 0
+for col in ('GarageYrBlt', 'GarageArea', 'GarageCars', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF',
+            'TotalBsmtSF', 'BsmtFullBath', 'BsmtHalfBath','MasVnrArea'):
+    all_data[col] = all_data[col].fillna(0)
+
+
+#set the most common string for NA
+common_vars = ['Exterior2nd', 'Exterior1st', 'ExterQual', 'KitchenQual', 'SaleType', 'Electrical',
+               'MSZoning', 'Utilities']
+for var in common_vars:
+    all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
 
 # Functional: NA means typical
 all_data['Functional'] = all_data['Functional'].fillna('Typ')
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~set the most common string by ''all_data[cell].mode()[0])''
-
-# Utilises: won't help in predictive modelling
-#all_data.drop(['Utilities'], axis = 1, inplace = True) #?????????????????????????????????????????
-# Utilities: No for No utility
-all_data['Utilities'] = all_data['Utilities'].fillna(all_data['Utilities'].mode()[0])
-
-# MSZoning: NA replace most common value of the list "RL"
-all_data['MSZoning'] = all_data['MSZoning'].fillna(all_data['MSZoning'].mode()[0])
-
-
-# Electrical: NA means SBrkr
-all_data['Electrical'] = all_data['Electrical'].fillna(all_data['Electrical'].mode()[0])
-
-
-#SaleType: NA means WD
-all_data['SaleType'] = all_data['SaleType'].fillna(all_data['SaleType'].mode()[0])
-
-# KitchenQual
-all_data['KitchenQual'] = all_data['KitchenQual'].fillna(all_data['KitchenQual'].mode()[0])
-
-
-# Exterior1st and Exterior2nd: NA means most common string
-all_data['ExterQual'] = all_data['ExterQual'].fillna(all_data['ExterQual'].mode()[0])
-all_data['Exterior1st'] = all_data['Exterior1st'].fillna(all_data['Exterior1st'].mode()[0])
-all_data['Exterior2nd'] = all_data['Exterior2nd'].fillna(all_data['Exterior2nd'].mode()[0])
-
 #.....................................Data conversion...................................................
-
 
 # most important
 all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
@@ -125,7 +72,6 @@ all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transf
 
 # converting numerical variables that are actually categorical
 all_data['MSSubClass'] = all_data['MSSubClass'].apply(str)
-#all_data['OverallCond'] = all_data['OverallCond'].astype(str)
 all_data['YrSold'] = all_data['YrSold'].astype(str)
 all_data['MoSold'] = all_data['MoSold'].astype(str)
 
@@ -143,10 +89,6 @@ for c in cols:
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # creating a set of all categorical(Ordinal) variables with a specific value to the characters
-col2 = ('PoolQC', 'Alley', 'FireplaceQu', 'GarageQual', 'GarageCond', 'MSZoning', 'BsmtQual',
-        'BsmtCond', 'Utilities', 'KitchenQual', 'ExterQual', 'ExterCond', 'HeatingQC',
-        'LandSlope', 'LotShape')
-
 dic = {'Ex':5,'Gd':4,'TA':3,'Fa':2,'None':0}
 all_data['PoolQC'] = checker.data_converter(dic, all_data, 'PoolQC')
 
@@ -191,6 +133,7 @@ all_data['LandSlope'] = checker.data_converter(dic, all_data, 'LandSlope')
 
 dic = {'Reg':9,'IR1':7,'IR2':5, 'IR3':2}
 all_data['LotShape'] = checker.data_converter(dic, all_data, 'LotShape')
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #  Adding total sqfootage feature
 all_data['Total_SF']=all_data['TotalBsmtSF'] + all_data['1stFlrSF'] + all_data['2ndFlrSF']
@@ -202,11 +145,8 @@ all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] +
                               all_data['EnclosedPorch'] + all_data['ScreenPorch'] +
                               all_data['WoodDeckSF'])
 
-# Not normally distributed can not be normalised and duplicated has no central tendency
-all_data = all_data.drop(['TotalBsmtSF', '1stFlrSF', '2ndFlrSF',
-                          'FullBath', 'HalfBath', 'BsmtFullBath', 'BsmtHalfBath',
-                          'OpenPorchSF', '3SsnPorch', 'EnclosedPorch', 'ScreenPorch', 'WoodDeckSF',
-                          'MasVnrArea', 'BsmtFinSF1'], axis=1)
+# Not normally distributed can not be normalised and central tendency
+all_data = all_data.drop(['2ndFlrSF', 'OpenPorchSF', 'WoodDeckSF', 'MasVnrArea', 'BsmtFinSF1'], axis=1)
 # separate all_data into df_train & df_test
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
