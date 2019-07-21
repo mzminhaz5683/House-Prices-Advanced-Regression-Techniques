@@ -1,8 +1,8 @@
 OverallQual
-Total_SF
+Total_SF ~~
 GrLivArea
 GarageCars
-Total_Bathrooms
+Total_Bathrooms ~~
 GarageArea
 TotalBsmtSF
 1stFlrSF
@@ -12,7 +12,12 @@ YearBuilt		~	categorical
 GarageYrBlt		~	categorical
 YearRemodAdd 	~	categorical
 Fireplaces
-MasVnrType		~	categorical
+MasVnrArea
 BsmtFinSF1
+LotFrontage
+2ndFlrSF
+BsmtFullBath
+WoodDeckSF
+OpenPorchSF
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

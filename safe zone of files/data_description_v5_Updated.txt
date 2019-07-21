@@ -82,34 +82,34 @@ Neighborhood: Physical locations within Ames city limits
 
        Blmngtn	Bloomington Heights
        Blueste	Bluestem
-       BrDale	Briardale
+       BrDale	       Briardale
        BrkSide	Brookside
        ClearCr	Clear Creek
        CollgCr	College Creek
        Crawfor	Crawford
        Edwards	Edwards
        Gilbert	Gilbert
-       IDOTRR	Iowa DOT and Rail Road
+       IDOTRR	       Iowa DOT and Rail Road
        MeadowV	Meadow Village
        Mitchel	Mitchell
-       Names	North Ames
+       Names	        North Ames
        NoRidge	Northridge
        NPkVill	Northpark Villa
        NridgHt	Northridge Heights
-       NWAmes	Northwest Ames
+       NWAmes	       Northwest Ames
        OldTown	Old Town
-       SWISU	South & West of Iowa State University
-       Sawyer	Sawyer
+       SWISU	        South & West of Iowa State University
+       Sawyer	       Sawyer
        SawyerW	Sawyer West
        Somerst	Somerset
        StoneBr	Stone Brook
-       Timber	Timberland
+       Timber	       Timberland
        Veenker	Veenker
 			
 Condition1: Proximity to various conditions
 	
-       Artery	Adjacent to arterial street
-       Feedr	Adjacent to feeder street	
+       Artery	       Adjacent to arterial street
+       Feedr	       Adjacent to feeder street	
        Norm		Normal	
        RRNn		Within 200' of North-South Railroad
        RRAn		Adjacent to North-South Railroad
@@ -120,8 +120,8 @@ Condition1: Proximity to various conditions
 	
 Condition2: Proximity to various conditions (if more than one is present)
 		
-       Artery	Adjacent to arterial street
-       Feedr	Adjacent to feeder street	
+       Artery	       Adjacent to arterial street
+       Feedr	       Adjacent to feeder street	
        Norm		Normal	
        RRNn		Within 200' of North-South Railroad
        RRAn		Adjacent to North-South Railroad
@@ -141,13 +141,13 @@ BldgType: Type of dwelling
 	
 HouseStyle: Style of dwelling
 	
-       1Story	One story
-       1.5Fin	One and one-half story: 2nd level finished
-       1.5Unf	One and one-half story: 2nd level unfinished
-       2Story	Two story
-       2.5Fin	Two and one-half story: 2nd level finished
-       2.5Unf	Two and one-half story: 2nd level unfinished
-       SFoyer	Split Foyer
+       1Story	       One story
+       1.5Fin	       One and one-half story: 2nd level finished
+       1.5Unf	       One and one-half story: 2nd level unfinished
+       2Story	       Two story
+       2.5Fin	       Two and one-half story: 2nd level finished
+       2.5Unf	       Two and one-half story: 2nd level unfinished
+       SFoyer	       Split Foyer
        SLvl		Split Level
 	
 OverallQual: Rates the overall material and finish of the house
@@ -183,7 +183,7 @@ YearRemodAdd: Remodel date (same as construction date if no remodeling or additi
 RoofStyle: Type of roof
 
        Flat		6	Flat
-       Gable	5	Gable
+       Gable	       5	Gable
        Gambrel	4	Gabrel (Barn)
        Hip		3	Hip
        Mansard	2	Mansard
@@ -194,7 +194,7 @@ RoofMatl: Roof material
        ClyTile	Clay or Tile
        CompShg	Standard (Composite) Shingle
        Membran	Membrane
-       Metal	Metal
+       Metal	       Metal
        Roll		Roll
        Tar&Grv	Gravel & Tar
        WdShake	Wood Shakes

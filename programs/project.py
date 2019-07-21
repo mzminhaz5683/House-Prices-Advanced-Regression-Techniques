@@ -30,7 +30,7 @@ df_test.drop(['Id'], axis=1, inplace=True)
 corrmat = df_train.corr()
 f, ax = plt.subplots(figsize=(20, 13))
 sns.heatmap(corrmat, vmax=1, square=True)
-#plt.show()
+plt.show()
 
 # Partial numerical correlation matrix (salePrice)
 corr_num = 15 #number of variables for heatmap
@@ -67,8 +67,10 @@ for col in common_vars:
 # categorical(numerical) 'NA' means 0
 common_vars = ['PoolQC', 'Alley', 'FireplaceQu', 'GarageQual','BsmtQual','GarageCond', # categorical(numerical)
                'BsmtCond', 'GarageFinish', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinSF2','BsmtFinType2',
-               'GarageArea','GarageCars','BsmtUnfSF','TotalBsmtSF','BsmtFullBath','BsmtHalfBath',# numerical
-               'BsmtFinSF1', 'MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd']
+               'OverallQual','GrLivArea','GarageCars','GarageArea','TotalBsmtSF','1stFlrSF', # numerical
+               'FullBath','TotRmsAbvGrd','Fireplaces','MasVnrArea','BsmtFinSF1','LotFrontage','2ndFlrSF',
+               'BsmtFullBath','WoodDeckSF','OpenPorchSF','BsmtHalfBath','MSSubClass','BsmtUnfSF',
+               'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd']
 #'MSSubClass','YrSold','MoSold','GarageYrBlt','YearBuilt','YearRemodAdd' >> special categorical
 for col in common_vars:
     all_data[col] = all_data[col].fillna(0)
@@ -212,13 +214,8 @@ df_train_t = all_data[:ntrain] # create temporary df_train
 df_train_t['SalePrice'] = y_train #adding 'SalePrice' column into temporary df_train
 df_train_t['SalePrice'] = y_train
 # Numerical values correlation matrix, to locate dependencies between different variables.
-# Complete numerical correlation matrix
-corrmat = df_train_t.corr()
-f, ax = plt.subplots(figsize=(20, 13))
-sns.heatmap(corrmat, vmax=1, square=True)
-plt.show()
-
 # Partial numerical correlation matrix (salePrice)
+corrmat = df_train_t.corr()
 corr_num = 15 #number of variables for heatmap
 cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
 corr_mat_sales = np.corrcoef(df_train_t[cols_corr].values.T)
@@ -227,18 +224,15 @@ hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
                  annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
 plt.show()
 '''
-
-# Not normally distributed can not be normalised and central tendency
-all_data = all_data.drop(['2ndFlrSF', 'OpenPorchSF', 'WoodDeckSF', 'MasVnrArea'], axis=1)
 # separate all_data into df_train & df_test
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
-#cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
-#cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
-#df_train.to_csv('../output/df_train.csv')
+cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
+cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
+df_train.to_csv('../output/df_train.csv')
 print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
 print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
 
@@ -266,9 +260,27 @@ df_train = df_train.drop(drop_index)
 #checker.numerical_relationship(df_train, 'TotalBsmtSF')
 #checker.numerical_relationship(df_train, '1stFlrSF')
 #checker.numerical_relationship(df_train, 'FullBath')
-#checker.numerical_relationship(df_train, 'TotRmsAbvGrd')
+#checker.numerical_relationship(df_train, 'TotRmsAbvGrd') ~~~~
 #checker.numerical_relationship(df_train, 'Fireplaces')
+
+#checker.numerical_relationship(df_train, 'MasVnrArea')
+drop_index = df_train[(df_train['MasVnrArea'] > 1500) & (df_train['SalePrice']<300000)].index
+df_train = df_train.drop(drop_index)
+#checker.numerical_relationship(df_train, 'MasVnrArea')
 #checker.numerical_relationship(df_train, 'BsmtFinSF1')
+
+#checker.numerical_relationship(df_train, 'LotFrontage')
+drop_index = df_train[(df_train['LotFrontage'] > 250) & (df_train['SalePrice']<300000)].index
+df_train = df_train.drop(drop_index)
+#checker.numerical_relationship(df_train, 'LotFrontage')
+#checker.numerical_relationship(df_train, '2ndFlrSF')
+#checker.numerical_relationship(df_train, 'BsmtFullBath') ~~~
+#checker.numerical_relationship(df_train, 'WoodDeckSF')
+
+#checker.numerical_relationship(df_train, 'OpenPorchSF')
+drop_index = df_train[(df_train['OpenPorchSF'] > 500) & (df_train['SalePrice']<40000)].index
+df_train = df_train.drop(drop_index)
+#checker.numerical_relationship(df_train, 'OpenPorchSF')
 
 #.......................................2b categorical analyzing.......................................
 
