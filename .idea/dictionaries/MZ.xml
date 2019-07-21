@@ -9,6 +9,7 @@
       <w>brkr</w>
       <w>bsmt</w>
       <w>cbar</w>
+      <w>colums</w>
       <w>conc</w>
       <w>corrcoef</w>
       <w>corrmat</w>
@@ -25,6 +26,7 @@
       <w>matplotlib</w>
       <w>ntest</w>
       <w>ntrain</w>
+      <w>overfit</w>
       <w>qual</w>
       <w>remod</w>
       <w>seperate</w>

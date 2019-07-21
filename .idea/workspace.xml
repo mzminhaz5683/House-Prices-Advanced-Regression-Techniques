@@ -4,7 +4,8 @@
     <list default="true" id="77b9e6f4-a338-41b7-ab03-845504fcf342" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/MZ.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/MZ.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output/data_description_v5_Updated.txt" afterPath="$PROJECT_DIR$/output/data_description_v5_Updated.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output/Most importent_v.txt" afterPath="$PROJECT_DIR$/output/Most importent_v.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output/Variable stage_v3_updated.txt" afterPath="$PROJECT_DIR$/output/Variable stage_v3_updated.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/project.py" afterPath="$PROJECT_DIR$/programs/project.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,7 +16,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/friends$project__1_.coverage" NAME="project (1) Coverage Results" MODIFIED="1563683130125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
+    <SUITE FILE_PATH="coverage/friends$project__1_.coverage" NAME="project (1) Coverage Results" MODIFIED="1563684345616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$Unittests_in_project_py.coverage" NAME="Unittests in project.py Coverage Results" MODIFIED="1563529205534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$checker.coverage" NAME="checker Coverage Results" MODIFIED="1563573026187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$Class1.coverage" NAME="Class1 Coverage Results" MODIFIED="1563444738713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs/test_cases" />
@@ -30,8 +31,8 @@
       <file leaf-file-name="project.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/programs/project.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2851">
-              <caret line="148" column="80" lean-forward="true" selection-start-line="148" selection-start-column="80" selection-end-line="148" selection-end-column="80" />
+            <state relative-caret-position="185">
+              <caret line="307" column="26" lean-forward="true" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
               </folding>
@@ -749,8 +750,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/programs/project.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2851">
-          <caret line="148" column="80" lean-forward="true" selection-start-line="148" selection-start-column="80" selection-end-line="148" selection-end-column="80" />
+        <state relative-caret-position="185">
+          <caret line="307" column="26" lean-forward="true" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
           <folding>
             <element signature="e#0#77#0" expanded="true" />
           </folding>

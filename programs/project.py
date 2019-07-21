@@ -269,7 +269,7 @@ df_train = df_train.drop(drop_index)
 
 #.......................................2b categorical analyzing.......................................
 
-checker.categorical_relationship(df_train, 'YearBuilt')
+#checker.categorical_relationship(df_train, 'YearBuilt')
 
 ###################################### 3. Normalization handling #########################################
 
@@ -302,4 +302,19 @@ checker.normalized_distribution(df_train, 'GrLivArea')
 
 
 ############################ 4. Converting categorical variable into dummy ###############################
-#all_data = pd.get_dummies(all_data) #?????????????????????????????????????????
+df_train = pd.get_dummies(df_train) #?????????????????????????????????????????
+# Removes columns where the threshold of zero's is (> 99.95), means has only zero values
+overfit = []
+for i in df_train.columns:
+    counts = df_train[i].value_counts()
+    zeros = counts.iloc[0]
+    if zeros / len(df_train) * 100 > 99.95:
+        overfit.append(i)
+
+overfit = list(overfit)
+X = df_train.drop(overfit, axis=1).copy()
+X_test = df_test.drop(overfit, axis=1).copy()
+
+print('\nAfter dummy')
+print("df_train set size:", df_train.shape) #1460 samples
+print("df_test set size:", df_test.shape) # 1459 df_test cases
