@@ -284,7 +284,7 @@ df_train = df_train.drop(drop_index)
 
 #.......................................2b categorical analyzing.......................................
 
-#checker.categorical_relationship(df_train, 'YearBuilt')
+checker.categorical_relationship(df_train, 'GarageYrBlt')
 
 ###################################### 3. Normalization handling #########################################
 
