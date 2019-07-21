@@ -58,23 +58,23 @@ missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 
 #.........................................dealing with missing data.....................................
 
-# categorical meaning NA means 'None'
+# categorical 'NA' means 'None'
 common_vars = ['MiscFeature', 'MasVnrType', 'GarageType', 'Fence']
 for col in common_vars:
     all_data[col] = all_data[col].fillna('None')
 
 
-# categorical(numerical) meaning NA means 0
+# categorical(numerical) 'NA' means 0
 common_vars = ['PoolQC', 'Alley', 'FireplaceQu', 'GarageQual','BsmtQual','GarageCond', # categorical(numerical)
                'BsmtCond', 'GarageFinish', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinSF2','BsmtFinType2',
                'GarageArea','GarageCars','BsmtUnfSF','TotalBsmtSF','BsmtFullBath','BsmtHalfBath',# numerical
-               'MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd','BsmtFinSF1']
-#'MSSubClass', 'GarageYrBlt', 'YrSold', 'MoSold' ---->> special categorical
+               'BsmtFinSF1', 'MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd']
+#'MSSubClass','YrSold','MoSold','GarageYrBlt','YearBuilt','YearRemodAdd' >> special categorical
 for col in common_vars:
     all_data[col] = all_data[col].fillna(0)
 
 
-#set the most common string for NA
+#'NA' means the most common string
 common_vars = ['Exterior2nd', 'Exterior1st', 'SaleType', 'Electrical', # categorical
                'MSZoning', 'Utilities', 'KitchenQual', 'ExterQual','Street', # categorical(numerical)
                'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
@@ -82,21 +82,21 @@ common_vars = ['Exterior2nd', 'Exterior1st', 'SaleType', 'Electrical', # categor
 for var in common_vars:
     all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
 
-# (categorical) Functional: NA means typical
+# (categorical) Functional: 'NA' means 'typical' variable
 all_data['Functional'] = all_data['Functional'].fillna('Typ')
 
 
 #.....................................Data conversion...................................................
 
-# most important
+# missing in 'LotFrontage' are the median of 'LotFrontage' of the group of the belonging 'Neighborhood'.
 all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
 
 
 # (categorical) converting numerical variables that are actually categorical
-all_data['MSSubClass'] = all_data['MSSubClass'].apply(str)
-all_data['GarageYrBlt'] = all_data['GarageYrBlt'].apply(str)
-all_data['YrSold'] = all_data['YrSold'].astype(str)
-all_data['MoSold'] = all_data['MoSold'].astype(str)
+#'MSSubClass','YrSold','MoSold','GarageYrBlt','YearBuilt','YearRemodAdd' >> special categorical
+cols = ['MSSubClass', 'YrSold', 'MoSold', 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd']
+for var in cols:
+    all_data[var] = all_data[var].astype(str)
 
 
 # (categorical) creating a set of all categorical variables
@@ -219,6 +219,25 @@ df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #df_train.to_csv('../output/df_train.csv')
 print("df_train set size after handling missing data(~ID):", df_train.shape)
 print("df_test set size after handling missing data(~ID):", df_test.shape)
+
+###########################################  Heat Map  ##################################################
+'''
+# Numerical values correlation matrix, to locate dependencies between different variables.
+# Complete numerical correlation matrix
+corrmat = df_train.corr()
+f, ax = plt.subplots(figsize=(20, 13))
+sns.heatmap(corrmat, vmax=1, square=True)
+#plt.show()
+
+# Partial numerical correlation matrix (salePrice)
+corr_num = 15 #number of variables for heatmap
+cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
+corr_mat_sales = np.corrcoef(df_train[cols_corr].values.T)
+f, ax = plt.subplots(figsize=(15, 11))
+hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
+                 annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
+#plt.show()
+'''
 
 ##################################### 2. Out-liars Handling #############################################
 #.......................................2a numerical analyzing.......................................

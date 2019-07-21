@@ -3,14 +3,18 @@
     <words>
       <w>abnorml</w>
       <w>alloca</w>
+      <w>annot</w>
       <w>astype</w>
       <w>bivariate</w>
       <w>brkr</w>
       <w>bsmt</w>
+      <w>cbar</w>
       <w>conc</w>
+      <w>corrcoef</w>
       <w>corrmat</w>
       <w>duplx</w>
       <w>exter</w>
+      <w>figsize</w>
       <w>fillna</w>
       <w>gambrel</w>
       <w>grliv</w>
@@ -27,6 +31,9 @@
       <w>sewr</w>
       <w>sqfootage</w>
       <w>twnhs</w>
+      <w>vmax</w>
+      <w>xticklabels</w>
+      <w>yticklabels</w>
     </words>
   </dictionary>
 </component>
