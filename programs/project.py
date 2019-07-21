@@ -14,8 +14,8 @@ from programs import checker # import local file
 #.....Importing & Checking Inputs.
 df_train = pd.read_csv('../input/train.csv')
 df_test = pd.read_csv('../input/test.csv')
-print("df_train set size:", df_train.shape) #1460 samples
-print("df_test set size:", df_test.shape) # 1459 df_test cases
+print("df_train set size(+ID):", df_train.shape) #1460 samples, 80 features +1(ID)
+print("df_test set size(+ID):", df_test.shape) # 1459 test cases, 79 features +1(ID)
 
 #.....Dropping 'Id' column since it's not a necessary item on prediction
 df_train_ID = df_train['Id']
@@ -206,6 +206,28 @@ all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] +
                               all_data['EnclosedPorch'] + all_data['ScreenPorch'] +
                               all_data['WoodDeckSF'])
 
+###########################################  Heat Map  ##################################################
+'''
+df_train_t = all_data[:ntrain] # create temporary df_train
+df_train_t['SalePrice'] = y_train #adding 'SalePrice' column into temporary df_train
+df_train_t['SalePrice'] = y_train
+# Numerical values correlation matrix, to locate dependencies between different variables.
+# Complete numerical correlation matrix
+corrmat = df_train_t.corr()
+f, ax = plt.subplots(figsize=(20, 13))
+sns.heatmap(corrmat, vmax=1, square=True)
+plt.show()
+
+# Partial numerical correlation matrix (salePrice)
+corr_num = 15 #number of variables for heatmap
+cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
+corr_mat_sales = np.corrcoef(df_train_t[cols_corr].values.T)
+f, ax = plt.subplots(figsize=(15, 11))
+hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
+                 annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
+plt.show()
+'''
+
 # Not normally distributed can not be normalised and central tendency
 all_data = all_data.drop(['2ndFlrSF', 'OpenPorchSF', 'WoodDeckSF', 'MasVnrArea'], axis=1)
 # separate all_data into df_train & df_test
@@ -217,27 +239,8 @@ df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
 #cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
 #df_train.to_csv('../output/df_train.csv')
-print("df_train set size after handling missing data(~ID):", df_train.shape)
-print("df_test set size after handling missing data(~ID):", df_test.shape)
-
-###########################################  Heat Map  ##################################################
-'''
-# Numerical values correlation matrix, to locate dependencies between different variables.
-# Complete numerical correlation matrix
-corrmat = df_train.corr()
-f, ax = plt.subplots(figsize=(20, 13))
-sns.heatmap(corrmat, vmax=1, square=True)
-#plt.show()
-
-# Partial numerical correlation matrix (salePrice)
-corr_num = 15 #number of variables for heatmap
-cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
-corr_mat_sales = np.corrcoef(df_train[cols_corr].values.T)
-f, ax = plt.subplots(figsize=(15, 11))
-hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
-                 annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
-#plt.show()
-'''
+print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
+print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
 
 ##################################### 2. Out-liars Handling #############################################
 #.......................................2a numerical analyzing.......................................
@@ -318,3 +321,4 @@ X_test = df_test.drop(overfit, axis=1).copy()
 print('\nAfter dummy')
 print("df_train set size:", df_train.shape) #1460 samples
 print("df_test set size:", df_test.shape) # 1459 df_test cases
+#'''
