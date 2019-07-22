@@ -1,0 +1,64 @@
+categorical v. conver to numerical
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PoolQC
+Alley
+FireplaceQu
+GarageQual
+BsmtQual
+GarageCond
+BsmtCond
+GarageFinish
+BsmtExposure
+BsmtFinType1
+BsmtFinType2
+
+!!!!!!!mode()!!!!!!!!
+MSZoning
+Utilities
+KitchenQual
+ExterQual
+Street
+ExterCond
+HeatingQC
+LandSlope
+LotShape
+LandContour
+LotConfig
+BldgType
+RoofStyle
+Foundation
+SaleCondition
+
+randomly conversion of categorical v.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GarageType
+Functional
+Fence
+PavedDrive
+CentralAir
+MSSubClass
+Neighborhood
+Condition1
+Condition2
+HouseStyle
+RoofMatl
+Exterior1st
+Exterior2nd
+MasVnrType
+Heating
+Electrical
+MiscFeature
+SaleType
+** YrSold
+** MoSold
+**GarageYrBlt
+**YearBuilt
+**YearRemodAdd
+
+variables which are dropped
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2ndFlrSF
+OpenPorchSF
+WoodDeckSF
+
+

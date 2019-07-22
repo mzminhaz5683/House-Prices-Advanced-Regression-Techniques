@@ -230,9 +230,9 @@ df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
-cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
-cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
-df_train.to_csv('../output/df_train.csv')
+#cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
+#cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
+#df_train.to_csv('../output/df_train.csv')
 print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
 print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
 
@@ -284,53 +284,102 @@ df_train = df_train.drop(drop_index)
 
 #.......................................2b categorical analyzing.......................................
 
+
 #checker.categorical_relationship(df_train, 'YearBuilt')
+drop_index = df_train[(df_train['SalePrice']>600000)].index
+df_train = df_train.drop(drop_index)
+#checker.categorical_relationship(df_train, 'YearBuilt')
+
+#checker.categorical_relationship(df_train, 'GarageYrBlt')
+drop_index = df_train[(df_train['SalePrice']>600000)].index
+df_train = df_train.drop(drop_index)
+#checker.categorical_relationship(df_train, 'GarageYrBlt')
+
+#checker.categorical_relationship(df_train, 'YearRemodAdd')
+drop_index = df_train[(df_train['SalePrice']>600000)].index
+df_train = df_train.drop(drop_index)
+#checker.categorical_relationship(df_train, 'YearRemodAdd')
+
 
 ###################################### 3. Normalization handling #########################################
 
 #checker.general_distribution(df_train, 'SalePrice')
 #plt.show()
-checker.normalized_distribution(df_train, 'SalePrice')
+#checker.normalized_distribution(df_train, 'SalePrice')
 #plt.show()
-
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, 'Total_SF')
+#plt.show()
+#checker.normalized_distribution(df_train, 'Total_SF')
+#plt.show()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'GrLivArea')
 #plt.show()
-checker.normalized_distribution(df_train, 'GrLivArea')
+#checker.normalized_distribution(df_train, 'GrLivArea')
 #plt.show()
-
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'TotalBsmtSF')
 #plt.show()
-#create column for new variable (one is enough because it's a binary categorical feature)
-#if area>0 it gets 1, for area==0 it gets 0
-#df_train['HasBsmt'] = pd.Series(len(df_train['TotalBsmtSF']), index=df_train.index)
-#df_train['HasBsmt'] = 0
-#df_train.loc[df_train['TotalBsmtSF']>0,'HasBsmt'] = 1
-#transform data
-#df_train.loc[df_train['HasBsmt']==1,'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
-#checker.general_distribution(df_train, 'TotalBsmtSF')
+#checker.normalized_distribution(df_train, 'TotalBsmtSF')
 #plt.show()
-
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, '1stFlrSF')
+#plt.show()
+#checker.normalized_distribution(df_train, '1stFlrSF')
+#plt.show()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, 'MasVnrArea')
+#plt.show()
+#checker.normalized_distribution(df_train, 'MasVnrArea')
+#plt.show()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, 'BsmtFinSF1')
+#plt.show()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, '2ndFlrSF')
+#plt.show()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, 'WoodDeckSF')
+#plt.show()
+#checker.normalized_distribution(df_train, 'WoodDeckSF')
+#plt.show()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#checker.general_distribution(df_train, 'OpenPorchSF')
+#plt.show()
+#checker.normalized_distribution(df_train, 'OpenPorchSF')
+#plt.show()
 ################################### 3. Homoscedasticity handling #########################################
 
 
 ############################ 4. Converting categorical variable into dummy ###############################
-df_train = pd.get_dummies(df_train) #?????????????????????????????????????????
+ntrain = df_train.shape[0]
+y_train = df_train.SalePrice.values
+df_train.drop(['SalePrice'], axis = 1, inplace = True)
+all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
+
+all_data = pd.get_dummies(all_data) #?????????????????????????????????????????
 # Removes columns where the threshold of zero's is (> 99.95), means has only zero values
 overfit = []
-for i in df_train.columns:
-    counts = df_train[i].value_counts()
+for i in all_data.columns:
+    counts = all_data[i].value_counts()
     zeros = counts.iloc[0]
-    if zeros / len(df_train) * 100 > 99.95:
+    if zeros / len(all_data) * 100 > 99.95:
         overfit.append(i)
 
 overfit = list(overfit)
-X = df_train.drop(overfit, axis=1).copy()
-X_test = df_test.drop(overfit, axis=1).copy()
+all_data.drop(overfit, axis=1)
+
+
+df_train = all_data[:ntrain]
+df_test = all_data[ntrain:]
+df_train['SalePrice'] = y_train
+df_train['Id'] = df_train_ID
+df_test['Id'] = df_test_ID
+#X = df_train.drop(overfit, axis=1).copy()
+#X_test = df_test.drop(overfit, axis=1).copy()
 
 print('\nAfter dummy')
 print("df_train set size:", df_train.shape) #1460 samples
 print("df_test set size:", df_test.shape) # 1459 df_test cases
-#'''
+df_train.to_csv('../output/processed_train.csv')
+df_test.to_csv('../output/processed_test.csv')
