@@ -20,8 +20,8 @@ print("df_test set size(+ID):", df_test.shape) # 1459 test cases, 79 features +1
 #.....Dropping 'Id' column since it's not a necessary item on prediction
 df_train_ID = df_train['Id']
 df_test_ID = df_test['Id']
-df_train.drop(['Id'], axis=1, inplace=True)
-df_test.drop(['Id'], axis=1, inplace=True)
+df_train.drop('Id', axis=1, inplace=True)
+df_test.drop('Id', axis=1, inplace=True)
 
 ###########################################  Heat Map  ##################################################
 '''
@@ -46,6 +46,12 @@ hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
 #.........................................missing data observing.........................................
 ntrain = df_train.shape[0]
 y_train = df_train.SalePrice.values
+
+def get_train_label():
+    return y_train
+
+def get_test_ID():
+    return df_test_ID
 
 df_train.drop(['SalePrice'], axis = 1, inplace = True)
 all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
@@ -230,9 +236,9 @@ df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
-#cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
-#cName_train.to_csv('../output/column_name_df_train.csv') # column names after handling missing data
-#df_train.to_csv('../output/df_train.csv')
+cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
+cName_train.to_csv('../output/column_name_df_train_v2.csv') # column names after handling missing data
+df_train.to_csv('../output/df_train_v2.csv')
 print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
 print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
 
@@ -372,14 +378,16 @@ all_data.drop(overfit, axis=1)
 
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
-df_train['SalePrice'] = y_train
-df_train['Id'] = df_train_ID
-df_test['Id'] = df_test_ID
+#df_train['SalePrice'] = y_train
+#df_train['Id'] = df_train_ID
+#df_test['Id'] = df_test_ID
 #X = df_train.drop(overfit, axis=1).copy()
 #X_test = df_test.drop(overfit, axis=1).copy()
 
 print('\nAfter dummy')
 print("df_train set size:", df_train.shape) #1460 samples
 print("df_test set size:", df_test.shape) # 1459 df_test cases
-df_train.to_csv('../output/processed_train.csv')
-df_test.to_csv('../output/processed_test.csv')
+#df_train.to_csv('../output/processed_train.csv')
+#df_test.to_csv('../output/processed_test.csv')
+def get_train_test_data():
+    return df_train, df_test

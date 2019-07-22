@@ -37,7 +37,7 @@ test.drop('Id', axis = 1, inplace=True)
 
 ############# Data Preprocessing #############
 ### let's check for the outliers first
-drop_index = train[(train['GrLivArea'] > 4000) &
+drop_index = train[(train['GrLivArea'] > 4000) & 
                 (train['SalePrice']<300000)].index
 
 # we can safely delete these huge outliers mention in drop_index
@@ -130,7 +130,7 @@ for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
 
 # BsmtFinSF1, BsmtFinSF2, BsmtUnfSF, TotalBsmtSF, BsmtFullBath and BsmtHalfBath:
 # "NA" means 0 for no basement
-for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF',
+for col in ('BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 
             'BsmtFullBath', 'BsmtHalfBath'):
     all_data[col] = all_data[col].fillna(0)
 
@@ -192,19 +192,19 @@ all_data['YrSold'] = all_data['YrSold'].astype(str)
 all_data['MoSold'] = all_data['MoSold'].astype(str)
 
 from sklearn.preprocessing import LabelEncoder
-cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond',
-        'ExterQual', 'ExterCond','HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1',
+cols = ('FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond', 
+        'ExterQual', 'ExterCond','HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1', 
         'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
-        'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond',
+        'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond', 
         'YrSold', 'MoSold')
 
 # process columns, apply LabelEncoder to categorical features
 for c in cols:
-    lbl = LabelEncoder()
-    lbl.fit(list(all_data[c].values))
+    lbl = LabelEncoder() 
+    lbl.fit(list(all_data[c].values)) 
     all_data[c] = lbl.transform(list(all_data[c].values))
 
-# shape
+# shape        
 print('Shape all_data', all_data.shape)
 #print(all_data['Street'])
 
