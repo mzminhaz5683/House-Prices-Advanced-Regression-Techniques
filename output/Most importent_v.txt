@@ -21,3 +21,15 @@ WoodDeckSF
 OpenPorchSF
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+OverallQual
+GarageCars
+Total_Bathrooms
+GarageArea
+FullBath
+TotRmsAbvGrd
+YearBuilt
+GarageYrBlt
+YearRemodAdd
+Fireplaces
+LotFrontage
+BsmtFullBath

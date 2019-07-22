@@ -26,7 +26,6 @@ def categorical_relationship(file, var):
     fig.axis(ymin=0, ymax=800000)
     plt.show()
 
-
 ##################################### distribution handling ##############################################
 
 # Checking distribution (histogram and normal probability plot)
@@ -34,6 +33,14 @@ def general_distribution(file, cell):
     sns.distplot(file[file[cell]>0][cell], fit=norm)
     fig = plt.figure()
     res = stats.probplot(file[file[cell]>0][cell], plot=plt)
+
+'''
+# Checking distribution (histogram and normal probability plot)
+def general_distribution(file, cell):
+    sns.distplot(file[cell], fit=norm)
+    fig = plt.figure()
+    res = stats.probplot(file[cell], plot=plt)
+'''
 
 # converting distribution in normal (histogram and normal probability plot)
 def normalized_distribution(file, cell):
