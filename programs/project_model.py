@@ -24,15 +24,16 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
 # import local files
-from programs import project
-#from programs import baseline_code
+#from programs import project
+from programs import baseline_code
+
 print("______________\nProject_model\n______________")
 
-#X, X_test = baseline_code.get_train_test_data()
-#y = y_train = baseline_code.get_train_label()
+X, X_test = baseline_code.get_train_test_data()
+y = y_train = baseline_code.get_train_label()
 
-X, X_test = project.get_train_test_data()
-y = y_train = project.get_train_label()
+#X, X_test = project.get_train_test_data()
+#y = y_train = project.get_train_label()
 
 kfolds = KFold(n_splits=10, shuffle=True, random_state=42)
 
@@ -155,4 +156,4 @@ print('Predict submission')
 submission = pd.read_csv("../input/sample_submission.csv")
 submission.iloc[:, 1] = np.floor(np.expm1(blend_models_predict(X_test)))
 
-submission.to_csv("p2_submission.csv", index=False)
+submission.to_csv("../output/p_submission.csv", index=False)

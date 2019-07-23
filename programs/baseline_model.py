@@ -91,4 +91,4 @@ sub = pd.DataFrame()
 sub['Id'] = baseline_code.get_test_ID()
 #sub['Id'] = project.get_test_ID()
 sub['SalePrice'] = ensemble_predict
-sub.to_csv('b_submission.csv',index=False)
+sub.to_csv('../output/b_submission.csv',index=False)
