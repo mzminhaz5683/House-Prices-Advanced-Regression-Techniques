@@ -49,4 +49,5 @@ def normalized_distribution(file, cell):
 
 ################################## categorical(Ordinal) variables handling ###############################
 def data_converter(dic, file, cell):
-    return file[cell].replace(dic)
+    file[cell] = file[cell].replace(dic)
+    return file[cell].astype(float)

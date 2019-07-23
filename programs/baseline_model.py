@@ -1,8 +1,5 @@
 # Description: Baseline code for the House Price Prediction Competition
 # File: model building
-
-# import necessary files
-import project
 #import baseline_code
 import xgboost as xgb
 import numpy as np
@@ -17,16 +14,18 @@ from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
 
 from mlxtend.regressor import StackingCVRegressor
+# import project (as like baseline_code)
+import project
+print("______________\nbaseline_model\n______________")
 print('finished stage : import')
-print("_____________\nbaseline_model\n______________")
 # loading test and test data
 #train, test = baseline_code.get_train_test_data()
 #y_label = baseline_code.get_train_label()
 
 train, test = project.get_train_test_data()
 y_label = project.get_train_label()
-
 print('finished stage : input')
+
 kfolds = KFold(n_splits = 10, shuffle = True, random_state = 61)
 print('finished stage : KFold')
 
@@ -79,6 +78,7 @@ print("gbr: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), )
 
 # fitting ensemble of algorithms
 print('finished stack_gen')
+
 stack_gen_model = stack_gen.fit(np.array(train), np.array(y_label))
 
 # predict

@@ -14,14 +14,14 @@ from programs import checker # import local file
 #.....Importing & Checking Inputs.
 df_train = pd.read_csv('../input/train.csv')
 df_test = pd.read_csv('../input/test.csv')
-print("df_train input size(+ID):", df_train.shape) #1460 samples, 80 features +1(ID)
-print("df_test input size(+ID):", df_test.shape) # 1459 test cases, 79 features +1(ID)
 
 #.....Dropping 'Id' column since it's not a necessary item on prediction
 df_train_ID = df_train['Id']
 df_test_ID = df_test['Id']
 df_train.drop('Id', axis=1, inplace=True)
 df_test.drop('Id', axis=1, inplace=True)
+print("df_train input size:", df_train.shape) #1460 samples, 80 features
+print("df_test input size:", df_test.shape) # 1459 test cases, 79 features
 
 ###########################################  Heat Map  ##################################################
 '''
@@ -239,9 +239,6 @@ df_test = all_data[ntrain:]
 df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 #print(df_train.isnull().sum().max()) #just checking that there's no missing data missing
 
-cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
-cName_train.to_csv('../output/column_name_df_train_v2.csv') # column names after handling missing data
-df_train.to_csv('../output/df_train_v2.csv')
 #print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
 #print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
 
@@ -314,48 +311,48 @@ df_train = df_train.drop(drop_index)
 
 #checker.general_distribution(df_train, 'SalePrice')
 #plt.show()
-#checker.normalized_distribution(df_train, 'SalePrice')
+checker.normalized_distribution(df_train, 'SalePrice')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'Total_SF')
 #plt.show()
-#checker.normalized_distribution(df_train, 'Total_SF')
+checker.normalized_distribution(df_train, 'Total_SF')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'GrLivArea')
 #plt.show()
-#checker.normalized_distribution(df_train, 'GrLivArea')
+checker.normalized_distribution(df_train, 'GrLivArea')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'TotalBsmtSF')
 #plt.show()
-#checker.normalized_distribution(df_train, 'TotalBsmtSF')
+checker.normalized_distribution(df_train, 'TotalBsmtSF')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, '1stFlrSF')
 #plt.show()
-#checker.normalized_distribution(df_train, '1stFlrSF')
+checker.normalized_distribution(df_train, '1stFlrSF')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'MasVnrArea')
 #plt.show()
-#checker.normalized_distribution(df_train, 'MasVnrArea')
+checker.normalized_distribution(df_train, 'MasVnrArea')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#checker.general_distribution(df_train, 'BsmtFinSF1')
+checker.general_distribution(df_train, 'BsmtFinSF1')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#checker.general_distribution(df_train, '2ndFlrSF')
+checker.general_distribution(df_train, '2ndFlrSF')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'WoodDeckSF')
 #plt.show()
-#checker.normalized_distribution(df_train, 'WoodDeckSF')
+checker.normalized_distribution(df_train, 'WoodDeckSF')
 #plt.show()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #checker.general_distribution(df_train, 'OpenPorchSF')
 #plt.show()
-#checker.normalized_distribution(df_train, 'OpenPorchSF')
+checker.normalized_distribution(df_train, 'OpenPorchSF')
 #plt.show()
 ################################### 3. Homoscedasticity handling #########################################
 
@@ -365,15 +362,17 @@ ntrain = df_train.shape[0] # load df_train size
 y_train = df_train.SalePrice.values # allocate SalePrice into y_train
 df_train.drop(['SalePrice'], axis = 1, inplace = True) # drop SalePrice
 
-print("df_train final size:", df_train.shape) # 1460 samples, 79 features
+print("\ndf_train final size(-SalePrice):", df_train.shape) # 1460 samples, 79 features
 print("df_test final size:", df_test.shape) # 1459 samples, 78 features
 
-
+'''
 all_data = pd.concat((df_train, df_test)).reset_index(drop=True) #concat to make dummy
 all_data = pd.get_dummies(all_data) # dummy
 
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
+'''
+
 # Removes columns where the threshold of zero's is (> 99.95), means has only zero values
 overfit = []
 for i in df_train.columns:
@@ -394,16 +393,6 @@ def get_train_test_data():
     # main shape (df_train, y_train, df_test):  (1448, 139) (1448,) (1459, 139)
     return df_train, df_test
 
-'''
-df_train['SalePrice'] = y_train
-df_train['Id'] = df_train_ID
-df_test['Id'] = df_test_ID
-#X = df_train.drop(overfit, axis=1).copy()
-#X_test = df_test.drop(overfit, axis=1).copy()
-
-print('After dummy')
-print("df_train set size (+ID, +SalePrice):", df_train.shape) #1460 samples
-print("df_test set size (+ID):", df_test.shape) # 1459 df_test cases
-#df_train.to_csv('../output/processed_train.csv')
-#df_test.to_csv('../output/processed_test.csv')
-'''
+all_data.to_csv('../output/all_data.csv')
+df_train.to_csv('../output/df_train.csv')
+df_test.to_csv('../output/df_test.csv')

@@ -2,12 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77b9e6f4-a338-41b7-ab03-845504fcf342" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/programs/project_model.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/MZ.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/MZ.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Most importent_v.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Variable stage_v3_updated.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/output/column_name_df_train_v2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/output/data_description_v5_Updated.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/output/df_train_v2.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/output/df_train_v3.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/programs/submission_v1.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/programs/test.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/programs/train.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/Most importent_v.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/Variable stage_v3_updated.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/Variable_type_v2.xlsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/checker.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/column_name_df_train.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/data_description_v5_Updated.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/df_train.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/full_map.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/full_map_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/partial_map.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/partial_map_2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/processed_test.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/processed_train.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/project.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/requirements.bat" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/sample_submission.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/test.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/safe zone of files/mz_v1/train.csv" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/baseline_model.py" afterPath="$PROJECT_DIR$/programs/baseline_model.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/checker.py" afterPath="$PROJECT_DIR$/programs/checker.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/project.py" afterPath="$PROJECT_DIR$/programs/project.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/project_model.py" afterPath="$PROJECT_DIR$/programs/project_model.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,11 +44,11 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/friends$project__1_.coverage" NAME="project (1) Coverage Results" MODIFIED="1563817017979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
-    <SUITE FILE_PATH="coverage/friends$project_model.coverage" NAME="project_model Coverage Results" MODIFIED="1563865768378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
-    <SUITE FILE_PATH="coverage/friends$Unittests_in_project_py.coverage" NAME="Unittests in project.py Coverage Results" MODIFIED="1563847676252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
-    <SUITE FILE_PATH="coverage/friends$checker.coverage" NAME="checker Coverage Results" MODIFIED="1563787793450" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
+    <SUITE FILE_PATH="coverage/friends$project_model.coverage" NAME="project_model Coverage Results" MODIFIED="1563886568231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
+    <SUITE FILE_PATH="coverage/friends$Unittests_in_project_py.coverage" NAME="Unittests in project.py Coverage Results" MODIFIED="1563875389137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$Unittests_in_baseline_code_py.coverage" NAME="Unittests in baseline_code.py Coverage Results" MODIFIED="1563817151560" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
-    <SUITE FILE_PATH="coverage/friends$baseline_model.coverage" NAME="baseline_model Coverage Results" MODIFIED="1563862335819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
+    <SUITE FILE_PATH="coverage/friends$checker.coverage" NAME="checker Coverage Results" MODIFIED="1563877442610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
+    <SUITE FILE_PATH="coverage/friends$baseline_model.coverage" NAME="baseline_model Coverage Results" MODIFIED="1563878260399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$Class1.coverage" NAME="Class1 Coverage Results" MODIFIED="1563444738713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs/test_cases" />
     <SUITE FILE_PATH="coverage/friends$project.coverage" NAME="project Coverage Results" MODIFIED="1563453967114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/friends$checker__1_.coverage" NAME="checker (1) Coverage Results" MODIFIED="1563441974007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/safe program files" />
@@ -35,21 +61,9 @@
       <file leaf-file-name="project.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/programs/project.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="391" column="23" lean-forward="false" selection-start-line="391" selection-start-column="4" selection-end-line="391" selection-end-column="23" />
+            <state relative-caret-position="154">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="33" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="project_model.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/programs/project_model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="159" column="0" lean-forward="true" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -57,10 +71,22 @@
       <file leaf-file-name="baseline_model.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/programs/baseline_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+            <state relative-caret-position="-1286">
+              <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
               <folding>
-                <element signature="e#121#135#0" expanded="true" />
+                <element signature="e#117#138#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="project_model.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/programs/project_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="141">
+              <caret line="179" column="47" lean-forward="true" selection-start-line="179" selection-start-column="47" selection-end-line="179" selection-end-column="47" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -74,6 +100,11 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>stack</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -90,9 +121,9 @@
         <option value="$PROJECT_DIR$/programs/test_cases/Class2.py" />
         <option value="$PROJECT_DIR$/programs/test_cases/Class1.py" />
         <option value="$PROJECT_DIR$/output/column_train_category.csv" />
-        <option value="$PROJECT_DIR$/programs/checker.py" />
         <option value="$PROJECT_DIR$/programs/baseline_code.py" />
         <option value="$PROJECT_DIR$/programs/project.py" />
+        <option value="$PROJECT_DIR$/programs/checker.py" />
         <option value="$PROJECT_DIR$/programs/baseline_model.py" />
         <option value="$PROJECT_DIR$/programs/project_model.py" />
       </list>
@@ -156,6 +187,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="friends" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="friends" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="output" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -188,25 +233,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.project_model">
-    <configuration default="false" name="project (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/programs" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="friends" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/programs/project.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="Unittests in project.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -272,6 +298,25 @@
       <module name="friends" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/programs/project_model.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="checker" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/programs" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="friends" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/programs/checker.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -426,19 +471,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.project (1)" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in project.py" />
-      <item index="2" class="java.lang.String" itemvalue="Python.baseline_model" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in baseline_code.py" />
-      <item index="4" class="java.lang.String" itemvalue="Python.project_model" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in project.py" />
+      <item index="1" class="java.lang.String" itemvalue="Python.baseline_model" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in baseline_code.py" />
+      <item index="3" class="java.lang.String" itemvalue="Python.project_model" />
+      <item index="4" class="java.lang.String" itemvalue="Python.checker" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.project_model" />
         <item index="1" class="java.lang.String" itemvalue="Python.baseline_model" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in project.py" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in baseline_code.py" />
-        <item index="4" class="java.lang.String" itemvalue="Python.project (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.checker" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in project.py" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in baseline_code.py" />
       </list>
     </recent_temporary>
   </component>
@@ -457,50 +502,60 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 33m 58s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 30m 43s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 34m 57s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 32m 35s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 43m 57s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 34m 08s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 45m 15s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 37m 27s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 46m 08s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 38m 12s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 47m 56s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 41m 54s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 48m 33s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 45m 17s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 50m 35s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 46m 55s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 07h 51m 18s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 48m 20s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_py - 2019.07.23 at 08h 08m 02s.xml">
+    <history-entry file="Unittests_in_project_py - 2019.07.23 at 15h 49m 57s.xml">
       <configuration name="Unittests in project.py" configurationId="tests" />
     </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15833333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329653" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.66939443" sideWeight="0.5030303" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3633388" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.66939443" sideWeight="0.4969697" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5433715" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16287878" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3633388" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.66939443" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2621212" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5433715" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39770868" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -509,7 +564,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -744,42 +798,44 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/programs/checker.py">
+    <entry file="file://$PROJECT_DIR$/programs/baseline_code.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="40" column="22" lean-forward="true" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+        <state relative-caret-position="1672">
+          <caret line="83" column="22" lean-forward="true" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/programs/baseline_code.py">
+    <entry file="file://$PROJECT_DIR$/programs/checker.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="79" column="23" lean-forward="false" selection-start-line="79" selection-start-column="23" selection-end-line="79" selection-end-column="23" />
+        <state relative-caret-position="295">
+          <caret line="46" column="37" lean-forward="true" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/programs/project.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="391" column="23" lean-forward="false" selection-start-line="391" selection-start-column="4" selection-end-line="391" selection-end-column="23" />
+        <state relative-caret-position="154">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/programs/baseline_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        <state relative-caret-position="-1286">
+          <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
           <folding>
-            <element signature="e#121#135#0" expanded="true" />
+            <element signature="e#117#138#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/programs/project_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="159" column="0" lean-forward="true" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+        <state relative-caret-position="141">
+          <caret line="179" column="47" lean-forward="true" selection-start-line="179" selection-start-column="47" selection-end-line="179" selection-end-column="47" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

@@ -19,7 +19,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LinearRegression
 
 from sklearn.ensemble import GradientBoostingRegressor
-# from sklearn.svm import SVR
+from sklearn.svm import SVR
 from mlxtend.regressor import StackingCVRegressor
 from sklearn.linear_model import LinearRegression
 
@@ -27,8 +27,9 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
 from programs import project
+print("______________\nProject_model\n______________")
 print('finished stage : import')
-print("_____________\nbaseline_model\n______________")
+
 X, X_test = project.get_train_test_data()
 y = y_train = project.get_train_label()
 print('finished stage : input')
@@ -60,13 +61,13 @@ lightgbm = LGBMRegressor(objective='regression',
                                        verbose=-1,
                                        )
 print('finished stage : lightgbm')
-# xgboost = XGBRegressor(learning_rate=0.01,n_estimators=3460,
-#                                      max_depth=3, min_child_weight=0,
-#                                      gamma=0, subsample=0.7,
-#                                      colsample_bytree=0.7,
-#                                      objective='reg:linear', nthread=-1,
-#                                      scale_pos_weight=1, seed=27,
-#                                      reg_alpha=0.00006)
+xgboost = XGBRegressor(learning_rate=0.01,n_estimators=3460,
+                                      max_depth=3, min_child_weight=0,
+                                      gamma=0, subsample=0.7,
+                                      colsample_bytree=0.7,
+                                      objective='reg:linear', nthread=-1,
+                                      scale_pos_weight=1, seed=27,
+                                      reg_alpha=0.00006)
 
 # setup models hyperparameters using a pipline
 # The purpose of the pipeline is to assemble several steps that can be cross-validated together, while setting different parameters.
@@ -101,8 +102,8 @@ print('finished stage : stack_gen')
 models = {'Ridge': ridge,
           'Lasso': lasso,
           'ElasticNet': elasticnet,
-          'lightgbm': lightgbm}
-#           'xgboost': xgboost}
+          'lightgbm': lightgbm,
+          'xgboost': xgboost}
 print('finished stage : models')
 
 predictions = {}
@@ -129,8 +130,8 @@ print("ElasticNet score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 score = cv_rmse(lightgbm) #function call
 print("lightgbm score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 
-# score = cv_rmse(xgboost)
-# print("xgboost score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
+score = cv_rmse(xgboost)
+print("xgboost score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()))
 
 #Fit the training data X, y
 print('----START Fit----',datetime.now())
@@ -143,8 +144,8 @@ ridge_model = ridge.fit(X, y)
 print('lightgbm')
 lgb_model_full_data = lightgbm.fit(X, y)
 
-# print('xgboost')
-# xgb_model_full_data = xgboost.fit(X, y)
+print('xgboost')
+xgb_model_full_data = xgboost.fit(X, y)
 
 print('stack_gen')
 stack_gen_model = stack_gen.fit(np.array(X), np.array(y))
@@ -154,16 +155,37 @@ def blend_models_predict(X_l):
             (0.25 * lasso_model.predict(X_l)) +
             (0.2 * ridge_model.predict(X_l)) +
             (0.10 * lgb_model_full_data.predict(X_l)) +
-#            (0.1 * xgb_model_full_data.predict(X_l)) +
+            (0.1 * xgb_model_full_data.predict(X_l)) +
             (0.2 * stack_gen_model.predict(np.array(X_l))))
 
 
 print('RMSLE score on train data:')
 print(rmsle(y, blend_models_predict(X)))
 
-# q1 = submission['SalePrice'].quantile(0.0042)
-# q2 = submission['SalePrice'].quantile(0.99)
+print('Predict submission')
+'''
+submission = pd.read_csv("../input/sample_submission.csv")
+submission.iloc[:,1] = (np.expm1(blend_models_predict(X_test)))
+
+q1 = submission['SalePrice'].quantile(0.0042)
+q2 = submission['SalePrice'].quantile(0.99)
 # # Quantiles helping us get some extreme values for extremely low or high values
-# submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x > q1 else x*0.77)
-# submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x < q2 else x*1.1)
-submission.to_csv("../output/submission.csv", index=False)
+submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x > q1 else x*0.77)
+submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x < q2 else x*1.1)
+submission.to_csv("submission.csv", index=False)
+
+# predict
+submission = pd.read_csv("../input/sample_submission.csv")
+submission.iloc[:,1] = (np.expm1(blend_models_predict(X_test)))
+submission.to_csv('submission.csv',index=False)
+
+'''
+# my submission
+ensemble_predict = blend_models_predict(X_test)
+ensemble_predict = np.expm1(ensemble_predict)
+sub = pd.DataFrame()
+sub['Id'] = project.get_test_ID()
+sub['SalePrice'] = ensemble_predict
+sub.to_csv('submission.csv',index=False)
+
+print('finished stage : Submission')
