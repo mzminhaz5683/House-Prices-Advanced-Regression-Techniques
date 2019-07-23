@@ -14,8 +14,8 @@ from programs import checker # import local file
 #.....Importing & Checking Inputs.
 df_train = pd.read_csv('../input/train.csv')
 df_test = pd.read_csv('../input/test.csv')
-print("df_train set size(+ID):", df_train.shape) #1460 samples, 80 features +1(ID)
-print("df_test set size(+ID):", df_test.shape) # 1459 test cases, 79 features +1(ID)
+print("df_train input size(+ID):", df_train.shape) #1460 samples, 80 features +1(ID)
+print("df_test input size(+ID):", df_test.shape) # 1459 test cases, 79 features +1(ID)
 
 #.....Dropping 'Id' column since it's not a necessary item on prediction
 df_train_ID = df_train['Id']
@@ -46,12 +46,6 @@ hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
 #.........................................missing data observing.........................................
 ntrain = df_train.shape[0]
 y_train = df_train.SalePrice.values
-
-def get_train_label():
-    return y_train
-
-def get_test_ID():
-    return df_test_ID
 
 df_train.drop(['SalePrice'], axis = 1, inplace = True)
 all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
@@ -214,6 +208,7 @@ all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] +
                               all_data['EnclosedPorch'] + all_data['ScreenPorch'] +
                               all_data['WoodDeckSF'])
 
+#print(all_data.shape)
 ###########################################  Heat Map  ##################################################
 '''
 df_train_t = all_data[:ntrain] # create temporary df_train
@@ -239,8 +234,8 @@ df_train['SalePrice'] = y_train #adding 'SalePrice' column into df_train
 cName_train = df_train.head(0).T # get only column names and transposes(T) row into columns
 cName_train.to_csv('../output/column_name_df_train_v2.csv') # column names after handling missing data
 df_train.to_csv('../output/df_train_v2.csv')
-print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
-print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
+#print("df_train set size after handling missing data(-ID):", df_train.shape) # 1460 samples, 79 features
+#print("df_test set size after handling missing data(-ID):", df_test.shape) # 1459 samples, 78 features
 
 ##################################### 2. Out-liars Handling #############################################
 #.......................................2a numerical analyzing.......................................
@@ -358,36 +353,57 @@ df_train = df_train.drop(drop_index)
 
 
 ############################ 4. Converting categorical variable into dummy ###############################
-ntrain = df_train.shape[0]
-y_train = df_train.SalePrice.values
-df_train.drop(['SalePrice'], axis = 1, inplace = True)
-all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
+ntrain = df_train.shape[0] # load df_train size
+y_train = df_train.SalePrice.values # allocate SalePrice into y_train
+df_train.drop(['SalePrice'], axis = 1, inplace = True) # drop SalePrice
 
-all_data = pd.get_dummies(all_data) #?????????????????????????????????????????
-# Removes columns where the threshold of zero's is (> 99.95), means has only zero values
-overfit = []
-for i in all_data.columns:
-    counts = all_data[i].value_counts()
-    zeros = counts.iloc[0]
-    if zeros / len(all_data) * 100 > 99.95:
-        overfit.append(i)
+print("df_train final size:", df_train.shape) # 1460 samples, 79 features
+print("df_test final size:", df_test.shape) # 1459 samples, 78 features
 
-overfit = list(overfit)
-all_data.drop(overfit, axis=1)
 
+all_data = pd.concat((df_train, df_test)).reset_index(drop=True) #concat to make dummy
+all_data = pd.get_dummies(all_data) # dummy
 
 df_train = all_data[:ntrain]
 df_test = all_data[ntrain:]
-#df_train['SalePrice'] = y_train
-#df_train['Id'] = df_train_ID
-#df_test['Id'] = df_test_ID
+# Removes columns where the threshold of zero's is (> 99.95), means has only zero values
+overfit = []
+for i in df_train.columns:
+    counts = df_train[i].value_counts()
+    zeros = counts.iloc[0]
+    if zeros / len(df_train) * 100 > 99.95:
+        overfit.append(i)
+
+overfit = list(overfit)
+df_train = df_train.drop(overfit, axis=1).copy()
+df_test = df_test.drop(overfit, axis=1).copy()
+
+print('final shape (df_train, y_train, df_test): ',df_train.shape,y_train.shape,df_test.shape)
+# main shape (df_train, y_train, df_test):  (1448, 139) (1448,) (1459, 139)
+
+def get_train_label():
+    print("y_train of get_train_label():", y_train.shape)
+    return y_train
+
+def get_test_ID():
+    print("df_test_ID of get_test_ID():", df_test_ID.shape)  # 1460 samples
+    return df_test_ID
+
+def get_train_test_data():
+    print('final shape of get_train_test_data(): ', df_train.shape, y_train.shape, df_test.shape)
+    # main shape (df_train, y_train, df_test):  (1448, 139) (1448,) (1459, 139)
+    return df_train, df_test
+
+'''
+df_train['SalePrice'] = y_train
+df_train['Id'] = df_train_ID
+df_test['Id'] = df_test_ID
 #X = df_train.drop(overfit, axis=1).copy()
 #X_test = df_test.drop(overfit, axis=1).copy()
 
-print('\nAfter dummy')
-print("df_train set size:", df_train.shape) #1460 samples
-print("df_test set size:", df_test.shape) # 1459 df_test cases
+print('After dummy')
+print("df_train set size (+ID, +SalePrice):", df_train.shape) #1460 samples
+print("df_test set size (+ID):", df_test.shape) # 1459 df_test cases
 #df_train.to_csv('../output/processed_train.csv')
 #df_test.to_csv('../output/processed_test.csv')
-def get_train_test_data():
-    return df_train, df_test
+'''
