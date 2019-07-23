@@ -14,6 +14,7 @@
       <w>corrcoef</w>
       <w>corrmat</w>
       <w>duplx</w>
+      <w>elasticnet</w>
       <w>exter</w>
       <w>figsize</w>
       <w>fillna</w>
@@ -22,13 +23,17 @@
       <w>grvl</w>
       <w>heatmap</w>
       <w>homoscedasticity</w>
+      <w>lightgbm</w>
       <w>matl</w>
       <w>matplotlib</w>
       <w>ntest</w>
       <w>ntrain</w>
       <w>overfit</w>
+      <w>pred</w>
       <w>qual</w>
       <w>remod</w>
+      <w>rmse</w>
+      <w>rmsle</w>
       <w>seperate</w>
       <w>sewr</w>
       <w>sqfootage</w>

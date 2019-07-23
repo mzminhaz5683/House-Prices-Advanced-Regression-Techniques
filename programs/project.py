@@ -47,6 +47,14 @@ hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
 ntrain = df_train.shape[0]
 y_train = df_train.SalePrice.values
 
+def get_train_label():
+    print("y_train of get_train_label():", y_train.shape)
+    return y_train
+
+def get_test_ID():
+    print("df_test_ID of get_test_ID():", df_test_ID.shape)  # 1460 samples
+    return df_test_ID
+
 df_train.drop(['SalePrice'], axis = 1, inplace = True)
 all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
 
@@ -380,14 +388,6 @@ df_test = df_test.drop(overfit, axis=1).copy()
 
 print('final shape (df_train, y_train, df_test): ',df_train.shape,y_train.shape,df_test.shape)
 # main shape (df_train, y_train, df_test):  (1448, 139) (1448,) (1459, 139)
-
-def get_train_label():
-    print("y_train of get_train_label():", y_train.shape)
-    return y_train
-
-def get_test_ID():
-    print("df_test_ID of get_test_ID():", df_test_ID.shape)  # 1460 samples
-    return df_test_ID
 
 def get_train_test_data():
     print('final shape of get_train_test_data(): ', df_train.shape, y_train.shape, df_test.shape)
