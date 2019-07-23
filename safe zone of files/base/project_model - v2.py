@@ -7,7 +7,10 @@ from scipy.special import boxcox1p
 from scipy.stats import boxcox_normmax
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
+#import warnings
+#warnings.filterwarnings('ignore')
 
+from datetime import datetime
 from sklearn.preprocessing import RobustScaler
 from sklearn.model_selection import KFold, cross_val_score
 from sklearn.metrics import mean_squared_error , make_scorer
@@ -23,16 +26,15 @@ from sklearn.linear_model import LinearRegression
 from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
-# import local files
-from programs import project
-#from programs import baseline_code
+#from programs import project
+from programs import baseline_code
 print("______________\nProject_model\n______________")
 
-#X, X_test = baseline_code.get_train_test_data()
-#y = y_train = baseline_code.get_train_label()
+X, X_test = baseline_code.get_train_test_data()
+y = y_train = baseline_code.get_train_label()
 
-X, X_test = project.get_train_test_data()
-y = y_train = project.get_train_label()
+#X, X_test = project.get_train_test_data()
+#y = y_train = project.get_train_label()
 
 kfolds = KFold(n_splits=10, shuffle=True, random_state=42)
 
@@ -43,7 +45,9 @@ def rmsle(y, y_pred):
 
 # build our model scoring function
 def cv_rmse(model, X=X):
-    rmse = np.sqrt(-cross_val_score(model, X, y, scoring="neg_mean_squared_error", cv=kfolds))
+    rmse = np.sqrt(-cross_val_score(model, X, y,
+                                    scoring="neg_mean_squared_error",
+                                    cv=kfolds))
     return rmse
 
 # setup models
@@ -82,6 +86,8 @@ lightgbm = LGBMRegressor(objective='regression',
                          feature_fraction=0.2,
                          feature_fraction_seed=7,
                          verbose=-1,
+                         # min_data_in_leaf=2,
+                         # min_sum_hessian_in_leaf=11
                          )
 
 xgboost = XGBRegressor(learning_rate=0.01, n_estimators=3460,
@@ -92,6 +98,7 @@ xgboost = XGBRegressor(learning_rate=0.01, n_estimators=3460,
                        scale_pos_weight=1, seed=27,
                        reg_alpha=0.00006, random_state=42)
 
+# stack
 stack_gen = StackingCVRegressor(regressors=(ridge, lasso, elasticnet,
                                             gbr, xgboost, lightgbm),
                                 meta_regressor=xgboost,
@@ -100,41 +107,42 @@ stack_gen = StackingCVRegressor(regressors=(ridge, lasso, elasticnet,
 print('TEST score on CV')
 
 score = cv_rmse(ridge)
-print("Kernel Ridge score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("Kernel Ridge score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
 score = cv_rmse(lasso)
-print("Lasso score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("Lasso score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
 score = cv_rmse(elasticnet)
-print("ElasticNet score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("ElasticNet score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
 score = cv_rmse(svr)
-print("SVR score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("SVR score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
 score = cv_rmse(lightgbm)
-print("Lightgbm score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("Lightgbm score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
 score = cv_rmse(gbr)
-print("GradientBoosting score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("GradientBoosting score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
 score = cv_rmse(xgboost)
-print("Xgboost score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()) )
+print("Xgboost score: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), datetime.now(), )
 
-print('load fit : StackingCVRegressor')
+print('START Fit')
+print(datetime.now(), 'StackingCVRegressor')
 stack_gen_model = stack_gen.fit(np.array(X), np.array(y))
-print('load fit : elasticnet')
+print(datetime.now(), 'elasticnet')
 elastic_model_full_data = elasticnet.fit(X, y)
-print('load fit : lasso')
+print(datetime.now(), 'lasso')
 lasso_model_full_data = lasso.fit(X, y)
-print('load fit : ridge')
+print(datetime.now(), 'ridge')
 ridge_model_full_data = ridge.fit(X, y)
-print('load fit : svr')
+print(datetime.now(), 'svr')
 svr_model_full_data = svr.fit(X, y)
-print('load fit : GradientBoosting')
+print(datetime.now(), 'GradientBoosting')
 gbr_model_full_data = gbr.fit(X, y)
-print('load fit : xgboost')
+print(datetime.now(), 'xgboost')
 xgb_model_full_data = xgboost.fit(X, y)
-print('load fit : lightgbm')
+print(datetime.now(), 'lightgbm')
 lgb_model_full_data = lightgbm.fit(X, y)
 
 
@@ -148,11 +156,40 @@ def blend_models_predict(X):
             (0.1 * lgb_model_full_data.predict(X)) +
             (0.3 * stack_gen_model.predict(np.array(X))))
 
-print('RMSLE score on train data')
+
+print('RMSLE score on train data:')
 print(rmsle(y, blend_models_predict(X)))
 
-print('Predict submission')
+print('Predict submission', datetime.now(), )
 submission = pd.read_csv("../input/sample_submission.csv")
 submission.iloc[:, 1] = np.floor(np.expm1(blend_models_predict(X_test)))
 
+'''
+# this kernel gave a score 0.114
+# let's up it by mixing with the top kernels
+print('Blend with Top Kernals submissions', datetime.now(), )
+sub_1 = pd.read_csv('../input/top-10-0-10943-stacking-mice-and-brutal-force/House_Prices_submit.csv')
+sub_2 = pd.read_csv('../input/hybrid-svm-benchmark-approach-0-11180-lb-top-2/hybrid_solution.csv')
+sub_3 = pd.read_csv('../input/lasso-model-for-regression-problem/lasso_sol22_Median.csv')
+# sub_4 = pd.read_csv('../input/all-you-need-is-pca-lb-0-11421-top-4/submission.csv')
+# sub_5 = pd.read_csv('../input/house-prices-solution-0-107-lb/submission.csv') # fork my kernel again)
+
+submission.iloc[:, 1] = np.floor((0.25 * np.floor(np.expm1(blend_models_predict(X_sub)))) +
+                                 (0.25 * sub_1.iloc[:, 1]) +
+                                 (0.25 * sub_2.iloc[:, 1]) +
+                                 (0.25 * sub_3.iloc[:, 1])
+                                 # (0.15 * sub_4.iloc[:,1])  
+                                 # (0.1 * sub_5.iloc[:,1])
+                                 )
+
+# From https://www.kaggle.com/agehsbarg/top-10-0-10943-stacking-mice-and-brutal-force
+# Brutal approach to deal with predictions close to outer range 
+q1 = submission['SalePrice'].quantile(0.0042)
+q2 = submission['SalePrice'].quantile(0.99)
+
+submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x > q1 else x * 0.77)
+submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x < q2 else x * 1.1)
+# 
+'''
 submission.to_csv("p2_submission.csv", index=False)
+print('Save submission', datetime.now(), )

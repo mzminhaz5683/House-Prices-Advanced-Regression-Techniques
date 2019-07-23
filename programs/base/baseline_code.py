@@ -16,8 +16,8 @@ pd.set_option('display.float_format', lambda x: '{:.3f}'.format(x))
 sns.set_style('darkgrid')
 
 # reading data files
-train = pd.read_csv("train.csv")
-test = pd.read_csv("test.csv")
+train = pd.read_csv("../input/train.csv")
+test = pd.read_csv("../input/test.csv")
 
 print("training data shape")
 print(train.shape)

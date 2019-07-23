@@ -1,9 +1,6 @@
 # Description: Baseline code for the House Price Prediction Competition
 # File: model building
-
-# import necessary files
-import project
-#import baseline_code
+import baseline_code
 import xgboost as xgb
 import numpy as np
 import pandas as pd
@@ -17,55 +14,56 @@ from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
 
 from mlxtend.regressor import StackingCVRegressor
-
-
-print('stage : import')
+# import project (as like baseline_code)
+import project
+print("______________\nbaseline_model\n______________")
+print('finished stage : import')
 # loading test and test data
-#train, test = baseline_code.get_train_test_data()
-#y_label = baseline_code.get_train_label()
+train, test = baseline_code.get_train_test_data()
+y_label = baseline_code.get_train_label()
 
-train, test = project.get_train_test_data()
-y_label = project.get_train_label()
+#train, test = project.get_train_test_data()
+#y_label = project.get_train_label()
+print('finished stage : input')
 
-print('stage : input')
 kfolds = KFold(n_splits = 10, shuffle = True, random_state = 61)
-print('stage : KFold')
+print('finished stage : KFold')
 
 def rmsle(y, y_pred):
-    print('stage : rmsle')
+    print('in stage : rmsle')
     return np.sqrt(mean_squared_error(y, y_pred))
 
 def cv_rmse(model, X = train):
-    print('stage : cv_rmse')
+    print('in stage : cv_rmse')
     rmse = np.sqrt(-cross_val_score(model, X, y_label, scoring="neg_mean_squared_error", cv=kfolds))
     return (rmse)
 
 alp2 = [5e-05, 0.0001, 0.0002, 0.0003, 0.0004, 0.0005, 0.0006, 0.0007, 0.0008]
-print('stage : alp2')
+print('finished stage : alp2')
 # using linear regression
 lasso = make_pipeline(RobustScaler(), LassoCV(max_iter=1e7, alphas=alp2, random_state=42, cv=kfolds))
-print('stage : lasso')
+print('finished stage : lasso')
 # using support vector machine algorithm
 svr = make_pipeline(RobustScaler(), SVR(C= 20, epsilon= 0.008, gamma=0.0003,))
-print('stage : svr')
+print('finished stage : svr')
 
 # regrassor
 xgboost = xgb.XGBRegressor(learning_rate=0.01,n_estimators=3460, max_depth=3, min_child_weight=0,
                            gamma=0, subsample=0.7, colsample_bytree=0.7,
                            objective='reg:linear', nthread=-1,scale_pos_weight=1, seed=27,
                            reg_alpha=0.00006)
-print('stage : xgboost')
+print('finished stage : xgboost')
 
 # suing gradient boosting algorithm
 gbr = GradientBoostingRegressor(n_estimators=3000, learning_rate=0.05, max_depth=4, max_features='sqrt',
                                 min_samples_leaf=15, min_samples_split=10, loss='huber',
                                 random_state =42)
 
-print('stage : gbr')
+print('finished stage : gbr')
 # using ensemble
 stack_gen = StackingCVRegressor(regressors=(lasso, gbr, svr), meta_regressor=xgboost,
                                 use_features_in_secondary=True)
-print('stage : stack_gen')
+print('finished stage : stack_gen')
 
 # training our methods
 score = cv_rmse(lasso)
@@ -79,17 +77,18 @@ print("gbr: {:.4f} ({:.4f})\n".format(score.mean(), score.std()), )
 
 
 # fitting ensemble of algorithms
-print('stack_gen')
+print('finished stack_gen')
+
 stack_gen_model = stack_gen.fit(np.array(train), np.array(y_label))
 
 # predict
 ensemble_predict = stack_gen_model.predict(np.array(test))
 ensemble_predict = np.expm1(ensemble_predict)
-print('stage : ensemble_predict')
+print('finished stage : ensemble_predict')
 
 # my submission
 sub = pd.DataFrame()
-#sub['Id'] = baseline_code.get_test_ID()
-sub['Id'] = project.get_test_ID()
+sub['Id'] = baseline_code.get_test_ID()
+#sub['Id'] = project.get_test_ID()
 sub['SalePrice'] = ensemble_predict
-sub.to_csv('submission.csv',index=False)
+sub.to_csv('b_submission.csv',index=False)
