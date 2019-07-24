@@ -30,6 +30,7 @@ df_test.drop(['Id'], axis=1, inplace=True)
 # Deleting outliers
 df_train = df_train[df_train.GrLivArea < 4500]
 df_train.reset_index(drop=True, inplace=True)
+df_train["SalePrice"] = np.log1p(df_train["SalePrice"])
 ###########################################  Heat Map  ##################################################
 '''
 # Numerical values correlation matrix, to locate dependencies between different variables.
@@ -53,16 +54,16 @@ plt.show()
 #ntrain = df_train.shape[0]
 #y_train = df_train.SalePrice.values
 y_train = df_train.SalePrice.reset_index(drop=True)
-df_train.drop(['SalePrice'], axis = 1, inplace = True)
-all_data = pd.concat((df_train, df_test)).reset_index(drop=True)
-
+df_train = df_train.drop(['SalePrice'], axis = 1)
+all_data = pd.concat([df_train, df_test]).reset_index(drop=True)
+print(all_data.shape)
 #.........................................missing data observing.........................................
-
+'''
 total = all_data.isnull().sum().sort_values(ascending=False)
 percent = ((all_data.isnull().sum()/all_data.isnull().count()) * 100).sort_values(ascending=False)
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 missing_data.to_csv('../output/missing_all_data.csv')
-
+'''
 #.........................................dealing with missing data.....................................
 # (categorical) converting numerical variables that are actually categorical
 # 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd'
@@ -79,7 +80,7 @@ all_data['KitchenQual'] = all_data['KitchenQual'].fillna("TA")
 #'Utilities', 'ExterQual','Street', # categorical(numerical)
 #'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
 #'RoofStyle', 'Foundation','SaleCondition'
-common_vars = ['Exterior2nd', 'Exterior1st', 'SaleType']
+common_vars = [ 'Exterior1st', 'Exterior2nd', 'SaleType']
 for var in common_vars:
     all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
 
@@ -118,13 +119,13 @@ for i in all_data.columns:
 all_data.update(all_data[numerics].fillna(0))
 
 numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-numerics = []
+numerics2 = []
 for i in all_data.columns:
     if all_data[i].dtype in numeric_dtypes:
-        numerics.append(i)
+        numerics2.append(i)
 
 # checking skew
-skew_all_data = all_data[numerics].apply(lambda x: skew(x)).sort_values(ascending=False)
+skew_all_data = all_data[numerics2].apply(lambda x: skew(x)).sort_values(ascending=False)
 high_skew = skew_all_data[skew_all_data > 0.5]
 skew_index = high_skew.index
 
@@ -163,16 +164,18 @@ all_data['hasgarage'] = all_data['GarageArea'].apply(lambda x: 1 if x > 0 else 0
 all_data['hasbsmt'] = all_data['TotalBsmtSF'].apply(lambda x: 1 if x > 0 else 0)
 all_data['hasfireplace'] = all_data['Fireplaces'].apply(lambda x: 1 if x > 0 else 0)
 
-
+'''
 # get only column names and transposes(T) row into columns
 cName_all_data = all_data.head(0).T
 cName_all_data.to_csv('../output/column_name_all_data.csv')
 all_data.to_csv('../output/all_data.csv')
 
+
 df_train = all_data.iloc[:len(y_train), :]
 df_test = all_data.iloc[len(df_train):, :]
 df_train['SalePrice'] = y_train
 df_train['SalePrice'] = y_train
+'''
 
 
 
@@ -204,36 +207,38 @@ overfit.append('MSZoning_C (all)')
 
 X = X.drop(overfit, axis=1).copy()
 X_sub = X_sub.drop(overfit, axis=1).copy()
-'''
+
 ntrain = df_train.shape[0] # load df_train size
 y_train = df_train.SalePrice.reset_index(drop=True)
 df_train.drop(['SalePrice'], axis = 1, inplace = True) # drop SalePrice
 
 all_data = pd.concat((df_train, df_test)).reset_index(drop=True) #concat to make dummy
-all_data = pd.get_dummies(all_data).reset_index(drop=True) # dummy
+'''
+
+final_all_data = pd.get_dummies(all_data).reset_index(drop=True) # dummy
 
 #de-couple dummy data
-df_train = all_data.iloc[:len(y_train), :]
-df_test = all_data.iloc[len(df_train):, :]
+final_train = final_all_data.iloc[:len(y_train), :]
+final_test = final_all_data.iloc[len(final_train):, :]
 
 outliers = [30, 88, 462, 631, 1322]
-df_train = df_train.drop(df_train.index[outliers])
+final_train = final_train.drop(final_train.index[outliers])
 y_train = y_train.drop(y_train.index[outliers])
 
 # Removes columns where the threshold of zero's is (> 99.95), means has only zero values
 overfit = []
-for i in df_train.columns:
-    counts = df_train[i].value_counts()
+for i in final_train.columns:
+    counts = final_train[i].value_counts()
     zeros = counts.iloc[0]
-    if zeros / len(df_train) * 100 > 99.94:
+    if zeros / len(final_train) * 100 > 99.94:
         overfit.append(i)
 
 overfit = list(overfit)
 overfit.append('MSZoning_C (all)')
-df_train = df_train.drop(overfit, axis=1).copy()
-df_test = df_test.drop(overfit, axis=1).copy()
+final_train = final_train.drop(overfit, axis=1).copy()
+final_test = final_test.drop(overfit, axis=1).copy()
 
-print('final shape (df_train, y_train, df_test): ',df_train.shape,y_train.shape,df_test.shape)
+print('final shape (df_train, y_train, df_test): ',final_train.shape,y_train.shape,final_test.shape)
 
 #df_train.to_csv('../output/df_train.csv')
 #df_test.to_csv('../output/df_test.csv')
@@ -247,5 +252,5 @@ def get_test_ID():
     return df_test_ID
 
 def get_train_test_data():
-    print('final shape of get_train_test_data(): ', df_train.shape, y_train.shape, df_test.shape)
-    return df_train, df_test
+    print('final shape of get_train_test_data(): ', final_train.shape, y_train.shape, final_test.shape)
+    return final_train, final_test
