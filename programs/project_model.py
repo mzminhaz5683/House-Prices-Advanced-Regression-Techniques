@@ -24,16 +24,13 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
 # import local files
-#from programs import project
-from programs import baseline_code
+from programs import project_v4 as project_analyser
+output = 'project_v4'
 
 print("______________\nProject_model\n______________")
 
-X, X_test = baseline_code.get_train_test_data()
-y = y_train = baseline_code.get_train_label()
-
-#X, X_test = project.get_train_test_data()
-#y = y_train = project.get_train_label()
+X, X_test = project_analyser.get_train_test_data()
+y = y_train = project_analyser.get_train_label()
 
 kfolds = KFold(n_splits=10, shuffle=True, random_state=42)
 
@@ -156,4 +153,31 @@ print('Predict submission')
 submission = pd.read_csv("../input/sample_submission.csv")
 submission.iloc[:, 1] = np.floor(np.expm1(blend_models_predict(X_test)))
 
-submission.to_csv("../output/p_submission.csv", index=False)
+###################################### combine results ##############################################
+'''
+sub_1 = pd.read_csv('../input/top-10-0-10943-stacking-mice-and-brutal-force/House_Prices_submit.csv')
+sub_2 = pd.read_csv('../input/hybrid-svm-benchmark-approach-0-11180-lb-top-2/hybrid_solution.csv')
+sub_3 = pd.read_csv('../input/lasso-model-for-regression-problem/lasso_sol22_Median.csv')
+#sub_4 = pd.read_csv('../input/all-you-need-is-pca-lb-0-11421-top-4/submission.csv')
+# sub_5 = pd.read_csv('../input/house-prices-solution-0-107-lb/submission.csv') # fork my kernel again)
+
+submission.iloc[:,1] = np.floor((0.25 * np.floor(np.expm1(blend_models_predict(X_sub)))) + 
+                                (0.25 * sub_1.iloc[:,1]) + 
+                                (0.25 * sub_2.iloc[:,1]) + 
+                                (0.25 * sub_3.iloc[:,1]) 
+                                #(0.15 * sub_4.iloc[:,1])  
+                                #(0.1 * sub_5.iloc[:,1])
+                                )
+
+
+# From https://www.kaggle.com/agehsbarg/top-10-0-10943-stacking-mice-and-brutal-force
+# Brutal approach to deal with predictions close to outer range 
+q1 = submission['SalePrice'].quantile(0.0042)
+q2 = submission['SalePrice'].quantile(0.99)
+
+submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x > q1 else x*0.77)
+submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x < q2 else x*1.1)
+'''
+############################################# result ################################################
+
+submission.to_csv("../output/"+output+"_submission.csv", index=False)

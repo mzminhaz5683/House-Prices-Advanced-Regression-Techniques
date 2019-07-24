@@ -1,6 +1,5 @@
 # Description: Baseline code for the House Price Prediction Competition
 # File: model building
-import baseline_code
 import xgboost as xgb
 import numpy as np
 import pandas as pd
@@ -14,16 +13,14 @@ from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
 
 from mlxtend.regressor import StackingCVRegressor
-# import project (as like baseline_code)
-import project
+
+from programs import baseline_code as project_analyser
 print("______________\nbaseline_model\n______________")
 print('finished stage : import')
-# loading test and test data
-train, test = baseline_code.get_train_test_data()
-y_label = baseline_code.get_train_label()
 
-#train, test = project.get_train_test_data()
-#y_label = project.get_train_label()
+# loading test and test data
+train, test = project_analyser.get_train_test_data()
+y_label = project_analyser.get_train_label()
 print('finished stage : input')
 
 kfolds = KFold(n_splits = 10, shuffle = True, random_state = 61)
@@ -88,7 +85,6 @@ print('finished stage : ensemble_predict')
 
 # my submission
 sub = pd.DataFrame()
-sub['Id'] = baseline_code.get_test_ID()
-#sub['Id'] = project.get_test_ID()
+sub['Id'] = project_analyser.get_test_ID()
 sub['SalePrice'] = ensemble_predict
 sub.to_csv('../output/b_submission.csv',index=False)
