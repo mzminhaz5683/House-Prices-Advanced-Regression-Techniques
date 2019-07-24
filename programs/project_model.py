@@ -1,38 +1,48 @@
+# coding=utf-8
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-from scipy.stats import norm
-from scipy.special import boxcox1p
-from scipy.stats import boxcox_normmax
-from sklearn.preprocessing import StandardScaler
-from scipy import stats
+import warnings
+warnings.filterwarnings('ignore')
 
 from sklearn.preprocessing import RobustScaler
 from sklearn.model_selection import KFold, cross_val_score
-from sklearn.metrics import mean_squared_error , make_scorer
+from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import ElasticNetCV, LassoCV, RidgeCV
 from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import LinearRegression
 
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.svm import SVR
 from mlxtend.regressor import StackingCVRegressor
-from sklearn.linear_model import LinearRegression
 
 from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
 # import local files
+######################################### model controller ####################################
 from programs import project_v4 as project_analyser
 output = 'project_v4'
+file_formate = '.csv'
 
-print("______________\nProject_model\n______________")
+random_state = 42       # at least 42
+n_estimator = 3000     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
+# load submission templates
+templates_activator = 1
 
+sbmsn_tmplt = {0:[0.21, '0.11412_project_v4_without_cTemplete'],
+#               1:[0.29, '0.11452_project_v2'],
+#               2:[0.25, '0.11535_project_v4'],
+#               3:[0.20, '0.11811_baseline_code']
+              }
+
+###############################################################################################
+print("______________________________________\nProject_Model\n______________________________________")
+print("Model runs with "" {0} "" template(s)".format(len(sbmsn_tmplt) if templates_activator else 0))
+print("random_state = {0}, n_estimator = {1}\n".format(random_state, n_estimator))
+print("______________________________________")
 X, X_test = project_analyser.get_train_test_data()
 y = y_train = project_analyser.get_train_label()
 
-kfolds = KFold(n_splits=10, shuffle=True, random_state=42)
+kfolds = KFold(n_splits=10, shuffle=True, random_state=random_state)
 
 # rmsle
 def rmsle(y, y_pred):
@@ -51,28 +61,28 @@ e_alphas = [0.0001, 0.0002, 0.0003, 0.0004, 0.0005, 0.0006, 0.0007]
 e_l1ratio = [0.8, 0.85, 0.9, 0.95, 0.99, 1]
 
 ridge = make_pipeline(RobustScaler(),
-                      RidgeCV(alphas=alphas_alt, cv=kfolds, ))
+                      RidgeCV(alphas=alphas_alt, cv=kfolds))
 
 lasso = make_pipeline(RobustScaler(),
                       LassoCV(max_iter=1e7, alphas=alphas2,
-                              random_state=42, cv=kfolds))
+                              random_state=random_state, cv=kfolds))
 
 elasticnet = make_pipeline(RobustScaler(),
-                           ElasticNetCV(max_iter=1e7, alphas=e_alphas,
-                                        cv=kfolds, random_state=42, l1_ratio=e_l1ratio))
+                           ElasticNetCV(max_iter=1e7, alphas=e_alphas, cv=kfolds,
+                                        random_state=random_state, l1_ratio=e_l1ratio))
 
 svr = make_pipeline(RobustScaler(),
                     SVR(C=20, epsilon=0.008, gamma=0.0003, ))
 
-gbr = GradientBoostingRegressor(n_estimators=3000, learning_rate=0.05,
+gbr = GradientBoostingRegressor(n_estimators=n_estimator, learning_rate=0.05,
                                 max_depth=4, max_features='sqrt',
                                 min_samples_leaf=15, min_samples_split=10,
-                                loss='huber', random_state=42)
+                                loss='huber', random_state=random_state)
 
 lightgbm = LGBMRegressor(objective='regression',
                          num_leaves=4,
                          learning_rate=0.01,
-                         n_estimators=5000,
+                         n_estimators=n_estimator+2000,
                          max_bin=200,
                          bagging_fraction=0.75,
                          bagging_freq=5,
@@ -82,13 +92,13 @@ lightgbm = LGBMRegressor(objective='regression',
                          verbose=-1,
                          )
 
-xgboost = XGBRegressor(learning_rate=0.01, n_estimators=3460,
+xgboost = XGBRegressor(learning_rate=0.01, n_estimators=n_estimator+460,
                        max_depth=3, min_child_weight=0,
                        gamma=0, subsample=0.7,
                        colsample_bytree=0.7,
                        objective='reg:linear', nthread=-1,
                        scale_pos_weight=1, seed=27,
-                       reg_alpha=0.00006, random_state=42)
+                       reg_alpha=0.00006, random_state=random_state)
 
 stack_gen = StackingCVRegressor(regressors=(ridge, lasso, elasticnet,
                                             gbr, xgboost, lightgbm),
@@ -151,33 +161,31 @@ print(rmsle(y, blend_models_predict(X)))
 
 print('Predict submission')
 submission = pd.read_csv("../input/sample_submission.csv")
-submission.iloc[:, 1] = np.floor(np.expm1(blend_models_predict(X_test)))
+submission.iloc[:,1] = np.floor(np.expm1(blend_models_predict(X_test)))
 
-###################################### combine results ##############################################
-'''
-sub_1 = pd.read_csv('../input/top-10-0-10943-stacking-mice-and-brutal-force/House_Prices_submit.csv')
-sub_2 = pd.read_csv('../input/hybrid-svm-benchmark-approach-0-11180-lb-top-2/hybrid_solution.csv')
-sub_3 = pd.read_csv('../input/lasso-model-for-regression-problem/lasso_sol22_Median.csv')
-#sub_4 = pd.read_csv('../input/all-you-need-is-pca-lb-0-11421-top-4/submission.csv')
-# sub_5 = pd.read_csv('../input/house-prices-solution-0-107-lb/submission.csv') # fork my kernel again)
+temp = file_formate
+file_formate = "_r{0}_e{1}".format(random_state, n_estimator)+temp
+###################################### combine results #######################################
+if templates_activator:
+    lst = []
+    for i in range(0, len(sbmsn_tmplt)):
+        lst.append(pd.read_csv('../output/submission_template/'+sbmsn_tmplt[i][1]+'.csv'))
 
-submission.iloc[:,1] = np.floor((0.25 * np.floor(np.expm1(blend_models_predict(X_sub)))) + 
-                                (0.25 * sub_1.iloc[:,1]) + 
-                                (0.25 * sub_2.iloc[:,1]) + 
-                                (0.25 * sub_3.iloc[:,1]) 
-                                #(0.15 * sub_4.iloc[:,1])  
-                                #(0.1 * sub_5.iloc[:,1])
-                                )
-
-
-# From https://www.kaggle.com/agehsbarg/top-10-0-10943-stacking-mice-and-brutal-force
+    submission.iloc[:,1] = np.floor( (0.27 * np.floor(np.expm1(blend_models_predict(X_test))))+
+                                     sum((sbmsn_tmplt[i][0] * lst[i].iloc[:,1])
+                                         for i in range(0, len(sbmsn_tmplt))) )
+    temp = file_formate
+    file_formate = '_with_{0}_cTemplate'.format(len(sbmsn_tmplt))+temp
+else:
+    temp = file_formate
+    file_formate = '_without_cTemplete'+temp
+#################################### Brutal approach #########################################
 # Brutal approach to deal with predictions close to outer range 
 q1 = submission['SalePrice'].quantile(0.0042)
 q2 = submission['SalePrice'].quantile(0.99)
 
 submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x > q1 else x*0.77)
 submission['SalePrice'] = submission['SalePrice'].apply(lambda x: x if x < q2 else x*1.1)
-'''
-############################################# result ################################################
+############################################# result #########################################
 
-submission.to_csv("../output/"+output+"_submission.csv", index=False)
+submission.to_csv("../output/"+output+file_formate, index=False)
