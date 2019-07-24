@@ -23,8 +23,8 @@ from programs import project_v4 as project_analyser
 output = 'project_v4'
 file_formate = '.csv'
 
-random_state = 61       # at least 42 (61)
-n_estimator = 3000     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
+random_state = 35       # at least 42 (61)
+n_estimator = 2500     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
 # load submission templates
 templates_activator = 1
 
@@ -171,15 +171,14 @@ if templates_activator:
     for i in range(0, len(sbmsn_tmplt)):
         lst.append(pd.read_csv('../output/submission_template/'+sbmsn_tmplt[i]+'.csv'))
 
+
     dev = 1/(len(sbmsn_tmplt)+1)
-    '''
-    submission.iloc[:,1] = np.floor( (dev * np.floor(np.expm1(blend_models_predict(X_test))))+
-                                     sum((dev * lst[i].iloc[:,1])
-                                         for i in range(0, len(sbmsn_tmplt))) )
-    '''
     submission.iloc[:, 1] = np.floor( (dev * np.floor(np.expm1(blend_models_predict(X_test)))))
+
+
     for i in range(0, len(sbmsn_tmplt)):
         submission.iloc[:, 1] += np.floor(dev * lst[i].iloc[:,1])
+
 
     temp = file_formate
     file_formate = '_with_{0}_cTemplate'.format(len(sbmsn_tmplt))+temp
