@@ -17,28 +17,28 @@ from mlxtend.regressor import StackingCVRegressor
 from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 
-# import local files
+# import local files & performance parameters
 ######################################### model controller ####################################
 from programs import project_v4 as project_analyser
 output = 'project_v4'
 file_formate = '.csv'
 
-random_state = 42       # at least 42
+random_state = 61       # at least 42 (61)
 n_estimator = 3000     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
 # load submission templates
 templates_activator = 1
 
-sbmsn_tmplt = {0:[0.21, '0.11412_project_v4_without_cTemplete'],
-#               1:[0.29, '0.11452_project_v2'],
-#               2:[0.25, '0.11535_project_v4'],
-#               3:[0.20, '0.11811_baseline_code']
+sbmsn_tmplt = {0:'0.11412_project_v4_without_cTemplete',
+               1:'0.11452_project_v2',
+               2:'0.11533_project_v4_with_1_cTemplate_r42_e3000',
+#               3:'0.11560_project_v4_without_cTemplete_r61_e3000'
               }
 
 ###############################################################################################
-print("______________________________________\nProject_Model\n______________________________________")
+print("_________________________________________\n            Project_Model\n_________________________________________")
 print("Model runs with "" {0} "" template(s)".format(len(sbmsn_tmplt) if templates_activator else 0))
 print("random_state = {0}, n_estimator = {1}\n".format(random_state, n_estimator))
-print("______________________________________")
+print("_________________________________________")
 X, X_test = project_analyser.get_train_test_data()
 y = y_train = project_analyser.get_train_label()
 
@@ -169,11 +169,18 @@ file_formate = "_r{0}_e{1}".format(random_state, n_estimator)+temp
 if templates_activator:
     lst = []
     for i in range(0, len(sbmsn_tmplt)):
-        lst.append(pd.read_csv('../output/submission_template/'+sbmsn_tmplt[i][1]+'.csv'))
+        lst.append(pd.read_csv('../output/submission_template/'+sbmsn_tmplt[i]+'.csv'))
 
-    submission.iloc[:,1] = np.floor( (0.27 * np.floor(np.expm1(blend_models_predict(X_test))))+
-                                     sum((sbmsn_tmplt[i][0] * lst[i].iloc[:,1])
+    dev = 1/(len(sbmsn_tmplt)+1)
+    '''
+    submission.iloc[:,1] = np.floor( (dev * np.floor(np.expm1(blend_models_predict(X_test))))+
+                                     sum((dev * lst[i].iloc[:,1])
                                          for i in range(0, len(sbmsn_tmplt))) )
+    '''
+    submission.iloc[:, 1] = np.floor( (dev * np.floor(np.expm1(blend_models_predict(X_test)))))
+    for i in range(0, len(sbmsn_tmplt)):
+        submission.iloc[:, 1] += np.floor(dev * lst[i].iloc[:,1])
+
     temp = file_formate
     file_formate = '_with_{0}_cTemplate'.format(len(sbmsn_tmplt))+temp
 else:

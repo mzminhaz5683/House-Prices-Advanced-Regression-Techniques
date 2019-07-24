@@ -1,5 +1,7 @@
 # coding=utf-8
 import numpy as np
-lst = [10, 5, 20]
-x = (10 + sum((i*2 + i+10) for i in lst))
+lst = np.array([10, 5, 20])
+a = 1/7
+x = np.floor(a*lst)
+#x = np.floor(sum((a*i) for i in lst))
 print(x)
