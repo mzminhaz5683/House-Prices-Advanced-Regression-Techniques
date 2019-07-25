@@ -12,28 +12,29 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', lambda x: '{:.3f}'.format(x))
 
 # import local file
-from programs import checker
+from programs import checker_v2
+checker_v2.path = path = "../output/"
 ######################################### START ######################################################
 
-df_train = pd.read_csv('../input/train.csv')
-df_test = pd.read_csv('../input/test.csv')
+train = pd.read_csv('../input/train.csv')
+test = pd.read_csv('../input/test.csv')
 
-df_train_ID = df_train['Id']
-df_test_ID = df_test['Id']
+train_ID = train['Id']
+test_ID = test['Id']
 
 # Now drop the  'Id' colum since it's unnecessary for  the prediction process.
-df_train.drop(['Id'], axis=1, inplace=True)
-df_test.drop(['Id'], axis=1, inplace=True)
+train.drop(['Id'], axis=1, inplace=True)
+test.drop(['Id'], axis=1, inplace=True)
 
 # Deleting outliers
-#df_train = df_train[df_train.GrLivArea < 4500]
-#df_train.reset_index(drop=True, inplace=True)
-#df_train["SalePrice"] = np.log1p(df_train["SalePrice"])
+#train = train[train.GrLivArea < 4500]
+#train.reset_index(drop=True, inplace=True)
+#train["SalePrice"] = np.log1p(train["SalePrice"])
 ###########################################  Heat Map  ##################################################
 '''
 # Numerical values correlation matrix, to locate dependencies between different variables.
 # Complete numerical correlation matrix
-corrmat = df_train.corr()
+corrmat = train.corr()
 f, ax = plt.subplots(figsize=(20, 13))
 sns.heatmap(corrmat, vmax=1, square=True)
 plt.show()
@@ -41,26 +42,49 @@ plt.show()
 # Partial numerical correlation matrix (salePrice)
 corr_num = 15 #number of variables for heatmap
 cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
-corr_mat_sales = np.corrcoef(df_train[cols_corr].values.T)
+corr_mat_sales = np.corrcoef(train[cols_corr].values.T)
 f, ax = plt.subplots(figsize=(15, 11))
 hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
                  annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
 plt.show()
 '''
-###################################### 1. Data Handling ##################################################
+###################################### 1. Data Handling #######################################
 
-y_train = df_train.SalePrice.reset_index(drop=True)
-df_train = df_train.drop(['SalePrice'], axis = 1)
+y_train = train.SalePrice.reset_index(drop=True)
+df_train = train.drop(['SalePrice'], axis = 1)
+df_test = test
 all_data = pd.concat([df_train, df_test]).reset_index(drop=True)
+dtypes = all_data.dtypes
+all_data.to_csv(path+'all_data.csv')
+print('All data shape : ', all_data.shape)
 
-#.........................................missing data observing.........................................
+######################################## missing data ###########################################
+checker_v2.missing_data(all_data, 0)
+#..................................... Special Case (relation) ...................................
 
-total = all_data.isnull().sum().sort_values(ascending=False)
-percent = ((all_data.isnull().sum()/all_data.isnull().count()) * 100).sort_values(ascending=False)
-missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-missing_data.to_csv('../output/missing_all_data.csv')
+all_data.loc[954, 'KitchenAbvGr'] = all_data['KitchenAbvGr'].mode()[0]
+all_data.loc[2587, 'KitchenAbvGr'] = all_data['KitchenAbvGr'].mode()[0]
+all_data.loc[2859, 'KitchenAbvGr'] = all_data['KitchenAbvGr'].mode()[0]
 
-#.........................................dealing with missing data.....................................
+all_data.loc[688, 'MasVnrArea'] = all_data['MasVnrArea'].mean()
+all_data.loc[1241, 'MasVnrArea'] = all_data['MasVnrArea'].mean()
+all_data.loc[2319, 'MasVnrArea'] = all_data['MasVnrArea'].mean()
+all_data.loc[2610, 'MasVnrType'] = all_data['MasVnrType'].mode()[0]
+
+all_data.loc[873, 'MiscVal'] = all_data['MiscVal'].mean()
+all_data.loc[1200, 'MiscVal'] = all_data['MiscVal'].mean()
+all_data.loc[2431, 'MiscVal'] = all_data['MiscVal'].mean()
+
+all_data.loc[2418, 'PoolQC'] = 'Fa'
+all_data.loc[2501, 'PoolQC'] = 'Gd'
+all_data.loc[2597, 'PoolQC'] = 'Fa'
+
+group = ['MasVnrArea', 'MasVnrType']
+relation = all_data[all_data['MasVnrType'].isnull()]
+checker_v2.partial(group, relation)
+
+
+#.................................. Multi-level .................................................
 # (categorical) converting numerical variables that are actually categorical
 # 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd'
 cols = ['MSSubClass', 'YrSold', 'MoSold']
@@ -89,13 +113,15 @@ for col in common_vars:
     all_data[col] = all_data[col].fillna('None')
 
 #numerical 'NA' means 0
-for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
+common_vars = ['GarageYrBlt', 'GarageArea', 'GarageCars']
+for col in common_vars:
     all_data[col] = all_data[col].fillna(0)
 
 # 'NA'means most or recent common according to base on other special groups
 all_data['MSZoning'] = all_data.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
 all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
 
+checker_v2.missing_data(all_data, 0)
 ######################################## data classifying ############################################
 
 # Collecting all object type feature
@@ -208,8 +234,8 @@ def get_train_label():
     return y_train
 
 def get_test_ID():
-    print("df_test_ID of get_test_ID():", df_test_ID.shape)
-    return df_test_ID
+    print("df_test_ID of get_test_ID():", test_ID.shape)
+    return test_ID
 
 def get_train_test_data():
     print('final shape of get_train_test_data(): ', final_train.shape, y_train.shape, final_test.shape)

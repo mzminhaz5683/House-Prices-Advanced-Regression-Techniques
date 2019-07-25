@@ -1,0 +1,14 @@
+
+***KitchenAbvGr-KitchenQual
+
+LotArea-LotConfig-LotFrontage-LotShape
+
+MasVnrArea-MasVnrType
+
+MiscFeature-MiscVal
+
+MSZoning-MSSubClass
+
+PoolArea-PoolQC
+
+YearRemodAdd-YearBuilt
