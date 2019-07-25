@@ -1,161 +1,216 @@
-import numpy as np  # linear algebra
-import pandas as pd  #
-from datetime import datetime
-
-from scipy.stats import skew  # for some statistics
+import numpy as np # -----------------------linear algebra
+import pandas as pd # ----------------------data processing, CSV file I/O handler(e.g. pd.read_csv)
+import matplotlib.pyplot as plt # ----------data manipulation
+import seaborn as sns # --------------------data presentation
+from scipy.stats import skew  # ------------for some statistics
 from scipy.special import boxcox1p
 from scipy.stats import boxcox_normmax
-
-from sklearn.linear_model import ElasticNetCV, LassoCV, RidgeCV
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.svm import SVR
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import RobustScaler
-from sklearn.model_selection import KFold, cross_val_score
-from sklearn.metrics import mean_squared_error
-
-from mlxtend.regressor import StackingCVRegressor
-
-from xgboost import XGBRegressor
-from lightgbm import LGBMRegressor
 import warnings
 warnings.filterwarnings('ignore')
 
-train = pd.read_csv('../input/train.csv')
-test = pd.read_csv('../input/test.csv')
+#Limiting floats output to 3 decimal points
+pd.set_option('display.float_format', lambda x: '{:.3f}'.format(x))
 
-train_ID = train['Id']
-test_ID = test['Id']
+# import local file
+from programs import checker
+######################################### START ######################################################
+
+df_train = pd.read_csv('../input/train.csv')
+df_test = pd.read_csv('../input/test.csv')
+
+df_train_ID = df_train['Id']
+df_test_ID = df_test['Id']
+
 # Now drop the  'Id' colum since it's unnecessary for  the prediction process.
-train.drop(['Id'], axis=1, inplace=True)
-test.drop(['Id'], axis=1, inplace=True)
+df_train.drop(['Id'], axis=1, inplace=True)
+df_test.drop(['Id'], axis=1, inplace=True)
 
 # Deleting outliers
-train = train[train.GrLivArea < 4500]
-train.reset_index(drop=True, inplace=True)
+#df_train = df_train[df_train.GrLivArea < 4500]
+#df_train.reset_index(drop=True, inplace=True)
+#df_train["SalePrice"] = np.log1p(df_train["SalePrice"])
+###########################################  Heat Map  ##################################################
+'''
+# Numerical values correlation matrix, to locate dependencies between different variables.
+# Complete numerical correlation matrix
+corrmat = df_train.corr()
+f, ax = plt.subplots(figsize=(20, 13))
+sns.heatmap(corrmat, vmax=1, square=True)
+plt.show()
 
-# We use the numpy fuction log1p which  applies log(1+x) to all elements of the column
-train["SalePrice"] = np.log1p(train["SalePrice"])
-y = train.SalePrice.reset_index(drop=True)
-def get_train_label():
-    print("y_train of get_train_label():", y.shape)
-    return y
+# Partial numerical correlation matrix (salePrice)
+corr_num = 15 #number of variables for heatmap
+cols_corr = corrmat.nlargest(corr_num, 'SalePrice')['SalePrice'].index
+corr_mat_sales = np.corrcoef(df_train[cols_corr].values.T)
+f, ax = plt.subplots(figsize=(15, 11))
+hm = sns.heatmap(corr_mat_sales, cbar=True, annot=True, square=True, fmt='.2f',
+                 annot_kws={'size': 7}, yticklabels=cols_corr.values, xticklabels=cols_corr.values)
+plt.show()
+'''
+###################################### 1. Data Handling ##################################################
 
-def get_test_ID():
-    print("df_test_ID of get_test_ID():", test_ID.shape)  # 1460 samples
-    return test_ID
+y_train = df_train.SalePrice.reset_index(drop=True)
+df_train = df_train.drop(['SalePrice'], axis = 1)
+all_data = pd.concat([df_train, df_test]).reset_index(drop=True)
 
-train_features = train.drop(['SalePrice'], axis=1)
-test_features = test
+#.........................................missing data observing.........................................
 
-features = pd.concat([train_features, test_features]).reset_index(drop=True)
-print(features.shape)
-# Some of the non-numeric predictors are stored as numbers; we convert them into strings
-features['MSSubClass'] = features['MSSubClass'].apply(str)
-features['YrSold'] = features['YrSold'].astype(str)
-features['MoSold'] = features['MoSold'].astype(str)
+total = all_data.isnull().sum().sort_values(ascending=False)
+percent = ((all_data.isnull().sum()/all_data.isnull().count()) * 100).sort_values(ascending=False)
+missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+missing_data.to_csv('../output/missing_all_data.csv')
 
-features['Functional'] = features['Functional'].fillna('Typ')
-features['Electrical'] = features['Electrical'].fillna("SBrkr")
-features['KitchenQual'] = features['KitchenQual'].fillna("TA")
-features['Exterior1st'] = features['Exterior1st'].fillna(features['Exterior1st'].mode()[0])
-features['Exterior2nd'] = features['Exterior2nd'].fillna(features['Exterior2nd'].mode()[0])
-features['SaleType'] = features['SaleType'].fillna(features['SaleType'].mode()[0])
+#.........................................dealing with missing data.....................................
+# (categorical) converting numerical variables that are actually categorical
+# 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd'
+cols = ['MSSubClass', 'YrSold', 'MoSold']
+for var in cols:
+    all_data[var] = all_data[var].astype(str)
 
-features["PoolQC"] = features["PoolQC"].fillna("None")
+# 'NA' means Special value
+all_data['Functional'] = all_data['Functional'].fillna('Typ')
+all_data['Electrical'] = all_data['Electrical'].fillna("SBrkr")
+all_data['KitchenQual'] = all_data['KitchenQual'].fillna("TA")
 
+#'NA' means most frequest value
+#'Utilities', 'ExterQual','Street', # categorical(numerical)
+#'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
+#'RoofStyle', 'Foundation','SaleCondition'
+common_vars = [ 'Exterior1st', 'Exterior2nd', 'SaleType']
+for var in common_vars:
+    all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
+
+# categorical 'NA' means 'None'
+#'MiscFeature', 'MasVnrType', 'GarageType', 'Fence'
+common_vars = ['PoolQC',
+               'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond',
+               'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']
+for col in common_vars:
+    all_data[col] = all_data[col].fillna('None')
+
+#numerical 'NA' means 0
 for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
-    features[col] = features[col].fillna(0)
-for col in ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']:
-    features[col] = features[col].fillna('None')
-for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
-    features[col] = features[col].fillna('None')
+    all_data[col] = all_data[col].fillna(0)
 
-features['MSZoning'] = features.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
+# 'NA'means most or recent common according to base on other special groups
+all_data['MSZoning'] = all_data.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
+all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
 
+######################################## data classifying ############################################
+
+# Collecting all object type feature
 objects = []
-for i in features.columns:
-    if features[i].dtype == object:
+for i in all_data.columns:
+    if all_data[i].dtype == object:
         objects.append(i)
 
-features.update(features[objects].fillna('None'))
+all_data.update(all_data[objects].fillna('None'))
 
-features['LotFrontage'] = features.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
-
-# Filling in the rest of the NA's
-
+# Collectting all numeric type feature
 numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 numerics = []
-for i in features.columns:
-    if features[i].dtype in numeric_dtypes:
+for i in all_data.columns:
+    if all_data[i].dtype in numeric_dtypes:
         numerics.append(i)
-features.update(features[numerics].fillna(0))
+all_data.update(all_data[numerics].fillna(0))
 
 numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 numerics2 = []
-for i in features.columns:
-    if features[i].dtype in numeric_dtypes:
+for i in all_data.columns:
+    if all_data[i].dtype in numeric_dtypes:
         numerics2.append(i)
 
-skew_features = features[numerics2].apply(lambda x: skew(x)).sort_values(ascending=False)
-
-high_skew = skew_features[skew_features > 0.5]
+# checking skew
+skew_all_data = all_data[numerics2].apply(lambda x: skew(x)).sort_values(ascending=False)
+high_skew = skew_all_data[skew_all_data > 0.5]
 skew_index = high_skew.index
 
+# Applying boxcox_normmax on skews > 0.5
 for i in skew_index:
-    features[i] = boxcox1p(features[i], boxcox_normmax(features[i] + 1))
+    all_data[i] = boxcox1p(all_data[i], boxcox_normmax(all_data[i] + 1))
 
-features = features.drop(['Utilities', 'Street', 'PoolQC',], axis=1)
+################################# subtracting and adding new feature ################################
 
-features['YrBltAndRemod']=features['YearBuilt']+features['YearRemodAdd']
-features['TotalSF']=features['TotalBsmtSF'] + features['1stFlrSF'] + features['2ndFlrSF']
+# dropping too much missing data columns
+all_data = all_data.drop(['Utilities', 'Street', 'PoolQC',], axis=1)
 
-features['Total_sqr_footage'] = (features['BsmtFinSF1'] + features['BsmtFinSF2'] +
-                                 features['1stFlrSF'] + features['2ndFlrSF'])
+# YrBltAndRemod
+all_data['YrBltAndRemod']=all_data['YearBuilt']+all_data['YearRemodAdd']
 
-features['Total_Bathrooms'] = (features['FullBath'] + (0.5 * features['HalfBath']) +
-                               features['BsmtFullBath'] + (0.5 * features['BsmtHalfBath']))
+# TotalSF
+all_data['TotalSF']=all_data['TotalBsmtSF'] + all_data['1stFlrSF'] + all_data['2ndFlrSF']
 
-features['Total_porch_sf'] = (features['OpenPorchSF'] + features['3SsnPorch'] +
-                              features['EnclosedPorch'] + features['ScreenPorch'] +
-                              features['WoodDeckSF'])
+# Total_sqr_footage
+all_data['Total_sqr_footage'] = (all_data['BsmtFinSF1'] + all_data['BsmtFinSF2'] +
+                                 all_data['1stFlrSF'] + all_data['2ndFlrSF'])
 
-# simplified features
-features['haspool'] = features['PoolArea'].apply(lambda x: 1 if x > 0 else 0)
-features['has2ndfloor'] = features['2ndFlrSF'].apply(lambda x: 1 if x > 0 else 0)
-features['hasgarage'] = features['GarageArea'].apply(lambda x: 1 if x > 0 else 0)
-features['hasbsmt'] = features['TotalBsmtSF'].apply(lambda x: 1 if x > 0 else 0)
-features['hasfireplace'] = features['Fireplaces'].apply(lambda x: 1 if x > 0 else 0)
+# Total_sqr_footage
+all_data['Total_Bathrooms'] = (all_data['FullBath'] + (0.5 * all_data['HalfBath']) +
+                               all_data['BsmtFullBath'] + (0.5 * all_data['BsmtHalfBath']))
 
-print(features.shape)
-final_features = pd.get_dummies(features).reset_index(drop=True)
-print(final_features.shape)
+# Total_porch_sf
+all_data['Total_porch_sf'] = (all_data['OpenPorchSF'] + all_data['3SsnPorch'] +
+                              all_data['EnclosedPorch'] + all_data['ScreenPorch'] +
+                              all_data['WoodDeckSF'])
 
-X = final_features.iloc[:len(y), :]
-X_sub = final_features.iloc[len(X):, :]
+# new simplified feature
+all_data['haspool'] = all_data['PoolArea'].apply(lambda x: 1 if x > 0 else 0)
+all_data['has2ndfloor'] = all_data['2ndFlrSF'].apply(lambda x: 1 if x > 0 else 0)
+all_data['hasgarage'] = all_data['GarageArea'].apply(lambda x: 1 if x > 0 else 0)
+all_data['hasbsmt'] = all_data['TotalBsmtSF'].apply(lambda x: 1 if x > 0 else 0)
+all_data['hasfireplace'] = all_data['Fireplaces'].apply(lambda x: 1 if x > 0 else 0)
 
-print('X', X.shape, 'y', y.shape, 'X_sub', X_sub.shape)
+'''
+# get only column names and transposes(T) row into columns
+cName_all_data = all_data.head(0).T
+cName_all_data.to_csv('../output/column_name_all_data.csv')
+all_data.to_csv('../output/all_data.csv')
+
+
+df_train = all_data.iloc[:len(y_train), :]
+df_test = all_data.iloc[len(df_train):, :]
+df_train['SalePrice'] = y_train
+df_train['SalePrice'] = y_train
+'''
+
+
+
+#################################### creating dummy & de-couple all_data #############################
+
+final_all_data = pd.get_dummies(all_data).reset_index(drop=True) # dummy
+
+#de-couple dummy data
+final_train = final_all_data.iloc[:len(y_train), :]
+final_test = final_all_data.iloc[len(final_train):, :]
 
 outliers = [30, 88, 462, 631, 1322]
-X = X.drop(X.index[outliers])
-y = y.drop(y.index[outliers])
+final_train = final_train.drop(final_train.index[outliers])
+y_train = y_train.drop(y_train.index[outliers])
 
+# Removes columns where the threshold of zero's is (> 99.95), means has only zero values
 overfit = []
-for i in X.columns:
-    counts = X[i].value_counts()
+for i in final_train.columns:
+    counts = final_train[i].value_counts()
     zeros = counts.iloc[0]
-    if zeros / len(X) * 100 > 99.94:
+    if zeros / len(final_train) * 100 > 99.94:
         overfit.append(i)
 
 overfit = list(overfit)
 overfit.append('MSZoning_C (all)')
+final_train = final_train.drop(overfit, axis=1).copy()
+final_test = final_test.drop(overfit, axis=1).copy()
 
-X = X.drop(overfit, axis=1).copy()
-X_sub = X_sub.drop(overfit, axis=1).copy()
+print('final shape (df_train, y_train, df_test): ',final_train.shape,y_train.shape,final_test.shape)
+
+
+def get_train_label():
+    print("y_train of get_train_label():", y_train.shape)
+    return y_train
+
+def get_test_ID():
+    print("df_test_ID of get_test_ID():", df_test_ID.shape)
+    return df_test_ID
 
 def get_train_test_data():
-    print('final shape of get_train_test_data(): ', X.shape, y.shape, X_sub.shape)
-    # main shape (df_train, y_train, df_test):  (1448, 139) (1448,) (1459, 139)
-    return X, X_sub
-
-print('X', X.shape, 'y', y.shape, 'X_sub', X_sub.shape)
+    print('final shape of get_train_test_data(): ', final_train.shape, y_train.shape, final_test.shape)
+    return final_train, final_test

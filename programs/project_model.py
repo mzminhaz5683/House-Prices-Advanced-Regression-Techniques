@@ -23,10 +23,10 @@ from programs import project_v4 as project_analyser
 output = 'project_v4'
 file_formate = '.csv'
 
-random_state = 35       # at least 42 (61)
-n_estimator = 2500     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
+random_state = 42       # at least 42 (61)
+n_estimator = 3000     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
 # load submission templates
-templates_activator = 1
+templates_activator = 0
 
 sbmsn_tmplt = {0:'0.11412_project_v4_without_cTemplete',
                1:'0.11452_project_v2',

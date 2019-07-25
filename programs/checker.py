@@ -7,7 +7,7 @@ from scipy import stats  # scientific notation handler
 from sklearn.preprocessing import StandardScaler
 import warnings
 warnings.filterwarnings('ignore')
-#%matplotlib inline
+
 from programs import checker # import local file
 
 ########################################### Out-liars Handling ############################################
