@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77b9e6f4-a338-41b7-ab03-845504fcf342" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/input/data_description_v5_Updated.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/project_v4_without_cTemplete_r38_e3000.csv" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/checker_v2.py" afterPath="$PROJECT_DIR$/programs/checker_v2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output/missing_file.csv" afterPath="$PROJECT_DIR$/output/missing_file.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/output/partial.csv" afterPath="$PROJECT_DIR$/output/partial.csv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/programs/project_v2.py" afterPath="$PROJECT_DIR$/programs/project_v2.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,7 +18,7 @@
     <SUITE FILE_PATH="coverage/friends$project_model.coverage" NAME="project_model Coverage Results" MODIFIED="1564031006456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$Unittests_in_project_py.coverage" NAME="Unittests in project.py Coverage Results" MODIFIED="1563875389137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$Class1.coverage" NAME="Class1 Coverage Results" MODIFIED="1563444738713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs/test_cases" />
-    <SUITE FILE_PATH="coverage/friends$Unittests_in_project_v2_py.coverage" NAME="Unittests in project_v2.py Coverage Results" MODIFIED="1564061900415" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
+    <SUITE FILE_PATH="coverage/friends$Unittests_in_project_v2_py.coverage" NAME="Unittests in project_v2.py Coverage Results" MODIFIED="1564071360152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
     <SUITE FILE_PATH="coverage/friends$project.coverage" NAME="project Coverage Results" MODIFIED="1563453967114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/friends$checker__1_.coverage" NAME="checker (1) Coverage Results" MODIFIED="1563441974007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/safe program files" />
     <SUITE FILE_PATH="coverage/friends$Unittests_for_project_get_test_ID.coverage" NAME="Unittests for project.get_test_ID Coverage Results" MODIFIED="1563528694423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/programs" />
@@ -40,8 +39,8 @@
       <file leaf-file-name="project_v2.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/programs/project_v2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="118" column="0" lean-forward="true" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+            <state relative-caret-position="-202">
+              <caret line="205" column="3" lean-forward="false" selection-start-line="205" selection-start-column="3" selection-end-line="205" selection-end-column="3" />
               <folding>
                 <element signature="e#0#58#0" expanded="true" />
               </folding>
@@ -49,10 +48,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="project_model.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/programs/project_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="164" column="0" lean-forward="true" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="checker_v2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/programs/checker_v2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
+            <state relative-caret-position="242">
               <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
@@ -99,12 +108,12 @@
       <find>y</find>
       <find>X</find>
       <find>df_train</find>
-      <find>features</find>
       <find>all_data</find>
+      <find>features</find>
     </findStrings>
     <replaceStrings>
-      <replace>all_data</replace>
       <replace>file</replace>
+      <replace>all_data</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -538,34 +547,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 17m 30s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 21h 47m 48s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 21m 14s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 21h 48m 18s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 21m 45s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 21h 49m 17s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 24m 41s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 21h 50m 49s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 25m 59s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 21h 51m 13s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 26m 31s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 22h 12m 12s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 26m 47s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 22h 12m 57s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 29m 17s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 22h 14m 13s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 31m 51s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 22h 14m 59s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 19h 38m 25s.xml">
+    <history-entry file="Unittests_in_project_v2_py - 2019.07.25 at 22h 16m 05s.xml">
       <configuration name="Unittests in project_v2.py" configurationId="tests" />
     </history-entry>
   </component>
@@ -780,16 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/programs/project_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="27" column="27" lean-forward="true" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
-          <folding>
-            <element signature="e#15#34#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2017.1/system/python_stubs/-991083293/numpy/core/_multiarray_umath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -829,7 +828,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/programs/checker_v2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
+        <state relative-caret-position="242">
           <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding>
             <element signature="e#0#77#0" expanded="true" />
@@ -837,10 +836,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/programs/project_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="164" column="0" lean-forward="true" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/programs/project_v2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="118" column="0" lean-forward="true" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+        <state relative-caret-position="-202">
+          <caret line="205" column="3" lean-forward="false" selection-start-line="205" selection-start-column="3" selection-end-line="205" selection-end-column="3" />
           <folding>
             <element signature="e#0#58#0" expanded="true" />
           </folding>

@@ -79,10 +79,56 @@ all_data.loc[2418, 'PoolQC'] = 'Fa'
 all_data.loc[2501, 'PoolQC'] = 'Gd'
 all_data.loc[2597, 'PoolQC'] = 'Fa'
 
-group = ['MasVnrArea', 'MasVnrType']
-relation = all_data[all_data['MasVnrType'].isnull()]
-checker_v2.partial(group, relation)
+all_data.loc[2124, 'GarageYrBlt'] = all_data['GarageYrBlt'].median()
+all_data.loc[2574, 'GarageYrBlt'] = all_data['GarageYrBlt'].median()
 
+all_data.loc[2124, 'GarageFinish'] = all_data['GarageFinish'].mode()[0]
+all_data.loc[2574, 'GarageFinish'] = all_data['GarageFinish'].mode()[0]
+
+all_data.loc[2574, 'GarageCars'] = all_data['GarageCars'].median()
+
+all_data.loc[2124, 'GarageArea'] = all_data['GarageArea'].median()
+all_data.loc[2574, 'GarageArea'] = all_data['GarageArea'].median()
+
+all_data.loc[2124, 'GarageQual'] = all_data['GarageQual'].mode()[0]
+all_data.loc[2574, 'GarageQual'] = all_data['GarageQual'].mode()[0]
+
+all_data.loc[2124, 'GarageCond'] = all_data['GarageCond'].mode()[0]
+all_data.loc[2574, 'GarageCond'] = all_data['GarageCond'].mode()[0]
+
+#group = ['MasVnrArea', 'MasVnrType']
+#relation = all_data[all_data['MasVnrType'].isnull()]
+#checker_v2.partial(group, relation)
+
+bsmt = ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2', 'BsmtFinSF1',
+        'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF']
+
+#b_data = all_data[bsmt]
+#b_data_null = b_data[b_data.isnull().any(axis=1)]
+
+#group = b_data_null
+#relation = b_data_null[(b_data_null.isnull()).sum(axis=1) < 5]
+#checker_v2.partial(group, relation)
+
+all_data.loc[332, 'BsmtFinType2'] = 'ALQ'
+all_data.loc[947, 'BsmtExposure'] = 'No' 
+all_data.loc[1485, 'BsmtExposure'] = 'No'
+all_data.loc[2038, 'BsmtCond'] = 'TA'
+all_data.loc[2183, 'BsmtCond'] = 'TA'
+all_data.loc[2215, 'BsmtQual'] = 'Po'
+all_data.loc[2216, 'BsmtQual'] = 'Fa'
+all_data.loc[2346, 'BsmtExposure'] = 'No'
+all_data.loc[2522, 'BsmtCond'] = 'Gd'
+
+# fixing wrong data
+all_data.loc[2592, 'GarageYrBlt'] = 2007
+
+#group = ['YearBuilt', 'YearRemodAdd', 'GarageYrBlt', 'YrSold']
+#relation = all_data[all_data['YrSold'] > 2019]
+
+#group = ['MoSold']
+#relation = all_data[all_data['MoSold'] > 12]
+#checker_v2.partial(group, relation)
 
 #.................................. Multi-level .................................................
 # (categorical) converting numerical variables that are actually categorical
@@ -121,7 +167,6 @@ for col in common_vars:
 all_data['MSZoning'] = all_data.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
 all_data['LotFrontage'] = all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
 
-checker_v2.missing_data(all_data, 0)
 ######################################## data classifying ############################################
 
 # Collecting all object type feature
@@ -155,9 +200,33 @@ skew_index = high_skew.index
 for i in skew_index:
     all_data[i] = boxcox1p(all_data[i], boxcox_normmax(all_data[i] + 1))
 
-################################# subtracting and adding new feature ################################
+checker_v2.missing_data(all_data, 0)
 
-# dropping too much missing data columns
+################################# subtracting and adding new feature ################################
+'''
+#checking the classes each categorical feature use
+objects = []
+for i in all_data.columns:
+    if all_data[i].dtype == object:
+        objects.append(i)
+
+var_all_data = all_data[objects].apply(lambda x: len(np.unique(x))).sort_values(ascending=False)
+
+print('------------- count of use of each variable --------------')
+var_column = ['Neighborhood', 'MSSubClass', 'Exterior2nd', 'Exterior1st', 'MoSold', 'Condition1',
+              'SaleType', 'RoofMatl', 'HouseStyle', 'Condition2', 'GarageType', 'Functional',
+              'BsmtFinType1', 'BsmtFinType2', 'Heating', 'RoofStyle', 'Foundation',
+              'SaleCondition','BsmtQual', 'GarageQual', 'FireplaceQu', 'GarageCond', 'MSZoning',
+              'LotConfig', 'YrSold', 'MiscFeature', 'Fence', 'BldgType', 'HeatingQC',
+              'Electrical', 'ExterCond','BsmtExposure', 'BsmtCond', 'GarageFinish', 'MasVnrType',
+              'LotShape', 'LandContour','PoolQC', 'KitchenQual','ExterQual', 'Utilities',
+              'Alley', 'PavedDrive','LandSlope', 'CentralAir', 'Street']
+for i in var_column:
+    print(all_data[i].value_counts())
+    print('\n~~~~~~~~~~~~~~~~~~~~~')
+'''
+
+# dropping the columns which have a large amount of distance between it's value used amount
 all_data = all_data.drop(['Utilities', 'Street', 'PoolQC',], axis=1)
 
 # YrBltAndRemod
