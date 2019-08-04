@@ -10,6 +10,6 @@ A kaggle karnel : https://www.kaggle.com/alfredmaboa/advanced-regression-techniq
 
 Related karnel which we use to check for table instruction : https://www.kaggle.com/shaygu/house-prices-begginer-top-7 🔢
 
-For some issue all updated will be marge after 4 August, 2019</br>
+For some issues all update will be marged after 4 August, 2019</br>
 
 
