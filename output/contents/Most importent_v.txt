@@ -1,35 +1,46 @@
-OverallQual
-Total_SF ~~
-GrLivArea
-GarageCars
-Total_Bathrooms ~~
-GarageArea
-TotalBsmtSF
-1stFlrSF
-FullBath
-TotRmsAbvGrd
-YearBuilt		~	categorical
-GarageYrBlt		~	categorical
-YearRemodAdd 	~	categorical
-Fireplaces
-MasVnrArea
-BsmtFinSF1
-LotFrontage
-2ndFlrSF
-BsmtFullBath
-WoodDeckSF
-OpenPorchSF
+Still Not handle for null
+-------------------------
+'ExterQual','ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-OverallQual
-GarageCars
-Total_Bathrooms
-GarageArea
-FullBath
-TotRmsAbvGrd
-YearBuilt
-GarageYrBlt
-YearRemodAdd
-Fireplaces
-LotFrontage
-BsmtFullBath
+'RoofStyle', 'Foundation','SaleCondition'
+'MiscFeature', 'MasVnrType', 'Fence'
+
+
+------------------- out lairs : numeric ----------
+MasVnrArea > 1500 & SalePrice <300000
+BsmtFinSF1 > 5500 & SalePrice <200000
+BsmtFinSF2 > 1400 & SalePrice <300000
+
+* TotalBsmtSF > 6000 & SalePrice <200000
+
+* 1stFlrSF > 4500 & SalePrice <200000
+
+* GrLivArea > 4000 & SalePrice <300000
+--------------------------------------------------
+* TotalSF > 7500 & SalePrice <200000
+
+* Total_sqr_footage > 7500 & SalePrice <200000
+
+---------------- out lairs : object -------------
+MSSubClass 
+MSZoning & SalePrice > 350000
+street & SalePrice > 350000
+LotShape & SalePrice > 350000
+LandContour & SalePrice > 430000
+LotConfig & SalePrice > 430000
+LandSlope & SalePrice > 400000
+Neighborhood & SalePrice > 550000
+Condition1 & SalePrice > 380000
+Condition2 & SalePrice > 340000
+BldgType & SalePrice > 340000
+HouseStyle & SalePrice > 350000
+RoofStyle & SalePrice > 480000
+RoofMatl & SalePrice > 470000
+Exterior1st & SalePrice > 550000
+Exterior2nd & SalePrice > 550000
+MasVnrType & SalePrice > 480000
+ExterQual & SalePrice > 600000
+ExterCond & SalePrice > 340000
+Foundation & SalePrice > 400000
+BsmtQual & SalePrice > 550000
+BsmtCond & SalePrice > 550000

@@ -1,6 +1,4 @@
 
-***KitchenAbvGr-KitchenQual
-
 LotArea-LotConfig-LotFrontage-LotShape
 
 MasVnrArea-MasVnrType

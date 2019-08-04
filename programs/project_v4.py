@@ -1,18 +1,17 @@
-import numpy as np # -----------------------linear algebra
-import pandas as pd # ----------------------data processing, CSV file I/O handler(e.g. pd.read_csv)
-import matplotlib.pyplot as plt # ----------data manipulation
-import seaborn as sns # --------------------data presentation
-from scipy.stats import skew  # ------------for some statistics
+# coding=utf-8
+import warnings
+import numpy as np  # -----------------------linear algebra
+import pandas as pd  # ----------------------data processing, CSV file I/O handler(e.g. pd.read_csv)
 from scipy.special import boxcox1p
 from scipy.stats import boxcox_normmax
-import warnings
+from scipy.stats import skew  # ------------for some statistics
+
 warnings.filterwarnings('ignore')
 
 #Limiting floats output to 3 decimal points
 pd.set_option('display.float_format', lambda x: '{:.3f}'.format(x))
 
 # import local file
-from programs import checker
 ######################################### START ######################################################
 
 df_train = pd.read_csv('../input/train.csv')
