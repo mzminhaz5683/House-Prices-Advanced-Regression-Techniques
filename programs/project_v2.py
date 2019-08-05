@@ -31,7 +31,7 @@ check_outliars_numeric = 0
 check_outliars_objects = 0
 
 file_open_order = 'w'
-single_level_Data_Handling = 0
+single_level_Data_Handling = 1
 o2n_converter = 0
 multi_level_modified = 1
 normalization = 1
@@ -584,8 +584,8 @@ if normalization :
         # get only column names and transposes(T) row into columns
         numeric_data = all_data[numerics]
         cName_n_data = numeric_data.head(0).T
-        cName_n_data.to_csv(path + 'nnormalization_save_column_names.csv')
-        print('Numeric columns names saved at :' + path + 'nnormalization_save_column_names.csv')
+        cName_n_data.to_csv(path + 'normalization_save_column_names.csv')
+        print('Numeric columns names saved at :' + path + 'normalization_save_column_names.csv')
 
 
     for i in numerics:
