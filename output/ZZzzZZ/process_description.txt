@@ -1,0 +1,27 @@
+~~~~~~~~~~~~~~~~~~~~~~~ Model file data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kfolds = KFold(n_splits=10, shuffle=True, random_state=49)
+TEST score on CV
+_________________
+Kernel Ridge score: 0.1045 (0.0113) ~> 0.1138 (0.0154)
+Lasso score: 0.1046 (0.0103) ~> 0.1138 (0.0148)
+ElasticNet score: 0.1044 (0.0107) ~> 0.1138 (0.0148)
+SVR score: 0.1727 (0.0261) ~> 0.1776 (0.0177)
+Lightgbm score: 0.1067 (0.0152) ~> 0.1142 (0.0164)
+GradientBoosting score: 0.1076 (0.0152) ~> 0.1135 (0.0151)
+Xgboost score: 0.1059 (0.0154) ~> 0.1154 (0.0166)
+RMSLE score on train data : 0.05230460813122692 ~> 0.0576
+~~~~~~~~~~~~~~~~~~~~~~~ Project file data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------- Numerical_outliars : Top ---------------------
+drop_index = train[(train['TotalBsmtSF'] > 6000) & (train['SalePrice']<200000)].index
+drop_index = train[(train['1stFlrSF'] > 4500) & (train['SalePrice']<200000)].index
+drop_index = train[(train['GrLivArea'] > 4000) & (train['SalePrice'] < 300000)].index
+-----------------------------------------------------------------
+multi_level_modified : activeted
+'MSSubClass', 'YearBuilt' = fillna(all_data[var].mode()[0]
+'YrSold', 'MoSold' = fillna(0)
+cols = ['MSSubClass', 'YrSold', 'MoSold'] =  str
+all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])
+skew removed
+drop_columns = ['Utilities', 'Street', 'PoolQC']
+['YearBuilt', 'YearRemodAdd', 'YrBltAndRemod', 'GarageYrBlt'] = nmbr
+Normalization : activeted
