@@ -4,14 +4,11 @@ import pandas as pd # ------------------data processing, CSV file I/O handler(e.
 import matplotlib.pyplot as plt # ------data manipulation
 import seaborn as sns # ----------------data presentation
 
-from scipy.special import boxcox1p
-from scipy.stats import boxcox_normmax
-from scipy.stats import skew
 
 import warnings
 warnings.filterwarnings('ignore')
 
-#Limiting floats output to 3 decimal points
+#Limiting floats output to 1 decimal point(s) after dot(.)
 pd.set_option('display.float_format', lambda x: '{:.1f}'.format(x))
 '''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Raw : 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
 p_description = ''
@@ -31,10 +28,12 @@ check_outliars_numeric = 0
 check_outliars_objects = 0
 
 file_open_order = 'w'
-single_level_Data_Handling = 1
+single_level_Data_Handling = 0
+
 o2n_converter = 0
-multi_level_modified = 1
 normalization = 1
+
+SalePrice_log1p_top = 0
 ######################################## design #(40) + string + #(*) = 100 ######################
 
 
@@ -148,8 +147,10 @@ if check_outliars_objects:
 
 #checker_v2.general_distribution(df_train, 'SalePrice')
 #plt.show()
-#checker_v2.normalized_distribution(df_train, 'SalePrice')
-train["SalePrice"] = np.log1p(train["SalePrice"])
+if SalePrice_log1p_top:
+    p_description += 'SalePrice_log1p_top : activeted\n'
+    train["SalePrice"] = np.log1p(train["SalePrice"])
+#checker_v2.general_distribution(df_train, 'SalePrice')
 #plt.show()
 
 ########################## concatenation of train & test ################################
@@ -170,13 +171,15 @@ if save_all_data:
 
 print('____________________________________________________________________________________')
 print('all_data shape (Rows, Columns) & Columns-(ID, SalePrice): ', all_data.shape)
-######################################## missing data operation ##################################
+
+
+
+
+############################## missing data operation ##################################
 if missing_data:
     checker_v2.missing_data(all_data, 0) # checking missing data 1/0 for save as file or not
 
 '''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Raw : 3 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
-
-
 
 
 #......................... single level (Data Handling) .................................
@@ -271,162 +274,81 @@ if single_level_Data_Handling :
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Multi-level (Data Handling) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~ Multi-level (Data Handling) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Raw : 4 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
-if multi_level_modified == 0:
-    # (categorical) converting numerical variables that are actually categorical
-    # 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd'
-    cols = ['MSSubClass', 'YrSold', 'MoSold']
-    for var in cols:
-        all_data[var] = all_data[var].astype(str)
-    p_description += "cols = ['MSSubClass', 'YrSold', 'MoSold'] =  str\n"
 
-    # 'NA' means Special value
-    all_data['Functional'] = all_data['Functional'].fillna('Typ')
-    all_data['Electrical'] = all_data['Electrical'].fillna("SBrkr")
-    all_data['KitchenQual'] = all_data['KitchenQual'].fillna("TA")
+p_description += 'multi_level_Data_Handling : activeted\n'
+# 'NA' means Special value
+all_data['Functional'] = all_data['Functional'].fillna('Typ')
+all_data['Electrical'] = all_data['Electrical'].fillna("SBrkr")
+all_data['KitchenQual'] = all_data['KitchenQual'].fillna("TA")
+#------------------------------------------------------------------------------------
 
-    #'NA' means most frequest value
-    #'ExterQual', # categorical(numerical)
-    #'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
-    #'RoofStyle', 'Foundation','SaleCondition'
-    common_vars = [ 'Exterior1st', 'Exterior2nd', 'SaleType']#, 'MSSubClass', 'YearBuilt']
-    for var in common_vars:
-        all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
+#'NA' means most frequest value
+#'ExterQual', # categorical(numerical)
+#'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
+#'RoofStyle', 'Foundation','SaleCondition'
+common_vars = [ 'Exterior1st', 'Exterior2nd', 'SaleType', 'MSSubClass', 'YearBuilt']
+for var in common_vars:
+    all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
+p_description += "'MSSubClass', 'YearBuilt' = fillna(all_data[var].mode()[0]\n"
+#------------------------------------------------------------------------------------
 
-    #same as construction date if no remodeling or additions
-    #all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])
-    # categorical 'NA' means 'None'
-    #'MiscFeature', 'MasVnrType', 'Fence'
-    common_vars = ['PoolQC',
-                   'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond',
-                   'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']
-    for col in common_vars:
-        all_data[col] = all_data[col].fillna('None')
+# categorical 'NA' means 'None'
+#'MiscFeature', 'MasVnrType', 'Fence'
+common_vars = ['PoolQC',
+               'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond',
+               'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']
+for col in common_vars:
+    all_data[col] = all_data[col].fillna('None')
+#------------------------------------------------------------------------------------
 
-    #numerical 'NA' means 0
-    common_vars = ['GarageYrBlt', 'GarageArea', 'GarageCars']
-    for col in common_vars:
-        all_data[col] = all_data[col].fillna(0)
+#numerical 'NA' means 0
+common_vars = ['GarageYrBlt', 'GarageArea', 'GarageCars', 'YrSold', 'MoSold']
+for col in common_vars:
+    all_data[col] = all_data[col].fillna(0)
+p_description += "'YrSold', 'MoSold' = fillna(0)\n"
+#------------------------------------------------------------------------------------
 
-    # 'NA'means most or recent common according to base on other special groups
-    all_data['MSZoning'] = all_data.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
-    all_data['LotFrontage'] = np.floor(all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median())))
+# (categorical) converting numerical variables that are actually categorical
+# 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd'
+cols = ['MSSubClass', 'YrSold', 'MoSold']
+for var in cols:
+    all_data[var] = all_data[var].astype(str)
+p_description += "cols = ['MSSubClass', 'YrSold', 'MoSold'] =  str\n"
+#-------------------------------------------------------------------------------------
 
-    #same as construction date if no remodeling or additions
-    all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])
-    p_description += "all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])\n"
+# 'NA'means most or recent common according to base on other special groups
+all_data['MSZoning'] = all_data.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
+all_data['LotFrontage'] = np.floor(all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median())))
 
-    # Collecting all object type feature and handling multi level null values
-    objects = []
-    for i in all_data.columns:
-        if all_data[i].dtype == object:
-            objects.append(i)
+#same as construction date if no remodeling or additions
+all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])
+p_description += "all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])\n"
+#------------------------------------------------------------------------------------
 
-    all_data.update(all_data[objects].fillna('None'))
+# Collecting all object type feature and handling multi level null values
+objects = []
+for i in all_data.columns:
+    if all_data[i].dtype == object:
+        objects.append(i)
 
-    # Collectting all numeric type feature and handling multi level null values
-    numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-    numerics = []
-    for i in all_data.columns:
-        if all_data[i].dtype in numeric_dtypes:
-            numerics.append(i)
-    all_data.update(all_data[numerics].fillna(0))
+all_data.update(all_data[objects].fillna('None'))
+#------------------------------------------------------------------------------------
 
-    if 0:
-        numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-        numerics2 = []
-        for i in all_data.columns:
-            if all_data[i].dtype in numeric_dtypes:
-                numerics2.append(i)
+# Collectting all numeric type feature and handling multi level null values
+numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+numerics = []
+for i in all_data.columns:
+    if all_data[i].dtype in numeric_dtypes:
+        numerics.append(i)
+all_data.update(all_data[numerics].fillna(0))
 
-        # checking skew
-        skew_all_data = all_data[numerics2].apply(lambda x: skew(x)).sort_values(ascending=False)
-        high_skew = skew_all_data[skew_all_data > 0.5]
-        skew_index = high_skew.index
-
-        for i in skew_index:
-            all_data[i] = boxcox1p(all_data[i], boxcox_normmax(all_data[i] + 1))
-    else:
-        p_description += 'skew removed\n'
-
-'''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End Raw : 4 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
-
-# ///////////////////////////////////// or //////////////////////////////////////////////
-
-if multi_level_modified:
-    p_description += 'multi_level_modified : activeted\n'
-    # 'NA' means Special value
-    all_data['Functional'] = all_data['Functional'].fillna('Typ')
-    all_data['Electrical'] = all_data['Electrical'].fillna("SBrkr")
-    all_data['KitchenQual'] = all_data['KitchenQual'].fillna("TA")
-    #------------------------------------------------------------------------------------
-
-    #'NA' means most frequest value
-    #'ExterQual', # categorical(numerical)
-    #'ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
-    #'RoofStyle', 'Foundation','SaleCondition'
-    common_vars = [ 'Exterior1st', 'Exterior2nd', 'SaleType', 'MSSubClass', 'YearBuilt']
-    for var in common_vars:
-        all_data[var] = all_data[var].fillna(all_data[var].mode()[0])
-    p_description += "'MSSubClass', 'YearBuilt' = fillna(all_data[var].mode()[0]\n"
-    #------------------------------------------------------------------------------------
-
-    # categorical 'NA' means 'None'
-    #'MiscFeature', 'MasVnrType', 'Fence'
-    common_vars = ['PoolQC',
-                   'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond',
-                   'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']
-    for col in common_vars:
-        all_data[col] = all_data[col].fillna('None')
-    #------------------------------------------------------------------------------------
-
-    #numerical 'NA' means 0
-    common_vars = ['GarageYrBlt', 'GarageArea', 'GarageCars', 'YrSold', 'MoSold']
-    for col in common_vars:
-        all_data[col] = all_data[col].fillna(0)
-    p_description += "'YrSold', 'MoSold' = fillna(0)\n"
-    #------------------------------------------------------------------------------------
-
-    # (categorical) converting numerical variables that are actually categorical
-    # 'GarageYrBlt', 'YearBuilt', 'YearRemodAdd'
-    cols = ['MSSubClass', 'YrSold', 'MoSold']
-    for var in cols:
-        all_data[var] = all_data[var].astype(str)
-    p_description += "cols = ['MSSubClass', 'YrSold', 'MoSold'] =  str\n"
-    #-------------------------------------------------------------------------------------
-
-    # 'NA'means most or recent common according to base on other special groups
-    all_data['MSZoning'] = all_data.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
-    all_data['LotFrontage'] = np.floor(all_data.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median())))
-
-    #same as construction date if no remodeling or additions
-    all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])
-    p_description += "all_data['YearRemodAdd'] = all_data['YearRemodAdd'].fillna(all_data['YearBuilt'])\n"
-    #------------------------------------------------------------------------------------
-
-    # Collecting all object type feature and handling multi level null values
-    objects = []
-    for i in all_data.columns:
-        if all_data[i].dtype == object:
-            objects.append(i)
-
-    all_data.update(all_data[objects].fillna('None'))
-    #------------------------------------------------------------------------------------
-
-    # Collectting all numeric type feature and handling multi level null values
-    numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-    numerics = []
-    for i in all_data.columns:
-        if all_data[i].dtype in numeric_dtypes:
-            numerics.append(i)
-    all_data.update(all_data[numerics].fillna(0))
-
-    p_description += 'skew removed\n'
+p_description += 'skew removed\n'
 
 
 
-########################## Column dron & each column's value count ###############################
+########################## Column drop & each column's value count ###############################
 if column_value_use_counter:
     print('------------- count of use of each variable --------------')
     objects = []
@@ -455,7 +377,7 @@ if missing_data:
 
 if o2n_converter:
     p_description += 'object to numeric converter : activeted\n'
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  fillna(0)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  fillna(0)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # creating a set of all categorical(Ordinal) variables with a specific value to the characters
     dic = {'Grvl': 3, 'Pave': 6, 'NA': 0, 'None' : 0}
     all_data['Alley'] = checker_v2.data_converter(dic, all_data, 'Alley')
@@ -489,7 +411,7 @@ if o2n_converter:
 
 
 
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!
     dic = {'A': 2, 'C (all)': 3, 'FV': 1, 'I': 4, 'RH': 9, 'RL': 5, 'RP': 6, 'RM': 8}
     all_data['MSZoning'] = checker_v2.data_converter(dic, all_data, 'MSZoning')
 
@@ -567,7 +489,7 @@ p_description += "['YearBuilt', 'YearRemodAdd', 'YrBltAndRemod', 'GarageYrBlt'] 
 
 
 
-######################################## 3. Normalization handling ###############################
+############################### 3. Normalization handling ###############################
 if normalization :
     p_description += 'Normalization : activeted\n'
     print('-------------------- Normalization ---------------------\n')
@@ -580,6 +502,8 @@ if normalization :
     else:
         numerics = ['TotalSF', 'GrLivArea', 'TotalBsmtSF', '1stFlrSF', 'MasVnrArea']
 
+
+
     if save_column_name:
         # get only column names and transposes(T) row into columns
         numeric_data = all_data[numerics]
@@ -587,6 +511,9 @@ if normalization :
         cName_n_data.to_csv(path + 'normalization_save_column_names.csv')
         print('Numeric columns names saved at :' + path + 'normalization_save_column_names.csv')
 
+    if SalePrice_log1p_top == 0:
+        p_description += 'SalePrice_log1p_top : disabled\n'
+        y_train = np.log1p(y_train)
 
     for i in numerics:
         if 1:
