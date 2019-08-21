@@ -72,14 +72,20 @@ if hit_map:
                      annot_kws={'size': 7}, yticklabels=cols_corr.values,
                      xticklabels=cols_corr.values)
     plt.show()
+
+
+
 ######################################## 1. Data Handling #########################################
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if 1:
     p_description += 'SalePrice_log1p : Top\n'
     train['SalePrice'] = np.log1p(train['SalePrice'])
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-######################################## 2. Out-liars Handling ##################################
-#.......................................2a numerical analyzing...................................
+
+
+
+############################## 2. Out-liars Handling ##################################
+#..............................2a numerical analyzing...................................
 
 p_description += '---------------- Numerical_outliars : Top ---------------------\n'
 if check_outliars_numeric:
@@ -147,6 +153,7 @@ if check_outliars_objects:
         for i in objects:
             checker_v2.categorical_relationship(train, i)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 ########################## concatenation of train & test ################################
@@ -308,6 +315,7 @@ p_description += "common_vars += c2n &\n" \
                  "'MSSubClass', 'YearBuilt' = fillna(all_data[var].mode()[0])\n"
 #------------------------------------------------------------------------------------
 
+
 # categorical( = need to be numerical)
 common_vars = ['Alley','BsmtQual','BsmtCond','BsmtExposure',
                'BsmtFinType1','BsmtFinType2','FireplaceQu','GarageType',
@@ -355,6 +363,8 @@ for i in all_data.columns:
 
 all_data.update(all_data[numerics].fillna(0))
 
+
+
 ####################### conversion of data-type ####################################
 
 # (categorical) converting numerical variables that are actually categorical
@@ -392,8 +402,9 @@ print('Dropping columns : ', drop_columns)
 all_data = all_data.drop([i for i in drop_columns], axis=1)
 p_description += "drop_columns = {0}\n".format(drop_columns)
 
-############################## adding new feature ######################################
 
+
+############################## adding new feature ######################################
 # YrBltAndRemod
 all_data['YrBltAndRemod']=all_data['YearBuilt']+all_data['YearRemodAdd']
 
@@ -426,6 +437,9 @@ p_description += "['YearBuilt', 'YearRemodAdd', 'YrBltAndRemod', 'GarageYrBlt'] 
 if missing_data:
     checker_v2.missing_data(all_data, 0) # checking missing data 1/0 for save as file or not
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
 ####################### skewed & log1p on numerical features ###########################################
 
 '''Extract numeric variables merged data.'''
@@ -468,7 +482,7 @@ df_merged_cat = all_data.select_dtypes(include = ['object']).astype('category')
 
 if o2n_converter:
     p_description += 'object to numeric converter : activeted\n'
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  fillna(0)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!  fillna(0)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # creating a set of all categorical(Ordinal) variables with a specific value to the characters
     dic = {'Grvl': 3, 'Pave': 6, 'NA': 0, 'None' : 0}
     df_merged_cat['Alley'] = checker_v2.data_converter(dic, df_merged_cat, 'Alley')
@@ -502,7 +516,7 @@ if o2n_converter:
 
 
 
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!   mod()[0]   !!!!!!!!!!!!!!!!!!!!!!!!!!
     dic = {'A': 2, 'C (all)': 3, 'FV': 1, 'I': 4, 'RH': 9, 'RL': 5, 'RP': 6, 'RM': 8}
     df_merged_cat['MSZoning'] = checker_v2.data_converter(dic, df_merged_cat, 'MSZoning')
 
@@ -541,7 +555,7 @@ if o2n_converter:
 
     dic = {'Normal': 6, 'Abnorml': 5, 'AdjLand': 4, 'Alloca': 3, 'Family': 2, 'Partial': 1}
     df_merged_cat['SaleCondition'] = checker_v2.data_converter(dic, df_merged_cat, 'SaleCondition')
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
     '''All the encodeded variables have int64 dtype except OverallQual and OverallCond. So convert them back into int64.'''
@@ -567,7 +581,6 @@ else:
 
 
 ############################# join numeric & categoric #############################
-
 '''Finally join processed categorical and numerical variables'''
 all_data = pd.concat([df_merged_num_scaled, df_merged_encoded], axis=1)
 
@@ -606,8 +619,6 @@ if hit_map:
 
 
 
-
-
 #################################### creating dummy & de-couple all_data #########################
 y_train = df_train.SalePrice.reset_index(drop=True)
 final_train = df_train.drop(['SalePrice'], axis = 1)
@@ -621,8 +632,6 @@ for i in final_train.columns:
         overfit.append(i)
 
 overfit = list(overfit)
-#if o2n_converter == 0:
-#    overfit.append('MSZoning_C (all)')
 
 print('overfit : ', overfit)
 final_train = final_train.drop(overfit, axis=1).copy()
