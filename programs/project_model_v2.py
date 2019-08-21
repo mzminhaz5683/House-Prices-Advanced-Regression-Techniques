@@ -38,6 +38,7 @@ file_formate = '_m2_'+counter+'.csv'
 
 random_state = 42       # at least 42 (61)
 n_estimator = 3000     # at least 3000 (=gbr, +2000 =lightgbm, +460 =xgboost)
+
 # load submission templates
 templates_activator = 0
 

@@ -34,14 +34,14 @@ LotArea: Lot size in square feet
 
 Street: Type of road access to property
 
-       Grvl 	7	Gravel
+       Grvl 	       7	Gravel
        Pave		9	Paved
        	
 Alley: Type of alley access to property
 
        Grvl		3	Gravel
        Pave		6	Paved
-       NA 	    0	No alley access
+       NA 	       0	No alley access
 		
 LotShape: General shape of property
 
@@ -59,15 +59,15 @@ LandContour: Flatness of the property
 		
 Utilities: Type of utilities available
 		
-       AllPub	9	All public Utilities (E,G,W,& S)	
-       NoSewr	8	Electricity, Gas, and Water (Septic Tank)
-       NoSeWa	7	Electricity and Gas Only
-       ELO		5	Electricity only	
+       AllPub	       9	All public Utilities (E,G,W,& S)	
+       NoSewr	       8	Electricity, Gas, and Water (Septic Tank)
+       NoSeWa	       7	Electricity and Gas Only
+       ELO	       5	Electricity only	
 	
 LotConfig: Lot configuration
 
-       Inside	2	Inside lot
-       Corner	4	Corner lot
+       Inside 	2	Inside lot
+       Corner 	4	Corner lot
        CulDSac	5	Cul-de-sac
        FR2		7	Frontage on 2 sides of property
        FR3		9	Frontage on 3 sides of property
@@ -133,11 +133,11 @@ Condition2: Proximity to various conditions (if more than one is present)
 BldgType: Type of dwelling
 		
        1Fam		2	Single-family Detached	
-       2fmCon	4	Two-family Conversion; originally built as one-family dwelling
-       Duplex	5	Duplex
-       Twnhs	7	Townhouse End Unit
-       TwnhsE 7      Townhouse End Unit
-       TwnhsI	9	Townhouse Inside Unit
+       2fmCon 	4	Two-family Conversion; originally built as one-family dwelling
+       Duplex	       5	Duplex
+       Twnhs	       7	Townhouse End Unit
+       TwnhsE 	7      Townhouse End Unit
+       TwnhsI 	9	Townhouse Inside Unit
 	
 HouseStyle: Style of dwelling
 	
@@ -183,7 +183,7 @@ YearRemodAdd: Remodel date (same as construction date if no remodeling or additi
 RoofStyle: Type of roof
 
        Flat		6	Flat
-       Gable	5	Gable
+       Gable	       5	Gable
        Gambrel	4	Gabrel (Barn)
        Hip		3	Hip
        Mansard	2	Mansard
@@ -242,11 +242,11 @@ Exterior2nd: Exterior covering on house (if more than one material)
 	
 MasVnrType: Masonry veneer type
 
-       BrkCmn	Brick Common
+       BrkCmn	       Brick Common
        BrkFace	Brick Face
-       CBlock	Cinder Block
+       CBlock	       Cinder Block
        None		None
-       Stone	Stone
+       Stone	       Stone
 	
 MasVnrArea: Masonry veneer area in square feet
 
@@ -271,9 +271,9 @@ Foundation: Type of foundation
        BrkTil	4	Brick & Tile
        CBlock	5	Cinder Block
        PConc	6	Poured Contrete	
-       Slab		2	Slab
+       Slab	2	Slab
        Stone	3	Stone
-       Wood		1	Wood
+       Wood	1	Wood
 		
 BsmtQual: Evaluates the height of the basement
 
@@ -413,13 +413,13 @@ FireplaceQu: Fireplace quality
 		
 GarageType: Garage location
 		
-       2Types	More than one type of garage
-       Attchd	Attached to home
-       Basment	Basement Garage
-       BuiltIn	Built-In (Garage part of house - typically has room above garage)
-       CarPort	Car Port
-       Detchd	Detached from home
-       NA		No Garage
+       2Types 	7     More than one type of garage
+       Attchd	       6     Attached to home
+       Basment	5     Basement Garage
+       BuiltIn	4     Built-In (Garage part of house - typically has room above garage)
+       CarPort	3     Car Port
+       Detchd	       2     Detached from home
+       NA		0     No Garage
 		
 GarageYrBlt: Year garage was built
 		
@@ -516,9 +516,9 @@ SaleType: Type of sale
 		
 SaleCondition: Condition of sale
 
-       Normal	6	Normal Sale
+       Normal	       6	Normal Sale
        Abnorml	5	Abnormal Sale -  trade, foreclosure, short sale
        AdjLand	4	Adjoining Land Purchase
-       Alloca	3	Allocation - two linked properties with separate deeds, typically condo with a garage unit	
-       Family	2	Sale between family members
+       Allocation	3	Allocation - two linked properties with separate deeds, typically condo with a garage unit	
+       Family	       2	Sale between family members
        Partial	1	Home was not completed when last assessed (associated with New Homes)

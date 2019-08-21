@@ -1,9 +1,3 @@
-Still Not handle for null
--------------------------
-'ExterQual','ExterCond','HeatingQC','LandSlope', 'LotShape','LandContour', 'LotConfig', 'BldgType',
-
-'RoofStyle', 'Foundation','SaleCondition'
-'MiscFeature', 'MasVnrType', 'Fence'
 
 
 ------------------- out lairs : numeric ----------
@@ -44,3 +38,11 @@ ExterCond & SalePrice > 340000
 Foundation & SalePrice > 400000
 BsmtQual & SalePrice > 550000
 BsmtCond & SalePrice > 550000
+
+````````````````  features should be droped  `````````````````````
+Street
+Utilities
+Condition2
+RoofMatl
+Heating
+PoolQC

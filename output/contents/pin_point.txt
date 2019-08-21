@@ -1,0 +1,40 @@
+1. analizing train-&-test data files & data-description file to modify if necessary.
+	1. change wrong key-words (like : 'C' of 'MSZoning' to 'C (all)')
+	2. Adding specific vatue to some categorical features (like : 'A' of 'MSZoning' ~ 2)	
+
+	a. YrSold, MoSold have no effect on SalePrice (= can be string)
+	b. 'YearBuilt', 'YearRemodAdd' have serious effect on SalePrice (= need to be numeric)
+			1. [lower 'YearBuilt' ~ less SalePrice]
+			2. [lower 'YearRemodAdd' ~ less SalePrice]
+	c. finding relationships between features [like : 'MasVnrArea' & 'MasVnrType']
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ in data-processing file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2. using hitmap find the most effective features for prediction of SalePrice
+	a. handing out-liars (numerical & categorical) focusing on the most effective features
+			(less data ~ lower performance)
+
+3. single level (missing data Handling)
+	a. using relationship of features[1.c] established a csv file, then 
+			check them individually using 'excel > filter (ctrl + shift + L)'
+			and handle the missings
+	b. unrealistic data handling (like : 2590, 'GarageYrBlt' = 2207 should be 2007)
+
+4. multi level (missing data Handling) 'NA'/(Blank)
+	a. 'NA' means Special value (like: Functional : Typ)
+	b. categorical( = need to be numerical) (like: LandSlope)
+	c. 'NA' means most frequest value (like: YearBuilt)
+	d. categorical 'NA' means 'None'
+	e. numerical 'NA' means 0
+	f. 'NA'means most or recent common value according to (base on) other special groups (like: MSZoning + MSSubClass)
+	g. 'NA' means special value because of condition of data description (like: YearRemodAdd + YearBuilt)
+
+5. conversion of data-type
+	converting numerical variables that are actually categorical (like: MSSubClass)
+
+6. column_value_use_count
+	a. column drop
+	b. find importent categorical features which can be numerical
+		and establish weight against the values (like: Reg of LotShape : 9)
+
+7. marge, create and simplify features
