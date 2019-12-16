@@ -8,4 +8,9 @@ Related karnel which we use to check for table instruction : https://www.kaggle.
 
 For some issues all update will be marged after 4 August, 2019</br>
 
+This is a course competition.</br>
+# Final components: --- score in kaggle ---- 0.10375 ---- World Rank in Kaggle ---- 8
+<h3>Varsity Competition scode : 0.10375(Deadline----4/8/2019 :: 11.59pm) ----- Rank in Course ----- 1</h3><br>
+<h4> 
+
 
